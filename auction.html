@@ -1,0 +1,80 @@
+<head>
+  <title>Tagpro MLTP Auction</title>
+</head>
+
+<body>
+    <div class="teams">
+        <h1>Rosters</h1>
+        <div class="container">
+            <div class="division">
+                <div class="team">
+                    <div class="teamname">
+                        Cyber Ballies
+                    </div>
+                    <ul class="teamdisplay">
+                        <li class="captain">Bull</li><hr class="goleft"/>
+                        <li class="cocaptain">a</li><hr class="goleft"/>
+                        <li class="mltp">a</li><hr class="goleft"/>
+                        <li class="mltp">asdf</li><hr class="goleft"/>
+                        <li>&nbsp;</li><hr class="goleft"/>
+                        <li>&nbsp;</li><hr class="goleft"/>
+                        <li>&nbsp;asdfasdf</li><hr class="goleft"/>
+                        <li>&nbsp;</li>
+                    </ul>
+                </div>
+                <div class="team">WSP's team</div>
+                <div class="team">idgaf</div>
+                <div class="team">leggo</div>
+                <div class="team">k</div>
+
+            </div>
+            <div class="division">
+                <h1>Spere</h1>
+            </div>
+            <div class="division">
+                <h1>Radii</h1>
+            </div>
+            <div class="division">
+                <h1>Pai</h1>
+            </div>
+        </div>
+    </div>
+    <!--
+        {{> loginButtons}}
+        \\ display_time will display a nomination input bar and "Nominate" button iff the current logged in player is the next to nominate in the auctiondata row
+        \\ otherwise, it'll say "Awaiting nomination by [person]"
+        \\ during the draft it'll display the same for everyone -
+        \\                                                             [seconds]
+        \\                                                        [person] - [amount]
+        \\                                                           [last bidder]
+        {{#each auctiondata}}
+            {{> display_time}}
+        {{/each}}
+        {{> display_time}}
+        {{> bid_screen}}
+        {{> message_log}}
+    -->
+    {{> display_time}}
+    {{> admin}}
+</body>
+
+<template name="display_time">
+    {{#if isNominationTime}}
+        {{#if isTurnToNominate}}
+            <form class="nominate-player">
+                <input type="text" name="player" placeholder="Input a player name" />
+                <input type="text" name="amount" placeholder="Initial bid (blank = 0)" />
+                <button type="submit">Nominate</button>
+            </form>
+        {{else}}
+            Awaiting nomination by {{currentNominatingPlayer}}
+        {{/if}}
+    {{else}}
+        {{time}} - {{personBeingBidOn}} - {{bidAmount}} - {{lastBidder}}
+    {{/if}}
+
+</template>
+<template name="admin">
+    <button>Toggle State</button>
+</template>
+
