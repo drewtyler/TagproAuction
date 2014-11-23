@@ -61,7 +61,7 @@ li {
   margin-left: -10px;
 }
 .captain {
-  list-style-image: url('/captain.png');
+  list-style-image: url('captain.png');
 }
 .cocaptain {
   list-style-image: url('cocaptain.png');

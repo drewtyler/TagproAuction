@@ -1,0 +1,265 @@
+{
+   "name": "Pacific",
+   "teams": [
+            {
+              "name": "Cyber Ballies",
+              "money": 100,
+              "numplayers": 1,
+              "captain": "Bull",
+              "roster": [
+                {
+                  "name": "Bull",
+                  "order": 1,
+                  "captain":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 2,
+                  "cocaptain":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 3,
+                  "mltp":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 4,
+                  "mltp":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 5,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 6,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 7,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 8,
+                  "cost": 0
+                }
+              ]
+            },
+            {
+              "name": "Walla Walla Ballas",
+              "money": 100,
+              "numplayers": 1,
+              "captain": "Ballee Lama",
+              "roster": [
+                {
+                  "name": "Ballee Lama",
+                  "order": 1,
+                  "captain":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 2,
+                  "cocaptain":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 3,
+                  "mltp":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 4,
+                  "mltp":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 5,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 6,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 7,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 8,
+                  "cost": 0
+                }
+              ]
+            },
+            {
+              "name": "12 Angry Balls",
+              "money": 100,
+              "numplayers": 1,
+              "captain": "Spiller",
+              "roster": [
+                {
+                  "name": "Spiller",
+                  "order": 1,
+                  "captain":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 2,
+                  "cocaptain":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 3,
+                  "mltp":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 4,
+                  "mltp":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 5,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 6,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 7,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 8,
+                  "cost": 0
+                }
+              ]
+            },
+            {
+              "name": "Antagonists",
+              "money": 100,
+              "numplayers": 1,
+              "captain": "Capernicus",
+              "roster": [
+                {
+                  "name": "Capernicus",
+                  "order": 1,
+                  "captain":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 2,
+                  "cocaptain":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 3,
+                  "mltp":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 4,
+                  "mltp":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 5,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 6,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 7,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 8,
+                  "cost": 0
+                }
+              ]
+            },
+            {
+              "name": "Probots",
+              "money": 100,
+              "numplayers": 1,
+              "captain": "RoughJustice",
+              "roster": [
+                {
+                  "name": "RoughJustice",
+                  "order": 1,
+                  "captain":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 2,
+                  "cocaptain":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 3,
+                  "mltp":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 4,
+                  "mltp":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 5,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 6,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 7,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 8,
+                  "cost": 0
+                }
+              ]
+            }
+          ]
+}

@@ -4,6 +4,8 @@
 # but you can also edit it by hand.
 
 meteor-platform
-insecure
 autopublish
+accounts-ui
+accounts-password
+json
 

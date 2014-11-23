@@ -1,0 +1,264 @@
+{ "name": "NorthEast",
+   "teams": [
+            {
+              "name": "ALL CAPS",
+              "money": 100,
+              "numplayers": 1,
+              "captain": "YOSSARIAN",
+              "roster": [
+                {
+                  "name": "YOSSARIAN",
+                  "order": 1,
+                  "captain":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 2,
+                  "cocaptain":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 3,
+                  "mltp":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 4,
+                  "mltp":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 5,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 6,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 7,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 8,
+                  "cost": 0
+                }
+              ]
+            },
+            {
+              "name": "Ghostboosters",
+              "money": 100,
+              "numplayers": 1,
+              "captain": "Mikero",
+              "roster": [
+                {
+                  "name": "Mikero",
+                  "order": 1,
+                 "captain":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 2,
+                  "cocaptain":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 3,
+                  "mltp":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 4,
+                  "mltp":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 5,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 6,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 7,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 8,
+                  "cost": 0
+                }
+              ]
+            },
+            {
+              "name": "Knights of Cap-A-Lot",
+              "money": 100,
+              "numplayers": 1,
+              "captain": "SirDan",
+              "roster": [
+                {
+                  "name": "SirDan",
+                  "order": 1,
+                  "captain":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 2,
+                  "cocaptain":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 3,
+                  "mltp":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 4,
+                  "mltp":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 5,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 6,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 7,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 8,
+                  "cost": 0
+                }
+              ]
+            },
+            {
+              "name": "30SMB",
+              "money": 100,
+              "numplayers": 1,
+              "captain": "Legman",
+              "roster": [
+                {
+                  "name": "Legman",
+                  "order": 1,
+                  "captain":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 2,
+                  "cocaptain":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 3,
+                  "mltp":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 4,
+                  "mltp":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 5,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 6,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 7,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 8,
+                  "cost": 0
+                }
+              ]
+            },
+            {
+              "name": "WSPs Team",
+              "money": 100,
+              "numplayers": 1,
+              "captain": "WowSuchPro",
+              "roster": [
+                {
+                  "name": "WowSuchPro",
+                  "order": 1,
+                  "captain":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 2,
+                  "cocaptain":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 3,
+                  "mltp":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 4,
+                  "mltp":true,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 5,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 6,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 7,
+                  "cost": 0
+                },
+                {
+                  "name": "",
+                  "order": 8,
+                  "cost": 0
+                }
+              ]
+            }
+          ]
+}
