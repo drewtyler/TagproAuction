@@ -200,7 +200,7 @@ Meteor.methods({
   },
   acceptBid: function(bidder, amount, clienttime) {
     if(Meteor.isServer) {
-      console.log("acceptBid: Called acceptBid");
+      // Gotta be logged in. Just precautionary.
       if(!Meteor.userId()) {
         console.log("acceptBid: no user");
         return false;
@@ -209,40 +209,58 @@ Meteor.methods({
       {
         console.log("accpetBid: bid from " + Meteor.user().username);
       }
+
+      // Check state of auction
       var state = AuctionData.findOne({});
-			if(state.State == "Nominating") {
+      if(state.State == "Nominating") {
         console.log("acceptBid: Can't bid right now");
 				return false;
 			}
+
+      // Alright let's check this thang out.
       console.log("acceptBid: Got State & we're bidding");
+      // First, is the bid enough?
       if(parseInt(state.currentBid) < parseInt(amount)) {
-        // todo: see if the player has enough money
-        console.log("acceptBid: good amount");
-        if(parseInt(state.nextExpiryDate) > parseInt(clienttime)) {
-          console.log("acceptBid: nextExpiryDate good");
-          BidHistory.insert({
-            bidder: bidder,
-            amount: amount,
-            player: state.currentPlayer,
-            createdAt: clienttime
-          });
-          AuctionData.update({State: "Bidding"}, {$set: {currentBid: amount, lastBidder: bidder}});
-          Meteor.call("insertMessage", bidder + " bids " + amount + " on " + AuctionData.findOne({}).currentPlayer, new Date());
-          console.log("acceptBid: inserted bid");
-          if(state.nextExpiryDate - clienttime < 10000) {
-            AuctionData.update({State: "Bidding"}, {$set: {nextExpiryDate: new Date(clienttime+10000).getTime()}});
+        // K cool, does the player have this much money?
+        bidderAmount = TeamData.findOne({"captain":bidder}).money;
+        if(amount < bidderAmount) {
+          // Cool, he does. Is it in time?
+          console.log("acceptBid: good amount");
+          if(parseInt(state.nextExpiryDate) > parseInt(clienttime)) {
+            // Sweet it was. Let's mark it down!
+            console.log("acceptBid: nextExpiryDate good");
+            BidHistory.insert({
+              bidder: bidder,
+              amount: amount,
+              player: state.currentPlayer,
+              createdAt: clienttime
+            });
+            AuctionData.update(
+              {State: "Bidding"},
+              {$set: {currentBid: amount, lastBidder: bidder}}
+            );
+            Meteor.call("insertMessage",
+                        bidder + " bids " + amount + " on " + AuctionData.findOne({}).currentPlayer,
+                        new Date());
+            console.log("acceptBid: inserted bid");
+
+            // Do we need to give some time back?
+            if(state.nextExpiryDate - clienttime < 10000) {
+              AuctionData.update({State: "Bidding"}, {$set: {nextExpiryDate: new Date(clienttime+10000).getTime()}});
+            }
+            return true;
+          } else {
+            console.log("acceptBid: too late: "+ state.nextExpiryDate + " vs " + clienttime);
           }
-          console.log("acceptBid: Updated Auction status. returning True");
-          return true;
-        } else {
-          console.log("acceptBid: too late: "+ state.nextExpiryDate + " vs " + clienttime);
-          return false;
+        }
+        else {
+          console.log("acceptBid: you outta money homie.");
         }
       } else {
         console.log("acceptBid: bad amount: " + state.currentBid + " vs " + amount + ".");
-        return false;
       }
     }
+    return false;
   }
 });
 
