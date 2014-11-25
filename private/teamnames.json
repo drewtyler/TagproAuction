@@ -1,0 +1,22 @@
+[
+  {"teamname":"Pi Rats", "division" : "Atlantic"},
+  {"teamname":"Rektiles", "division" : "Atlantic"},
+  {"teamname":"KGBallers", "division" : "Atlantic"},
+  {"teamname":"SOHB", "division" : "Atlantic"},
+  {"teamname":"Ballchimedes", "division" : "Atlantic"},
+  {"teamname":"Probots", "division" : "Pacific"},
+  {"teamname":"Walla Walla Ballas", "division" : "Pacific"},
+  {"teamname":"12 Angry Balls", "division" : "Pacific"},
+  {"teamname":"The Antagonists", "division" : "Pacific"},
+  {"teamname":"Cyber Ballies", "division" : "Pacific"},
+  {"teamname":"Tears for Spheres", "division" : "Central"},
+  {"teamname":"Capitalists", "division" : "Central"},
+  {"teamname":"MBM", "division" : "Central"},
+  {"teamname":"Lagprone", "division" : "Central"},
+  {"teamname":"idk", "division" : "Central"},
+  {"teamname":"ALL CAPS", "division" : "Northeast"},
+  {"teamname":"Ghostboosters", "division" : "Northeast"},
+  {"teamname":"Knights of Cap-A-Lot", "division" : "Northeast"},
+  {"teamname":"30 SMB", "division" : "Northeast"},
+  {"teamname":"wsp", "division" : "Northeast"}
+]

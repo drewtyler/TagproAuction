@@ -1,8 +1,11 @@
 AuctionData = new Mongo.Collection("auctiondata");
 TeamData = new Mongo.Collection('teams');
+TeamNames = new Mongo.Collection('teamnames');
+Divisions = new Mongo.Collection('divisions');
 DraftablePlayers = new Mongo.Collection('players');
 Messages = new Mongo.Collection('messages');
 BidHistory = new Mongo.Collection('bids');
+CaptainData = new Mongo.Collection('captains');
 
 if (Meteor.isClient) {
   Session.setDefault("time", 0);
@@ -13,7 +16,13 @@ if (Meteor.isClient) {
   Template.rosters.helpers(
     {
       divisions : function() {
-        return TeamData.find({});
+        return Divisions.find({});
+      },
+      teams : function(division) {
+        return TeamNames.find({"division" : division});
+      },
+      players : function(teamname) {
+        return TeamData.find({"teamname" : teamname}, {sort : {order : 1}});
       }
     }
   );
@@ -28,37 +37,27 @@ if (Meteor.isClient) {
   Template.display_time.helpers(
     {
       time : function() {
-        if(AuctionData.findOne().State == "Bidding") {
-          var curtime = Session.get('time');
-          var serverTime = AuctionData.findOne().nextExpiryDate;
-          var secsLeft = Math.floor((serverTime - curtime)/1000);
-          if(secsLeft < 0)
-            Meteor.call("checkForToggle");
-          else
-            return secsLeft;
-        }
+        var curtime = Session.get('time');
+        var serverTime = AuctionData.findOne().nextExpiryDate;
+        var secsLeft = Math.ceil((serverTime - curtime)/100)/10;
+        if(secsLeft < 0)
+          Meteor.call("checkForToggle");
+        else
+          return secsLeft;
       },
       currentNominatingPlayer : function() {
-        if(AuctionData.findOne().State == "Bidding") {
           return AuctionData.findOne().Nominator;
-        }
       },
       personBeingBidOn : function() {
-        if(AuctionData.findOne().State == "Bidding") {
           return AuctionData.findOne().currentPlayer;
-        }
       },
       bidAmount :function()
       {
-        if(AuctionData.findOne().State == "Bidding") {
           return AuctionData.findOne().currentBid;
-        }
       },
       lastBidder : function()
       {
-        if(AuctionData.findOne().State == "Bidding") {
-          return AuctionData.findOne().lastBidder;
-        }
+        return AuctionData.findOne().lastBidder;
       },
       isNominationTime: function()
       {
@@ -217,18 +216,32 @@ Meteor.methods({
 
 if (Meteor.isServer) {
   Meteor.startup(function () {
+    // Clear state
     AuctionData.remove({});
-    AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+100000, Nominator: "asdf"});
     TeamData.remove({});
+    Divisions.remove({});
+    TeamNames.remove({});
+
+    // Load state
+    AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+100000, Nominator: "asdf"});
     var initialRosterData = {};
-    initialRosterData = JSON.parse(Assets.getText("atlantic.json"));
-    TeamData.insert(initialRosterData);
-    initialRosterData = JSON.parse(Assets.getText("pacific.json"));
-    TeamData.insert(initialRosterData);
-    initialRosterData = JSON.parse(Assets.getText("central.json"));
-    TeamData.insert(initialRosterData);
-    initialRosterData = JSON.parse(Assets.getText("northeast.json"));
-    TeamData.insert(initialRosterData);
+    initialRosterData = JSON.parse(Assets.getText('teams.json'));
+    for(i = 0; i < initialRosterData.length; i++) {
+      var obj = initialRosterData[i];
+      TeamData.insert(obj);
+    }
+    var divisions = {};
+    divisions = JSON.parse(Assets.getText('divisions.json'));
+    for(i = 0; i < divisions.length; i++) {
+      var obj = divisions[i];
+      Divisions.insert(obj);
+    }
+    var teamnames = {};
+    teamnames = JSON.parse(Assets.getText('teamnames.json'));
+    for(i = 0; i < teamnames.length; i++) {
+      var obj = teamnames[i];
+      TeamNames.insert(obj);
+    }
     return true;
   });
 }

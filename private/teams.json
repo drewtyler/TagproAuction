@@ -1,0 +1,1201 @@
+[
+  {
+  "name": "Spiller",
+  "order": 1,
+  "captain":true,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "12 Angry Balls"
+},
+{
+  "name": "",
+  "order": 2,
+  "cocaptain":true,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "12 Angry Balls"
+},
+{
+  "name": "",
+  "order": 3,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "12 Angry Balls"
+},
+{
+  "name": "",
+  "order": 4,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "12 Angry Balls"
+},
+{
+  "name": "",
+  "order": 5,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "12 Angry Balls"
+},
+{
+  "name": "",
+  "order": 6,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "12 Angry Balls"
+},
+{
+  "name": "",
+  "order": 7,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "12 Angry Balls"
+},
+{
+  "name": "",
+  "order": 8,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "12 Angry Balls"
+}
+,{
+  "name": "Legman",
+  "order": 1,
+  "captain":true,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "30 SMB"
+},
+{
+  "name": "",
+  "order": 2,
+  "cocaptain":true,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "30 SMB"
+},
+{
+  "name": "",
+  "order": 3,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "30 SMB"
+},
+{
+  "name": "",
+  "order": 4,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "30 SMB"
+},
+{
+  "name": "",
+  "order": 5,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "30 SMB"
+},
+{
+  "name": "",
+  "order": 6,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "30 SMB"
+},
+{
+  "name": "",
+  "order": 7,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "30 SMB"
+},
+{
+  "name": "",
+  "order": 8,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "30 SMB"
+}
+,{
+  "name": "YOSSARIAN",
+  "order": 1,
+  "captain":true,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "ALL CAPS"
+},
+{
+  "name": "",
+  "order": 2,
+  "cocaptain":true,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "ALL CAPS"
+},
+{
+  "name": "",
+  "order": 3,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "ALL CAPS"
+},
+{
+  "name": "",
+  "order": 4,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "ALL CAPS"
+},
+{
+  "name": "",
+  "order": 5,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "ALL CAPS"
+},
+{
+  "name": "",
+  "order": 6,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "ALL CAPS"
+},
+{
+  "name": "",
+  "order": 7,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "ALL CAPS"
+},
+{
+  "name": "",
+  "order": 8,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "ALL CAPS"
+}
+,{
+  "name": "Capernicus",
+  "order": 1,
+  "captain":true,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "The Antagonists"
+},
+{
+  "name": "",
+  "order": 2,
+  "cocaptain":true,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "The Antagonists"
+},
+{
+  "name": "",
+  "order": 3,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "The Antagonists"
+},
+{
+  "name": "",
+  "order": 4,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "The Antagonists"
+},
+{
+  "name": "",
+  "order": 5,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "The Antagonists"
+},
+{
+  "name": "",
+  "order": 6,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "The Antagonists"
+},
+{
+  "name": "",
+  "order": 7,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "The Antagonists"
+},
+{
+  "name": "",
+  "order": 8,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "The Antagonists"
+}
+,{
+  "name": "Chalksy",
+  "order": 1,
+  "captain":true,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "Ballchimedes"
+},
+{
+  "name": "",
+  "order": 2,
+  "cocaptain":true,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "Ballchimedes"
+},
+{
+  "name": "",
+  "order": 3,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "Ballchimedes"
+},
+{
+  "name": "",
+  "order": 4,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "Ballchimedes"
+},
+{
+  "name": "",
+  "order": 5,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "Ballchimedes"
+},
+{
+  "name": "",
+  "order": 6,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "Ballchimedes"
+},
+{
+  "name": "",
+  "order": 7,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "Ballchimedes"
+},
+{
+  "name": "",
+  "order": 8,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "Ballchimedes"
+}
+,{
+  "name": "eagles",
+  "order": 1,
+  "captain":true,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "Capitalists"
+},
+{
+  "name": "",
+  "order": 2,
+  "cocaptain":true,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "Capitalists"
+},
+{
+  "name": "",
+  "order": 3,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "Capitalists"
+},
+{
+  "name": "",
+  "order": 4,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "Capitalists"
+},
+{
+  "name": "",
+  "order": 5,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "Capitalists"
+},
+{
+  "name": "",
+  "order": 6,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "Capitalists"
+},
+{
+  "name": "",
+  "order": 7,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "Capitalists"
+},
+{
+  "name": "",
+  "order": 8,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "Capitalists"
+}
+,{
+  "name": "Mikero",
+  "order": 1,
+  "captain":true,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "Ghostboosters"
+},
+{
+  "name": "",
+  "order": 2,
+  "cocaptain":true,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "Ghostboosters"
+},
+{
+  "name": "",
+  "order": 3,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "Ghostboosters"
+},
+{
+  "name": "",
+  "order": 4,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "Ghostboosters"
+},
+{
+  "name": "",
+  "order": 5,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "Ghostboosters"
+},
+{
+  "name": "",
+  "order": 6,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "Ghostboosters"
+},
+{
+  "name": "",
+  "order": 7,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "Ghostboosters"
+},
+{
+  "name": "",
+  "order": 8,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "Ghostboosters"
+}
+,{
+  "name": "Bull",
+  "order": 1,
+  "captain":true,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "Cyber Ballies"
+},
+{
+  "name": "",
+  "order": 2,
+  "cocaptain":true,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "Cyber Ballies"
+},
+{
+  "name": "",
+  "order": 3,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "Cyber Ballies"
+},
+{
+  "name": "",
+  "order": 4,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "Cyber Ballies"
+},
+{
+  "name": "",
+  "order": 5,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "Cyber Ballies"
+},
+{
+  "name": "",
+  "order": 6,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "Cyber Ballies"
+},
+{
+  "name": "",
+  "order": 7,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "Cyber Ballies"
+},
+{
+  "name": "",
+  "order": 8,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "Cyber Ballies"
+}
+,{
+  "name": "Jagdpanther",
+  "order": 1,
+  "captain":true,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "idk"
+},
+{
+  "name": "",
+  "order": 2,
+  "cocaptain":true,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "idk"
+},
+{
+  "name": "",
+  "order": 3,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "idk"
+},
+{
+  "name": "",
+  "order": 4,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "idk"
+},
+{
+  "name": "",
+  "order": 5,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "idk"
+},
+{
+  "name": "",
+  "order": 6,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "idk"
+},
+{
+  "name": "",
+  "order": 7,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "idk"
+},
+{
+  "name": "",
+  "order": 8,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "idk"
+}
+,{
+  "name": "Stalin",
+  "order": 1,
+  "captain":true,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "KGBallers"
+},
+{
+  "name": "",
+  "order": 2,
+  "cocaptain":true,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "KGBallers"
+},
+{
+  "name": "",
+  "order": 3,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "KGBallers"
+},
+{
+  "name": "",
+  "order": 4,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "KGBallers"
+},
+{
+  "name": "",
+  "order": 5,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "KGBallers"
+},
+{
+  "name": "",
+  "order": 6,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "KGBallers"
+},
+{
+  "name": "",
+  "order": 7,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "KGBallers"
+},
+{
+  "name": "",
+  "order": 8,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "KGBallers"
+}
+,{
+  "name": "SirDan",
+  "order": 1,
+  "captain":true,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "Knights of Cap-A-Lot"
+},
+{
+  "name": "",
+  "order": 2,
+  "cocaptain":true,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "Knights of Cap-A-Lot"
+},
+{
+  "name": "",
+  "order": 3,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "Knights of Cap-A-Lot"
+},
+{
+  "name": "",
+  "order": 4,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "Knights of Cap-A-Lot"
+},
+{
+  "name": "",
+  "order": 5,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "Knights of Cap-A-Lot"
+},
+{
+  "name": "",
+  "order": 6,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "Knights of Cap-A-Lot"
+},
+{
+  "name": "",
+  "order": 7,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "Knights of Cap-A-Lot"
+},
+{
+  "name": "",
+  "order": 8,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "Knights of Cap-A-Lot"
+}
+,{
+  "name": "Ballymandias",
+  "order": 1,
+  "captain":true,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "Lagprone"
+},
+{
+  "name": "",
+  "order": 2,
+  "cocaptain":true,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "Lagprone"
+},
+{
+  "name": "",
+  "order": 3,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "Lagprone"
+},
+{
+  "name": "",
+  "order": 4,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "Lagprone"
+},
+{
+  "name": "",
+  "order": 5,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "Lagprone"
+},
+{
+  "name": "",
+  "order": 6,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "Lagprone"
+},
+{
+  "name": "",
+  "order": 7,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "Lagprone"
+},
+{
+  "name": "",
+  "order": 8,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "Lagprone"
+}
+,{
+  "name": "KPow",
+  "order": 1,
+  "captain":true,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "MBM"
+},
+{
+  "name": "",
+  "order": 2,
+  "cocaptain":true,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "MBM"
+},
+{
+  "name": "",
+  "order": 3,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "MBM"
+},
+{
+  "name": "",
+  "order": 4,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "MBM"
+},
+{
+  "name": "",
+  "order": 5,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "MBM"
+},
+{
+  "name": "",
+  "order": 6,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "MBM"
+},
+{
+  "name": "",
+  "order": 7,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "MBM"
+},
+{
+  "name": "",
+  "order": 8,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "MBM"
+}
+,{
+  "name": "nlfn",
+  "order": 1,
+  "captain":true,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "Pi Rats"
+},
+{
+  "name": "",
+  "order": 2,
+  "cocaptain":true,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "Pi Rats"
+},
+{
+  "name": "",
+  "order": 3,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "Pi Rats"
+},
+{
+  "name": "",
+  "order": 4,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "Pi Rats"
+},
+{
+  "name": "",
+  "order": 5,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "Pi Rats"
+},
+{
+  "name": "",
+  "order": 6,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "Pi Rats"
+},
+{
+  "name": "",
+  "order": 7,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "Pi Rats"
+},
+{
+  "name": "",
+  "order": 8,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "Pi Rats"
+}
+,{
+  "name": "RoughJustice",
+  "order": 1,
+  "captain":true,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "Probots"
+},
+{
+  "name": "",
+  "order": 2,
+  "cocaptain":true,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "Probots"
+},
+{
+  "name": "",
+  "order": 3,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "Probots"
+},
+{
+  "name": "",
+  "order": 4,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "Probots"
+},
+{
+  "name": "",
+  "order": 5,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "Probots"
+},
+{
+  "name": "",
+  "order": 6,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "Probots"
+},
+{
+  "name": "",
+  "order": 7,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "Probots"
+},
+{
+  "name": "",
+  "order": 8,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "Probots"
+}
+,{
+  "name": "Fez",
+  "order": 1,
+  "captain":true,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "Rektiles"
+},
+{
+  "name": "",
+  "order": 2,
+  "cocaptain":true,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "Rektiles"
+},
+{
+  "name": "",
+  "order": 3,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "Rektiles"
+},
+{
+  "name": "",
+  "order": 4,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "Rektiles"
+},
+{
+  "name": "",
+  "order": 5,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "Rektiles"
+},
+{
+  "name": "",
+  "order": 6,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "Rektiles"
+},
+{
+  "name": "",
+  "order": 7,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "Rektiles"
+},
+{
+  "name": "",
+  "order": 8,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "Rektiles"
+}
+,{
+  "name": "Xile",
+  "order": 1,
+  "captain":true,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "SOHB"
+},
+{
+  "name": "",
+  "order": 2,
+  "cocaptain":true,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "SOHB"
+},
+{
+  "name": "",
+  "order": 3,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "SOHB"
+},
+{
+  "name": "",
+  "order": 4,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "SOHB"
+},
+{
+  "name": "",
+  "order": 5,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "SOHB"
+},
+{
+  "name": "",
+  "order": 6,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "SOHB"
+},
+{
+  "name": "",
+  "order": 7,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "SOHB"
+},
+{
+  "name": "",
+  "order": 8,
+  "cost": 0,
+  "division" : "Atlantic",
+  "teamname": "SOHB"
+}
+,{
+  "name": "Troball",
+  "order": 1,
+  "captain":true,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "Tears for Spheres"
+},
+{
+  "name": "",
+  "order": 2,
+  "cocaptain":true,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "Tears for Spheres"
+},
+{
+  "name": "",
+  "order": 3,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "Tears for Spheres"
+},
+{
+  "name": "",
+  "order": 4,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "Tears for Spheres"
+},
+{
+  "name": "",
+  "order": 5,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "Tears for Spheres"
+},
+{
+  "name": "",
+  "order": 6,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "Tears for Spheres"
+},
+{
+  "name": "",
+  "order": 7,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "Tears for Spheres"
+},
+{
+  "name": "",
+  "order": 8,
+  "cost": 0,
+  "division" : "Central",
+  "teamname": "Tears for Spheres"
+}
+,{
+  "name": "WowSuchPro",
+  "order": 1,
+  "captain":true,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "wsp"
+},
+{
+  "name": "",
+  "order": 2,
+  "cocaptain":true,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "wsp"
+},
+{
+  "name": "",
+  "order": 3,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "wsp"
+},
+{
+  "name": "",
+  "order": 4,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "wsp"
+},
+{
+  "name": "",
+  "order": 5,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "wsp"
+},
+{
+  "name": "",
+  "order": 6,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "wsp"
+},
+{
+  "name": "",
+  "order": 7,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "wsp"
+},
+{
+  "name": "",
+  "order": 8,
+  "cost": 0,
+  "division" : "Northeast",
+  "teamname": "wsp"
+},{
+  "name": "Ballee Lama",
+  "order": 1,
+  "captain":true,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "Walla Walla Ballas"
+},
+{
+  "name": "",
+  "order": 2,
+  "cocaptain":true,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "Walla Walla Ballas"
+},
+{
+  "name": "",
+  "order": 3,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "Walla Walla Ballas"
+},
+{
+  "name": "",
+  "order": 4,
+  "mltp":true,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "Walla Walla Ballas"
+},
+{
+  "name": "",
+  "order": 5,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "Walla Walla Ballas"
+},
+{
+  "name": "",
+  "order": 6,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "Walla Walla Ballas"
+},
+{
+  "name": "",
+  "order": 7,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "Walla Walla Ballas"
+},
+{
+  "name": "",
+  "order": 8,
+  "cost": 0,
+  "division" : "Pacific",
+  "teamname": "Walla Walla Ballas"
+}
+]

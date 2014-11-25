@@ -39,14 +39,13 @@
         <div class="container">
           {{#each divisions}}
               <div class="division">
-                  <!--{{name}}-->
-                  {{#each teams}}
+                  {{#each teams division ./division}}
                      <div class="team">
                         <div class="teamname">
-                            {{name}}
+                            {{teamname}}
                         </div>
                         <ul class="teamdisplay">
-                            {{#each roster}}
+                            {{#each players teamname ./teamname}}
                                 {{#if captain}}
                                     <li class="captain">{{name}}&nbsp;</li><hr class="goleft">
                                 {{else}}
