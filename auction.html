@@ -5,8 +5,6 @@
 <body>
     <div style="margin-left: 850px;margin-top:15px;">
         {{> display_time}}
-        <br>
-        <!--{{> admin}}-->
         <br style="margin-bottom:10px">
         {{> loginButtons}}
     </div>
@@ -14,20 +12,23 @@
     <div style="margin-left: 850px;margin-top:500px;">
         {{> display_bidding_options}}
     </div>
-    <div style="margin-left:1500px;margin-top:-647px;">
+    <div style="margin-left:1500px;margin-top:-600px;">
+        <p>Bid Log and Chat</p>
         {{> messages}}
     </div>
 </body>
 
 <template name="messages">
-    <form class="new-post">
-        <input type="text" name="text" placeholder="Type to send message"/>
-    </form>
+    {{#if canSendMessage}}
+        <form class="new-post">
+            <input type="text" name="text" placeholder="Type to send message"/>
+        </form>
+    {{/if}}
     <br>
     <ul>
         {{#each messages}}
             {{#if text}}
-                <li>{{text}}</li>
+                <p style="margin-left:-35px;width:250px">{{text}}</p>
             {{/if}}
         {{/each}}
     </ul>
@@ -101,7 +102,3 @@
     {{/if}}
 
 </template>
-<template name="admin">
-    <button>Toggle State</button>
-</template>
-
