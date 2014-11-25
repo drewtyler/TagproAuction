@@ -5,9 +5,9 @@ Divisions = new Mongo.Collection('divisions');
 DraftablePlayers = new Mongo.Collection('players');
 Messages = new Mongo.Collection('messages');
 BidHistory = new Mongo.Collection('bids');
-CaptainData = new Mongo.Collection('captains');
 
 if (Meteor.isClient) {
+
   Session.setDefault("time", 0);
   Meteor.setInterval(function() {
     Session.set('time', new Date().getTime());
