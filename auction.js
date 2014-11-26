@@ -139,7 +139,7 @@ if (Meteor.isClient) {
   });
   Template.messages.events(
     {
-      'submit .new-post' : function(event)
+      'submit' : function(event)
       {
         console.log("Got a new message from ", Meteor.user().username);
         console.log("Message text:", event.target.text.value);
