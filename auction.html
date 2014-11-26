@@ -60,14 +60,16 @@
 </div>
 </template>
 
+
+
 <template name="rosters">
     <div class="row" style="padding-top:30px;">
       {{#each divisions}}
-              <div class="col-sm-2"></div>
+              <div class="col-sm-2 cmn-t-shake"></div>
               {{#each teams division ./division}}
                  <div class="col-sm-2" style="">
-                        <ul class="list-group">
-                        <li class="list-group-item" style="text-align:center; color:#777; background-color:#eee">
+                        <ul class="list-group cmn-t-shake">
+                        <li class="list-group-item {{inRedDivision division}}" style="text-align:center;">
                             {{teamname}}
                         </li>
                         {{#each players teamname ./teamname}}

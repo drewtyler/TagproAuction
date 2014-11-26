@@ -17,7 +17,6 @@ if (Meteor.isClient) {
   Accounts.ui.config({
     passwordSignupFields: "USERNAME_ONLY"
   });
-
   // Rosters
   Template.rosters.helpers(
     {
@@ -29,6 +28,14 @@ if (Meteor.isClient) {
       },
       players : function(teamname) {
         return TeamData.find({"teamname" : teamname}, {sort : {order : 1}});
+      },
+      inRedDivision : function(division) {
+        if(division == "Central" || division == "Pacific") {
+          return "red-division";
+        }
+        else {
+          return "blue-division";
+        }
       }
     }
   );
@@ -226,7 +233,6 @@ Meteor.methods({
       {
         console.log("acceptBid: bid from " + Meteor.user().username);
       }
-
       // Check state of auction
       var state = AuctionData.findOne({});
       if(state.State == "Nominating") {
@@ -239,7 +245,7 @@ Meteor.methods({
       // First, is the bid enough?
       if(parseInt(state.currentBid) < parseInt(amount)) {
         // K cool, does the player have this much money?
-        bidderAmount = TeamData.findOne({"captain":bidder}).money;
+        bidderAmount = TeamNames.findOne({"captain":bidder}).money;
         if(amount < bidderAmount) {
           // Cool, he does. Is it in time?
           console.log("acceptBid: good amount");

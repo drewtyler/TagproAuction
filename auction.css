@@ -16,7 +16,13 @@ body {
 
 	font-size: 14px;
 }
+.red-division {
+	background-color: #EB7E7E !important
+}
 
+.blue-division {
+	background-color: #86C6E6 !important
+}
 .list-group-item {
   padding: 2px 2px;
   position: relative;
@@ -67,4 +73,3 @@ header .hide-completed {
 		padding-bottom: 5px;
 	}
 }
-
