@@ -40,6 +40,20 @@ if (Meteor.isClient) {
     }
   );
 
+
+  Template.funds_remaining.helpers(
+  {
+    getBalance: function () {
+        Session.set("balance", TeamNames.findOne({"captain":Meteor.user().username}).money);
+        return TeamNames.findOne({"captain":Meteor.user().username}).money;
+    },
+    isCaptain: function() {
+      if(!Meteor.userId())
+        return false;
+      return (TeamData.findOne({"name" : Meteor.user().username, "captain" : true}))
+    },
+  });
+
   // display_time (aka bid status)
   Template.display_time.events(
     {
@@ -183,7 +197,7 @@ Meteor.methods({
 
         // Start bidding baby
         AuctionData.remove({});
-        return AuctionData.insert({State: "Bidding", nextExpiryDate: new Date().getTime()+90000, currentBid: bid, currentPlayer: playerNominated, lastBidder: state.Nominator});
+        return AuctionData.insert({State: "Bidding", nextExpiryDate: new Date().getTime()+30000, currentBid: bid, currentPlayer: playerNominated, lastBidder: state.Nominator});
       }
       else
       {
