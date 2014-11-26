@@ -45,7 +45,7 @@
                         <button class="btn btn-primary" type="button">Send</button>
                 </form>
             {{else}}
-                Log and Chat
+                Log in to Chat
             {{/if}}
         </div>
         <ul class="list-group">
@@ -54,7 +54,11 @@
                     {{#if winningBid }}
                         <li class="list-group-item list-group-item-success" style="">{{text}}</li>
                     {{else}}
-                        <li class="list-group-item" style="">{{text}}</li>
+                        {{#if isTextMessage}}
+                            <li class="list-group-item" style="word-break: break-all;background-color:#dddddd">{{text}}</li>
+                        {{else}}
+                            <li class="list-group-item" style="word-break: break-all;">{{text}}</li>
+                        {{/if}}
                     {{/if}}
                 {{/if}}
             {{/each}}
@@ -66,19 +70,21 @@
 
 <template name="funds_remaining">
 {{#if isCaptain}}
-        <p class="navbar-text navbar-right">Balance: <b id="balance">{{getBalance}}</b></p>
+        <p class="navbar-text navbar-right">Balance: <b name="balance">{{getBalance}}</b></p>
 {{/if}}
 </template>
 
 <template name="rosters">
     <div class="row" style="padding-top:30px;">
       {{#each divisions}}
-              <div class="col-sm-2 cmn-t-shake"></div>
+              <div class="col-sm-2"></div>
               {{#each teams division ./division}}
                  <div class="col-sm-2" style="">
-                        <ul class="list-group cmn-t-shake">
+                        <ul class="list-group">
                         <li class="list-group-item {{inRedDivision division}}" style="text-align:center;">
-                            {{teamname}}
+                            {{teamname}} 
+                            <br>
+                            {{money}}
                         </li>
                         {{#each players teamname ./teamname}}
                             <li class="list-group-item" style="padding: 2px 2px; height:25px">
