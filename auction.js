@@ -190,7 +190,7 @@ Meteor.methods({
 
         // Put him in the roster
         TeamData.update({"teamname": team.teamname, "order" : playerOrder}, {$set: {"name": playerWon, "cost": state.currentBid}});
-        TeamNames.update({"teamname": team.teamname}, {$set: {"count":playerOrder, "money":(team.money-state.currentBid)}));
+        TeamNames.update({"teamname": team.teamname}, {$set: {"count":playerOrder, "money":(team.money-state.currentBid)}});
         // Log message
         var text = state.lastBidder + " wins " + playerWon + " for " + state.currentBid + "!";
         Meteor.call("insertMessage", text, new Date(), 1);
