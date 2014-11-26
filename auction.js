@@ -5,6 +5,7 @@ Divisions = new Mongo.Collection('divisions');
 DraftablePlayers = new Mongo.Collection('players');
 Messages = new Mongo.Collection('messages');
 BidHistory = new Mongo.Collection('bids');
+Nominators = new Mongo.Collection('nominators');
 
 Meteor.setServerTime = function() {
   Meteor.call("getServerTime", function(error, serverMS) {
@@ -187,7 +188,7 @@ Meteor.methods({
 
         // Start bidding baby
         AuctionData.remove({});
-        return AuctionData.insert({State: "Bidding", nextExpiryDate: new Date().getTime()+90000, currentBid: bid, currentPlayer: playerNominated, lastBidder: state.Nominator});
+        return AuctionData.insert({State: "Bidding", nextExpiryDate: new Date().getTime()+30000, currentBid: bid, currentPlayer: playerNominated, lastBidder: state.Nominator});
       }
       else
       {
@@ -208,9 +209,13 @@ Meteor.methods({
         Meteor.call("insertMessage", text, new Date(), 1);
 
         // Reset state
-        // TODO: figure out next nominator here.
+        var captains = Nominators.find({nominated:false}).fetch();
+        var randskip = Math.floor(Math.random() * captains.length);
+        var nominator = captains[randskip];
+        Nominators.update({name:nominator.name}, {$set:{nominated:true}});
+
         AuctionData.remove({});
-        return AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+30000, Nominator: "Chalksy"});
+        return AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+10000, Nominator: nominator.name});
       }
     }
   },
@@ -300,12 +305,23 @@ if (Meteor.isServer) {
     Divisions.remove({});
     TeamNames.remove({});
     Messages.remove({});
-
-    // TODO: Create nomination queue
+    Nominators.remove({});
 
     // Load state
-    AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+100000, Nominator: "Bull"});
     var initialRosterData = {};
+    initialRosterData = JSON.parse(Assets.getText('nominations.json'));
+    for(i = 0; i < initialRosterData.length; i++) {
+      var obj = initialRosterData[i];
+      Nominators.insert(obj);
+    }
+
+    var captains = Nominators.find({nominated:false}).fetch();
+    var randskip = Math.floor(Math.random() * captains.length);
+    var nominator = captains[randskip];
+    Nominators.update({name:nominator.name}, {$set:{nominated:true}});
+
+    AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+100000, Nominator: nominator.name});
+
     initialRosterData = JSON.parse(Assets.getText('teams.json'));
     for(i = 0; i < initialRosterData.length; i++) {
       var obj = initialRosterData[i];
