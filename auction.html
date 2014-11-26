@@ -15,7 +15,11 @@
 <body>
     <div class="container-fluid">
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-        <p class="navbar-text navbar-right" style="margin-right:75px;">{{> loginButtons align="right"}}</p>
+            <ul class="nav navbar-nav navbar-right">
+            <li style="margin-right:20px;">{{> funds_remaining}}</li>
+            <li style="margin-right:30px;"><p class="navbar-text">{{> loginButtons align="right"}}</p></li>
+            </ul>
+
         </nav>
         <div class="row" style="padding-top:50px;">
             <div class="col-md-8">
@@ -38,10 +42,10 @@
             {{#if canSendMessage}}
                 <form class="form-inline new-post" role="form">
                         <input type="text" class="form-control" name="text" placeholder="Type a message" style="width:83%">
-                        <input class="btn btn-default" type="submit" value="Send">
+                        <button class="btn btn-primary" type="button">Send</button>
                 </form>
             {{else}}
-                Log in to chat
+                Log in to Chat
             {{/if}}
         </div>
         <ul class="list-group">
@@ -64,6 +68,12 @@
 </div>
 </template>
 
+<template name="funds_remaining">
+{{#if isCaptain}}
+        <p class="navbar-text navbar-right">Balance: <b name="balance">{{getBalance}}</b></p>
+{{/if}}
+</template>
+
 <template name="rosters">
     <div class="row" style="padding-top:30px;">
       {{#each divisions}}
@@ -71,8 +81,10 @@
               {{#each teams division ./division}}
                  <div class="col-sm-2" style="">
                         <ul class="list-group">
-                        <li class="list-group-item" style="text-align:center; color:#777; background-color:#eee">
-                            {{teamname}}
+                        <li class="list-group-item {{inRedDivision division}}" style="text-align:center;">
+                            {{teamname}} 
+                            <br>
+                            {{money}}
                         </li>
                         {{#each players teamname ./teamname}}
                             <li class="list-group-item" style="padding: 2px 2px; height:25px">
@@ -113,18 +125,18 @@
                 <form class="form-inline nominate-player" role="form">
                         <input type="text" name="player" class="form-control" placeholder="Input a player name" />
                         <input type="text" name="amount" class="form-control" placeholder="Initial bid (blank = 0)" />
-                        <button type="submit" class="btn btn-default">Nominate</button>
+                        <button type="submit" class="btn btn-success">Nominate</button>
                 </form>
             {{else}}
                 <form class="form-inline bid-on-player" role="form">
                         <input type="text" disabled name="amount" class="form-control" placeholder="Input a bid amount" style="width:83%">
-                        <button type="submit" disabled class="btn btn-default">Bid</button>
+                        <button type="submit" disabled class="btn btn-success">Bid</button>
                 </form>
             {{/if}}
         {{else}}
             <form class="form-inline bid-on-player">
                 <input type="text" class="form-control" name="amount" placeholder="Input a bid amount" style="width:83%">
-                <button type="submit" class="btn btn-default">Bid</button>
+                <button type="submit" class="btn btn-success">Bid</button>
             </form>
         {{/if}}
         </div>
