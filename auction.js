@@ -44,8 +44,10 @@ if (Meteor.isClient) {
   Template.funds_remaining.helpers(
   {
     getBalance: function () {
-        Session.set("balance", TeamNames.findOne({"captain":Meteor.user().username}).money);
-        return TeamNames.findOne({"captain":Meteor.user().username}).money;
+        if(!Session.get("balance")) {
+          Session.set("balance", TeamNames.findOne({"captain":Meteor.user().username}).money);
+        }
+        return Session.get("balance");          
     },
     isCaptain: function() {
       if(!Meteor.userId())
@@ -216,6 +218,8 @@ Meteor.methods({
         // Log message
         var text = state.lastBidder + " wins " + playerWon + " for " + state.currentBid + "!";
         Meteor.call("insertMessage", text, new Date(), 1);
+
+        
 
         // Reset state
         // TODO: figure out next nominator here.
