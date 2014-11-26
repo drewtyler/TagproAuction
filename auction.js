@@ -170,7 +170,6 @@ Meteor.methods({
       var state = AuctionData.findOne();
 
       if(state.State == "Nominating") {
-
         // Log message
         Meteor.call("insertMessage", state.Nominator + " nominates " + playerNominated + " with an initial bid of " + bid, new Date(), 0);
 
@@ -191,7 +190,7 @@ Meteor.methods({
 
         // Put him in the roster
         TeamData.update({"teamname": team.teamname, "order" : playerOrder}, {$set: {"name": playerWon, "cost": state.currentBid}});
-
+        TeamNames.update({"teamname": team.teamname}, {$set: {"count":playerOrder, "money":(team.money-state.currentBid)}));
         // Log message
         var text = state.lastBidder + " wins " + playerWon + " for " + state.currentBid + "!";
         Meteor.call("insertMessage", text, new Date(), 1);
@@ -242,7 +241,7 @@ Meteor.methods({
         var bidderAmount = TeamNames.findOne({captain:bidder});
         console.log(bidderAmount);
         var bidamt = bidderAmount.money;
-        if(amount < bidderAmount) {
+        if(amount < bidamt) {
           // Cool, he does. Is it in time?
           console.log("acceptBid: good amount");
           if(parseInt(state.nextExpiryDate) > parseInt(clienttime)) {
