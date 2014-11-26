@@ -183,6 +183,9 @@ Meteor.methods({
       var state = AuctionData.findOne();
 
       if(state.State == "Nominating") {
+        if(TeamNames.findOne({captain:state.Nominator}).money < bid) {
+         return false;
+        }
         // Log message
         Meteor.call("insertMessage", state.Nominator + " nominates " + playerNominated + " with an initial bid of " + bid, new Date(), 0, 0);
 
@@ -262,7 +265,7 @@ Meteor.methods({
           if(parseInt(state.nextExpiryDate) > parseInt(clienttime)) {
             // Sweet it was. Let's mark it down!
             console.log("acceptBid: nextExpiryDate good");
-            if(!state.lastBidder == bidder) {
+            if(!(state.lastBidder == bidder)) {
               BidHistory.insert({
                 bidder: bidder,
                 amount: amount,
