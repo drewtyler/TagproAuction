@@ -36,16 +36,6 @@ if (Meteor.isClient) {
   // display_time (aka bid status)
   Template.display_time.events(
     {
-      'submit .nominate-player' : function(event)
-      {
-        var player = event.target.player.value;
-        var bid = event.target.amount.value;
-        if(!bid) {
-          bid = 0;
-        }
-        Meteor.call("toggleState", player, bid);
-        return false;
-      }
     }
   );
   Template.display_time.helpers(
@@ -56,8 +46,16 @@ if (Meteor.isClient) {
         var secsLeft = Math.ceil((serverTime - curtime)/100)/10;
         if(secsLeft < 0)
           Meteor.call("checkForToggle");
-        else
-          return secsLeft;
+        else {
+          formattedSeconds = String(secsLeft)
+          if(parseInt(secsLeft) == secsLeft) {
+            formattedSeconds += ".0";
+          }
+          if(secsLeft < 10) {
+            formattedSeconds = "0"+formattedSeconds;
+          }
+          return formattedSeconds;
+        }
       },
       currentNominatingPlayer : function() {
           return AuctionData.findOne().Nominator;
@@ -95,8 +93,15 @@ if (Meteor.isClient) {
     },
     isNominationTime: function() {
       return AuctionData.findOne().State == "Nominating";
-    }
+    },
+    isTurnToNominate: function()
+      {
+        if(!Meteor.userId())
+          return false;
+        return (AuctionData.findOne().Nominator == Meteor.user().username);
+      }
   });
+
   Template.display_bidding_options.events(
     {
       'submit .bid-on-player' : function(event)
@@ -106,6 +111,16 @@ if (Meteor.isClient) {
           bid = parseInt(AuctionData.findOne().currentBid) + 1;
         }
         Meteor.call("acceptBid", Meteor.user().username, bid, new Date().getTime());
+        return false;
+      },
+      'submit .nominate-player' : function(event)
+      {
+        var player = event.target.player.value;
+        var bid = event.target.amount.value;
+        if(!bid) {
+          bid = 0;
+        }
+        Meteor.call("toggleState", player, bid);
         return false;
       }
     }
@@ -126,11 +141,13 @@ if (Meteor.isClient) {
     {
       'submit .new-post' : function(event)
       {
+        console.log("Got a new message from ", Meteor.user().username);
+        console.log("Message text:", event.target.text.value);
         if(!Meteor.userId()) {
          return false;
         }
         var text = Meteor.user().username + ": " + event.target.text.value;
-        Meteor.call("insertMessage", text, new Date());
+        Meteor.call("insertMessage", text, new Date(), 0);
         event.target.text.value = "";
         return false;
       }
@@ -142,10 +159,10 @@ Meteor.methods({
   getAuctionStatus:function() {
     return AuctionData.findOne();
   },
-  insertMessage:function(text, createdAt) {
+  insertMessage:function(text, createdAt, winningBid) {
     if(Meteor.isServer)
       var texttowrite = "[" + createdAt.toLocaleTimeString() + "] " + text;
-      Messages.insert({text:texttowrite,createdAt:new Date()});
+      Messages.insert({text:texttowrite,createdAt:new Date(),winningBid:winningBid});
   },
   toggleState: function(playerNominated, bid) {
     if(Meteor.isServer) {
@@ -155,11 +172,11 @@ Meteor.methods({
       if(state.State == "Nominating") {
 
         // Log message
-        Meteor.call("insertMessage", state.Nominator + " nominates " + playerNominated + " with an initial bid of " + bid, new Date());
+        Meteor.call("insertMessage", state.Nominator + " nominates " + playerNominated + " with an initial bid of " + bid, new Date(), 0);
 
         // Start bidding baby
         AuctionData.remove({});
-        return AuctionData.insert({State: "Bidding", nextExpiryDate: new Date().getTime()+30000, currentBid: bid, currentPlayer: playerNominated, lastBidder: state.Nominator});
+        return AuctionData.insert({State: "Bidding", nextExpiryDate: new Date().getTime()+90000, currentBid: bid, currentPlayer: playerNominated, lastBidder: state.Nominator});
       }
       else
       {
@@ -177,7 +194,7 @@ Meteor.methods({
 
         // Log message
         var text = state.lastBidder + " wins " + playerWon + " for " + state.currentBid + "!";
-        Meteor.call("insertMessage", text, new Date());
+        Meteor.call("insertMessage", text, new Date(), 1);
 
         // Reset state
         // TODO: figure out next nominator here.
@@ -207,7 +224,7 @@ Meteor.methods({
       }
       else
       {
-        console.log("accpetBid: bid from " + Meteor.user().username);
+        console.log("acceptBid: bid from " + Meteor.user().username);
       }
 
       // Check state of auction
@@ -241,7 +258,7 @@ Meteor.methods({
             );
             Meteor.call("insertMessage",
                         bidder + " bids " + amount + " on " + AuctionData.findOne({}).currentPlayer,
-                        new Date());
+                        new Date(), 0);
             console.log("acceptBid: inserted bid");
 
             // Do we need to give some time back?

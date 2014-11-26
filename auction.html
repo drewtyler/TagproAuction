@@ -1,104 +1,152 @@
+
 <head>
   <title>Tagpro MLTP Auction</title>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <body>
-    <div style="margin-left: 850px;margin-top:15px;">
-        {{> display_time}}
-        <br style="margin-bottom:10px">
-        {{> loginButtons}}
-    </div>
-    {{> rosters}}
-    <div style="margin-left: 850px;margin-top:500px;">
-        {{> display_bidding_options}}
-    </div>
-    <div style="margin-left:1500px;margin-top:-600px;">
-        <p>Bid Log and Chat</p>
-        {{> messages}}
+    <div class="container-fluid">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <p class="navbar-text navbar-right" style="margin-right:75px;">{{> loginButtons align="right"}}</p>
+        </nav>
+        <div class="row" style="padding-top:50px;">
+            <div class="col-md-8">
+                {{> rosters}}
+            </div>
+            <div class="col-md-4" style="padding-top:50px;">
+                {{> display_bidding_options}}
+                {{> display_time}}
+                {{> messages}}
+            </div>
+        </div>
     </div>
 </body>
 
-<template name="messages">
-    {{#if canSendMessage}}
-        <form class="new-post">
-            <input type="text" name="text" placeholder="Type to send message"/>
-        </form>
-    {{/if}}
-    <br>
-    <ul>
-        {{#each messages}}
-            {{#if text}}
-                <p style="margin-left:-35px;width:250px">{{text}}</p>
+<template name="messages">                
+<div class="row">
+    <div class="col-sm-10 col-sm-offset-1">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            {{#if canSendMessage}}
+                <form class="form-inline new-post" role="form">
+                        <input type="text" class="form-control" name="text" placeholder="Type a message" style="width:83%">
+                        <button class="btn btn-default" type="button">Send</button>
+                </form>
+            {{else}}
+                Log and Chat
             {{/if}}
-        {{/each}}
-    </ul>
+        </div>
+        <ul class="list-group">
+            {{#each messages}}
+                {{#if text}}
+                    {{#if winningBid }}
+                        <li class="list-group-item list-group-item-success" style="">{{text}}</li>
+                    {{else}}
+                        <li class="list-group-item" style="">{{text}}</li>
+                    {{/if}}
+                {{/if}}
+            {{/each}}
+        </ul>
+    </div>
+</div>
+</div>
 </template>
 
 <template name="rosters">
-    <div class="teams">
-        <h1>Rosters</h1>
-        <div class="container">
-          {{#each divisions}}
-              <div class="division">
-                  {{#each teams division ./division}}
-                     <div class="team">
-                        <div class="teamname">
+    <div class="row" style="padding-top:30px;">
+      {{#each divisions}}
+              <div class="col-sm-2"></div>
+              {{#each teams division ./division}}
+                 <div class="col-sm-2" style="">
+                        <ul class="list-group">
+                        <li class="list-group-item" style="text-align:center; color:#777; background-color:#eee">
                             {{teamname}}
-                        </div>
-                        <ul class="teamdisplay">
-                            {{#each players teamname ./teamname}}
-                                {{#if captain}}
-                                    <li class="captain">{{name}}&nbsp;</li><hr class="goleft">
+                        </li>
+                        {{#each players teamname ./teamname}}
+                            <li class="list-group-item" style="padding: 2px 2px; height:25px">
+                            <span>
+                            {{#if captain}}
+                                <img src="/captain.png">
+                            {{else}}
+                                {{#if cocaptain}}
+                                    <img src="/cocaptain.png">
                                 {{else}}
-                                    {{#if cocaptain}}
-                                        <li class="cocaptain">{{name}}&nbsp;</li><hr class="goleft">
+                                    {{#if mltp}}
+                                        <img src="/MLTP.png">
                                     {{else}}
-                                        {{#if mltp}}
-                                            <li class="mltp">{{name}}&nbsp;</li><hr class="goleft">
-                                        {{else}}
-                                            <li>{{name}}&nbsp;</li><hr class="goleft">
-                                        {{/if}}
                                     {{/if}}
                                 {{/if}}
+                            {{/if}}
+                            </span>
+                            {{name}}
+                            </li>
                             {{/each}}
                         </ul>
-                  </div>
-                  {{/each}}
-            </div>
-          {{/each}}
-        </div>
+                    </div>
+              {{/each}}
+
+      {{/each}}
     </div>
 </template>
 
 <template name="display_bidding_options">
     {{#if isCaptain}}
+    <div class="row">
+        <div class="col-sm-10 col-sm-offset-1">
+        <div class="panel panel-default">
+        <div class="panel-heading">
         {{#if isNominationTime}}
-            <input type="text" disabled name="amount" placeholder="Input a bid amount">
-            <button type="submit" disabled>Bid</button>
-            <p>Bid will increment if amount is blank</p>
+            {{#if isTurnToNominate}}
+                <form class="form-inline nominate-player" role="form">
+                        <input type="text" name="player" class="form-control" placeholder="Input a player name" />
+                        <input type="text" name="amount" class="form-control" placeholder="Initial bid (blank = 0)" />
+                        <button type="submit" class="btn btn-default">Nominate</button>
+                </form>
+            {{else}}
+                <form class="form-inline bid-on-player" role="form">
+                        <input type="text" disabled name="amount" class="form-control" placeholder="Input a bid amount" style="width:83%">
+                        <button type="submit" disabled class="btn btn-default">Bid</button>
+                </form>
+            {{/if}}
         {{else}}
-            <form class="bid-on-player">
-                <input type="text" name="amount" placeholder="Input a bid amount">
-                <button type="submit">Bid</button>
-                <p>Bid will increment if amount is blank</p>
+            <form class="form-inline bid-on-player">
+                <input type="text" class="form-control" name="amount" placeholder="Input a bid amount" style="width:83%">
+                <button type="submit" class="btn btn-default">Bid</button>
             </form>
         {{/if}}
+        </div>
+        </div>
+        </div>
+    </div>
     {{/if}}
 </template>
 
 <template name="display_time">
-    {{#if isNominationTime}}
-        {{#if isTurnToNominate}}
-            <form class="nominate-player">
-                <input type="text" name="player" placeholder="Input a player name" />
-                <input type="text" name="amount" placeholder="Initial bid (blank = 0)" />
-                <button type="submit">Nominate</button>
-            </form>
+    <div class="row">
+        <div class="col-sm-10 col-sm-offset-1">
+        <div class="panel panel-default" style="height:90px;">
+        <div class="panel-heading" style="text-align:center">
+            {{#if isNominationTime}}
+                <h2 class="panel-title">Awaiting nomination by {{currentNominatingPlayer}}</h2>
+            {{else}}
+                <h2 class="panel-title">{{personBeingBidOn}} -- {{time}}</h2>
+            {{/if}}
+        </div>
+        {{#if isNominationTime}}
         {{else}}
-            Awaiting nomination by {{currentNominatingPlayer}}
+            <div class="panel-body" style="text-align:center">
+            <h4 class="panel-title">{{lastBidder}} bid {{bidAmount}}</h4>
+            </div>
         {{/if}}
-    {{else}}
-        {{time}} - {{personBeingBidOn}} - {{bidAmount}} - {{lastBidder}}
-    {{/if}}
-
+        </div>
+        </div>    
+    </div>
 </template>
