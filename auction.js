@@ -6,12 +6,24 @@ DraftablePlayers = new Mongo.Collection('players');
 Messages = new Mongo.Collection('messages');
 BidHistory = new Mongo.Collection('bids');
 
+Meteor.setServerTime = function() {
+  Meteor.call("getServerTime", function(error, serverMS) {
+    var localMS = new Date().getTime();
+    var serverOffset = serverMS - localMS;
+    console.log('Meteor.setServerTime()', {serverMS: serverMS, localMS:localMS, serverOffset: serverOffset});
+    Session.set('serverTimeOffset', serverOffset);
+  });
+};
 if (Meteor.isClient) {
-
-  Session.setDefault("time", 0);
-  Meteor.setInterval(function() {
-    Session.set('time', new Date().getTime());
-  }, 100);
+  Meteor.startup(function() {
+    Session.setDefault("serverTimeOffset", 0);
+    Session.setDefault("time", new Date().getTime());
+    Meteor.setServerTime();
+    Meteor.clearInterval(Meteor.intervalUpdateTimeDisplayed);
+    Meteor.intervalUpdateTimeDisplayed = Meteor.setInterval(function() { Session.set('time', new Date().getTime()); }, 50);
+    Meteor.clearInterval(Meteor.intervalUpdateServerTime);
+    Meteor.intervalUpdateServerTime = Meteor.setInterval(function() { Meteor.setServerTime(); }, 300000);
+  });
 
   // Need usernames
   Accounts.ui.config({
@@ -41,9 +53,9 @@ if (Meteor.isClient) {
   Template.display_time.helpers(
     {
       time : function() {
-        var curtime = Session.get('time');
-        var serverTime = AuctionData.findOne().nextExpiryDate;
-        var secsLeft = Math.ceil((serverTime - curtime)/100)/10;
+        var curtime = Session.get('time') + Session.get('serverTimeOffset');
+        var remainingTime = AuctionData.findOne().nextExpiryDate;
+        var secsLeft = Math.ceil((remainingTime - curtime)/100)/10;
         if(secsLeft < 0)
           Meteor.call("checkForToggle");
         else {
@@ -238,9 +250,7 @@ Meteor.methods({
       // First, is the bid enough?
       if(parseInt(state.currentBid) < parseInt(amount)) {
         // K cool, does the player have this much money?
-        var bidderAmount = TeamNames.findOne({captain:bidder});
-        console.log(bidderAmount);
-        var bidamt = bidderAmount.money;
+        var bidamt = TeamNames.findOne({captain:bidder}).money;
         if(amount < bidamt) {
           // Cool, he does. Is it in time?
           console.log("acceptBid: good amount");
@@ -314,5 +324,11 @@ if (Meteor.isServer) {
       TeamNames.insert(obj);
     }
     return true;
+  });
+  Meteor.methods({
+     getServerTime: function () {
+        var _time = (new Date).getTime();
+        return _time;
+     }
   });
 }
