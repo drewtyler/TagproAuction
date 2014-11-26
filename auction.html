@@ -51,15 +51,7 @@
         <ul class="list-group">
             {{#each messages}}
                 {{#if text}}
-                    {{#if winningBid}}
-                        <li class="list-group-item list-group-item-success" style="word-break: break-all;">{{text}}</li>
-                    {{else}}
-                        {{#if isTextMessage}}
-                            <li class="list-group-item" style="word-break: break-all;background-color:#dddddd">{{text}}</li>
-                        {{else}}
-                            <li class="list-group-item" style="word-break: break-all;">{{text}}</li>
-                        {{/if}}
-                    {{/if}}
+                    <li class="list-group-item {{messageColor messageType}}" style="word-break: break-all;">{{text}}</li>
                 {{/if}}
             {{/each}}
         </ul>
@@ -70,7 +62,7 @@
 
 <template name="funds_remaining">
 {{#if isCaptain}}
-        <p class="navbar-text navbar-right">Balance: <b name="balance">{{getBalance}}</b></p>
+        <p class="navbar-text navbar-right">Balance: <b>{{getBalance}}</b></p>
 {{/if}}
 </template>
 
@@ -134,10 +126,21 @@
                 </form>
             {{/if}}
         {{else}}
+            {{#if sufficientFunds}}
             <form class="form-inline bid-on-player">
                 <input type="text" class="form-control" name="amount" placeholder="Input a bid amount" style="width:83%">
-                <button type="submit" class="btn btn-success">Bid</button>
+                {{#if canBid}}
+                    <button type="submit" class="btn btn-success">Bid</button>
+                {{else}}
+                    <button type="submit" disabled class="btn btn-success">Bid</button>
+                {{/if}}
             </form>
+            {{else}}
+                <form class="form-inline bid-on-player" role="form">
+                        <input type="text" disabled name="amount" class="form-control" placeholder="Insufficient Funds" style="width:83%">
+                        <button type="submit" disabled class="btn btn-danger">Bid</button>
+                </form>
+            {{/if}}
         {{/if}}
         </div>
         </div>

@@ -57,10 +57,7 @@ if (Meteor.isClient) {
   Template.funds_remaining.helpers(
   {
     getBalance: function () {
-        if(!Session.get("balance")) {
-          Session.set("balance", TeamNames.findOne({"captain":Meteor.user().username}).money);
-        }
-        return Session.get("balance");          
+       return TeamNames.findOne({"captain":Meteor.user().username}).money;
     },
     isCaptain: function() {
       if(!Meteor.userId())
@@ -135,7 +132,25 @@ if (Meteor.isClient) {
         if(!Meteor.userId())
           return false;
         return (AuctionData.findOne().Nominator == Meteor.user().username);
-      }
+      },
+      canBid: function() {
+        if(AuctionData.findOne().lastBidder == Meteor.user().username) {
+          return false;
+        }
+        return true;
+      },
+      sufficientFunds: function()
+      {
+        var balance = TeamNames.findOne({"captain":Meteor.user().username}).money;
+        var minBid = AuctionData.findOne().currentBid;
+        console.log("Balance: ", balance, " Minbid: ", minBid);
+        if(balance < minBid) {
+          return false;
+        }
+        else {
+          return true;
+        }
+      },
   });
 
   Template.display_bidding_options.events(
@@ -171,6 +186,20 @@ if (Meteor.isClient) {
       if(!Meteor.userId())
         return false;
       return true;
+    },
+    messageColor: function(messageType) {
+      if(messageType == "winningBid") {
+        return "list-group-item-success";
+      }
+      else if(messageType == "bid") {
+        return "list-group-item-warning";
+      }
+      else if(messageType == "nomination") {
+        return "list-group-item-info"
+      }
+      else {
+        return "";
+      }
     }
   });
   Template.messages.events(
@@ -183,7 +212,7 @@ if (Meteor.isClient) {
          return false;
         }
         var text = Meteor.user().username + ": " + event.target.text.value;
-        Meteor.call("insertMessage", text, new Date(), 0, 1);
+        Meteor.call("insertMessage", text, new Date(), "textMessage");
         event.target.text.value = "";
         return false;
       }
@@ -195,10 +224,10 @@ Meteor.methods({
   getAuctionStatus:function() {
     return AuctionData.findOne();
   },
-  insertMessage:function(text, createdAt, winningBid, isTextMessage) {
+  insertMessage:function(text, createdAt, messageType) {
     if(Meteor.isServer)
       var texttowrite = "[" + createdAt.toLocaleTimeString() + "] " + text;
-      Messages.insert({text:texttowrite,createdAt:new Date(),winningBid:winningBid,isTextMessage:isTextMessage});
+      Messages.insert({text:texttowrite,createdAt:new Date(),messageType:messageType});
   },
   toggleState: function(playerNominated, bid) {
     if(Meteor.isServer) {
@@ -210,7 +239,7 @@ Meteor.methods({
          return false;
         }
         // Log message
-        Meteor.call("insertMessage", state.Nominator + " nominates " + playerNominated + " with an initial bid of " + bid, new Date(), 0, 0);
+        Meteor.call("insertMessage", state.Nominator + " nominates " + playerNominated + " with an initial bid of " + bid, new Date(), "nomination");
 
         // Start bidding baby
         AuctionData.remove({});
@@ -232,9 +261,7 @@ Meteor.methods({
         TeamNames.update({"teamname": team.teamname}, {$set: {"count":playerOrder, "money":(team.money-state.currentBid)}});
         // Log message
         var text = state.lastBidder + " wins " + playerWon + " for " + state.currentBid + "!";
-        Meteor.call("insertMessage", text, new Date(), 1, 0);
-
-        
+        Meteor.call("insertMessage", text, new Date(), "winningBid");
 
         // Reset state
         var captains = Nominators.find({nominated:false}).fetch();
@@ -302,7 +329,7 @@ Meteor.methods({
               );
               Meteor.call("insertMessage",
                           bidder + " bids " + amount + " on " + AuctionData.findOne({}).currentPlayer,
-                          new Date(), 0, 0);
+                          new Date(), "bid");
               console.log("acceptBid: inserted bid");
 
               // Do we need to give some time back?
@@ -350,6 +377,9 @@ if (Meteor.isServer) {
     var captains = Nominators.find({nominated:false}).fetch();
     var randskip = Math.floor(Math.random() * captains.length);
     var nominator = captains[randskip];
+    nominator = {"name":"Bull"};
+
+
     Nominators.update({name:nominator.name}, {$set:{nominated:true}});
 
     AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+100000, Nominator: nominator.name});
