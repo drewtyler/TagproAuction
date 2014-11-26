@@ -239,7 +239,9 @@ Meteor.methods({
       // First, is the bid enough?
       if(parseInt(state.currentBid) < parseInt(amount)) {
         // K cool, does the player have this much money?
-        bidderAmount = TeamData.findOne({"captain":bidder}).money;
+        var bidderAmount = TeamNames.findOne({captain:bidder});
+        console.log(bidderAmount);
+        var bidamt = bidderAmount.money;
         if(amount < bidderAmount) {
           // Cool, he does. Is it in time?
           console.log("acceptBid: good amount");
