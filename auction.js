@@ -160,7 +160,7 @@ if (Meteor.isClient) {
          return false;
         }
         var text = Meteor.user().username + ": " + event.target.text.value;
-        Meteor.call("insertMessage", text, new Date(), 0);
+        Meteor.call("insertMessage", text, new Date(), 0, 1);
         event.target.text.value = "";
         return false;
       }
@@ -172,10 +172,10 @@ Meteor.methods({
   getAuctionStatus:function() {
     return AuctionData.findOne();
   },
-  insertMessage:function(text, createdAt, winningBid) {
+  insertMessage:function(text, createdAt, winningBid, isTextMessage) {
     if(Meteor.isServer)
       var texttowrite = "[" + createdAt.toLocaleTimeString() + "] " + text;
-      Messages.insert({text:texttowrite,createdAt:new Date(),winningBid:winningBid});
+      Messages.insert({text:texttowrite,createdAt:new Date(),winningBid:winningBid,isTextMessage:isTextMessage});
   },
   toggleState: function(playerNominated, bid) {
     if(Meteor.isServer) {
@@ -184,7 +184,7 @@ Meteor.methods({
 
       if(state.State == "Nominating") {
         // Log message
-        Meteor.call("insertMessage", state.Nominator + " nominates " + playerNominated + " with an initial bid of " + bid, new Date(), 0);
+        Meteor.call("insertMessage", state.Nominator + " nominates " + playerNominated + " with an initial bid of " + bid, new Date(), 0, 0);
 
         // Start bidding baby
         AuctionData.remove({});
@@ -206,7 +206,7 @@ Meteor.methods({
         TeamNames.update({"teamname": team.teamname}, {$set: {"count":playerOrder, "money":(team.money-state.currentBid)}});
         // Log message
         var text = state.lastBidder + " wins " + playerWon + " for " + state.currentBid + "!";
-        Meteor.call("insertMessage", text, new Date(), 1);
+        Meteor.call("insertMessage", text, new Date(), 1, 0);
 
         // Reset state
         var captains = Nominators.find({nominated:false}).fetch();
@@ -262,26 +262,31 @@ Meteor.methods({
           if(parseInt(state.nextExpiryDate) > parseInt(clienttime)) {
             // Sweet it was. Let's mark it down!
             console.log("acceptBid: nextExpiryDate good");
-            BidHistory.insert({
-              bidder: bidder,
-              amount: amount,
-              player: state.currentPlayer,
-              createdAt: clienttime
-            });
-            AuctionData.update(
-              {State: "Bidding"},
-              {$set: {currentBid: amount, lastBidder: bidder}}
-            );
-            Meteor.call("insertMessage",
-                        bidder + " bids " + amount + " on " + AuctionData.findOne({}).currentPlayer,
-                        new Date(), 0);
-            console.log("acceptBid: inserted bid");
+            if(!state.lastBidder == bidder) {
+              BidHistory.insert({
+                bidder: bidder,
+                amount: amount,
+                player: state.currentPlayer,
+                createdAt: clienttime
+              });
+              AuctionData.update(
+                {State: "Bidding"},
+                {$set: {currentBid: amount, lastBidder: bidder}}
+              );
+              Meteor.call("insertMessage",
+                          bidder + " bids " + amount + " on " + AuctionData.findOne({}).currentPlayer,
+                          new Date(), 0, 0);
+              console.log("acceptBid: inserted bid");
 
-            // Do we need to give some time back?
-            if(state.nextExpiryDate - clienttime < 10000) {
-              AuctionData.update({State: "Bidding"}, {$set: {nextExpiryDate: new Date(clienttime+10000).getTime()}});
+              // Do we need to give some time back?
+              if(state.nextExpiryDate - new Date().getTime() < 10000) {
+                AuctionData.update({State: "Bidding"}, {$set: {nextExpiryDate: new Date().getTime()+10000}});
+              }
+              return true;
+            } else {
+               console.log("why would you bid 2x in a row?")
+               return false;
             }
-            return true;
           } else {
             console.log("acceptBid: too late: "+ state.nextExpiryDate + " vs " + clienttime);
           }

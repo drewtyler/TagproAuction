@@ -11,7 +11,7 @@
   {"teamname":"Cyber Ballies", "division" : "Pacific", "money" : 100, "captain" : "Bull", "count" : 1},
   {"teamname":"Tears for Spheres", "division" : "Central", "money" : 100, "captain" : "Troball", "count" : 1},
   {"teamname":"Capitalists", "division" : "Central", "money" : 100, "captain" : "eagles", "count" : 1},
-  {"teamname":"MBM", "division" : "Central", "money" : 100, "captain" : "KPow", "count" : 1},
+  {"teamname":"MBM", "division" : "Central", "money" : 60, "captain" : "KPow", "count" : 1},
   {"teamname":"Lagprone", "division" : "Central", "money" : 100, "captain" : "Ballymandias", "count" : 1},
   {"teamname":"idk", "division" : "Central", "money" : 100, "captain" : "Jagdpanther", "count" : 1},
   {"teamname":"ALL CAPS", "division" : "Northeast", "money" : 100, "captain" : "YOSSARIAN", "count" : 1},

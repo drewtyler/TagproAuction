@@ -48,9 +48,13 @@
             {{#each messages}}
                 {{#if text}}
                     {{#if winningBid}}
-                        <li class="list-group-item list-group-item-success" style="">{{text}}</li>
+                        <li class="list-group-item list-group-item-success" style="word-break: break-all;">{{text}}</li>
                     {{else}}
-                        <li class="list-group-item" style="word-break: break-all;">{{text}}</li>
+                        {{#if isTextMessage}}
+                            <li class="list-group-item" style="word-break: break-all;background-color:#dddddd">{{text}}</li>
+                        {{else}}
+                            <li class="list-group-item" style="word-break: break-all;">{{text}}</li>
+                        {{/if}}
                     {{/if}}
                 {{/if}}
             {{/each}}
@@ -82,6 +86,7 @@
                                     {{#if mltp}}
                                         <img src="/MLTP.png">
                                     {{else}}
+
                                     {{/if}}
                                 {{/if}}
                             {{/if}}

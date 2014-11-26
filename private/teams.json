@@ -728,7 +728,7 @@
   "teamname": "MBM"
 },
 {
-  "name": "",
+  "name": "romulus",
   "order": 2,
   "cocaptain":true,
   "cost": 0,
@@ -736,7 +736,7 @@
   "teamname": "MBM"
 },
 {
-  "name": "",
+  "name": "mr.thot",
   "order": 3,
   "mltp":true,
   "cost": 0,
@@ -744,7 +744,7 @@
   "teamname": "MBM"
 },
 {
-  "name": "",
+  "name": "espeluznante",
   "order": 4,
   "mltp":true,
   "cost": 0,
@@ -752,14 +752,14 @@
   "teamname": "MBM"
 },
 {
-  "name": "",
+  "name": "ball OON",
   "order": 5,
   "cost": 0,
   "division" : "Central",
   "teamname": "MBM"
 },
 {
-  "name": "",
+  "name": "fuzz ball",
   "order": 6,
   "cost": 0,
   "division" : "Central",
