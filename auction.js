@@ -30,7 +30,6 @@ if (Meteor.isClient) {
   Accounts.ui.config({
     passwordSignupFields: "USERNAME_ONLY"
   });
-
   // Rosters
   Template.rosters.helpers(
     {
@@ -42,9 +41,33 @@ if (Meteor.isClient) {
       },
       players : function(teamname) {
         return TeamData.find({"teamname" : teamname}, {sort : {order : 1}});
+      },
+      inRedDivision : function(division) {
+        if(division == "Central" || division == "Pacific") {
+          return "red-division";
+        }
+        else {
+          return "blue-division";
+        }
       }
     }
   );
+
+
+  Template.funds_remaining.helpers(
+  {
+    getBalance: function () {
+        if(!Session.get("balance")) {
+          Session.set("balance", TeamNames.findOne({"captain":Meteor.user().username}).money);
+        }
+        return Session.get("balance");          
+    },
+    isCaptain: function() {
+      if(!Meteor.userId())
+        return false;
+      return (TeamData.findOne({"name" : Meteor.user().username, "captain" : true}))
+    },
+  });
 
   // display_time (aka bid status)
   Template.display_time.events(
@@ -211,6 +234,8 @@ Meteor.methods({
         var text = state.lastBidder + " wins " + playerWon + " for " + state.currentBid + "!";
         Meteor.call("insertMessage", text, new Date(), 1, 0);
 
+        
+
         // Reset state
         var captains = Nominators.find({nominated:false}).fetch();
         var randskip = Math.floor(Math.random() * captains.length);
@@ -245,7 +270,6 @@ Meteor.methods({
       {
         console.log("acceptBid: bid from " + Meteor.user().username);
       }
-
       // Check state of auction
       var state = AuctionData.findOne({});
       if(state.State == "Nominating") {
