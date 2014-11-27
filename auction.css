@@ -16,13 +16,17 @@ body {
 
 	font-size: 14px;
 }
-.red-division {
-	background-color: #EB7E7E !important
+#li.red-division {
+	background-color: #EB7E7E;
 }
 
-.blue-division {
-	background-color: #86C6E6 !important
+#li.blue-division {
+	background-color: #86C6E6;
 }
+.highlight-color {
+	background-color: #7EEB7E;
+}
+
 .list-group-item {
   padding: 2px 2px;
   position: relative;

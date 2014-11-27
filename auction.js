@@ -39,20 +39,35 @@ if (Meteor.isClient) {
       teams : function(division) {
         return TeamNames.find({"division" : division});
       },
+      teamID: function(teamname) {
+        return teamname.replace(" ", "_");
+      },
       players : function(teamname) {
         return TeamData.find({"teamname" : teamname}, {sort : {order : 1}});
       },
       inRedDivision : function(division) {
         if(division == "Central" || division == "Pacific") {
-          return "red-division";
+          return "rgb(235, 126, 126)";
         }
         else {
-          return "blue-division";
+          return "rgb(134, 198, 230)";
         }
-      }
-    }
-  );
-
+      },
+      needToAnimate: function(team) {
+        // This doesn't work - when the roster template is rendered there isn't any data for the auction
+        // so we can't see who the winning team was
+        // anything that gets the 'needs-animation' class will be animated
+        var state = AuctionData.findOne();
+        var nominating = state.State === "Nominating";
+        if(nominating && winningTeam == team) {
+          winningTeam = "NO TEAM";
+          return "needs-animation";
+        }
+        else {
+          return "";
+        }
+      },
+  });
 
   Template.funds_remaining.helpers(
   {
@@ -197,6 +212,9 @@ if (Meteor.isClient) {
       else if(messageType == "nomination") {
         return "list-group-item-info"
       }
+      else if(messageType == "animate") {
+        return "hidden winningTeam"
+      }
       else {
         return "";
       }
@@ -262,6 +280,8 @@ Meteor.methods({
         // Log message
         var text = state.lastBidder + " wins " + playerWon + " for " + state.currentBid + "!";
         Meteor.call("insertMessage", text, new Date(), "winningBid");
+        Meteor.call("insertMessage", team.teamname, new Date(), "animate");
+
 
         // Reset state
         var captains = Nominators.find({nominated:false}).fetch();

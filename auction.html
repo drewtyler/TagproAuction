@@ -3,13 +3,54 @@
   <title>Tagpro MLTP Auction</title>
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/ui/1.11.2/jquery-ui.min.js"></script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/auction.css">
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <script type="text/javascript">
+        var highlightColor = "rgb(255, 245, 0)";
+        var blueColor = "rgb(134, 198, 230)";
+        var redColor = "rgb(235, 126, 126)";
+        var intime = 50;
+        var outtime = 1500;
+
+        function animateTeam(name, intime, outtime) {
+            team = $("#team_"+name.replace(" ","_"));
+            highlightColor = "rgb(255, 245, 0)";
+            blueColor = "rgb(134, 198, 230)";
+            redColor = "rgb(235, 126, 126)";
+            color = '';
+            if(team.css("background-color") === redColor) {
+                color = redColor;
+            }
+            else {
+                color = blueColor;
+            }
+            team.animate({backgroundColor:highlightColor}, intime, function () {
+                team.animate({backgroundColor:color}, outtime)});
+        }
+
+        function checkForAnimation() {
+            if($(".winningTeam").length == 1) {
+                teamname = $(".winningTeam").html().split("] ")[1]
+                animateTeam(teamname);
+                $(".winningTeam").remove();
+            }
+            else {
+                $(".winningTeam").remove();
+            }
+        }
+        
+
+        setInterval(checkForAnimation, 250);
+
+    </script>
 </head>
 
 <body>
@@ -19,7 +60,6 @@
             <li style="margin-right:20px;">{{> funds_remaining}}</li>
             <li style="margin-right:30px;"><p class="navbar-text">{{> loginButtons align="right"}}</p></li>
             </ul>
-
         </nav>
         <div class="row" style="padding-top:50px;">
             <div class="col-md-8">
@@ -66,14 +106,15 @@
 {{/if}}
 </template>
 
+
 <template name="rosters">
     <div class="row" style="padding-top:30px;">
       {{#each divisions}}
               <div class="col-sm-2"></div>
               {{#each teams division ./division}}
-                 <div class="col-sm-2" style="">
+                 <div class="col-sm-2 team" style="">
                         <ul class="list-group">
-                        <li class="list-group-item {{inRedDivision division}}" style="text-align:center;">
+                        <li class="list-group-item {{needToAnimate teamname}}" id="team_{{teamID teamname}}" style="text-align:center;background-color:{{inRedDivision division}}">
                             {{teamname}} 
                             <br>
                             {{money}}
@@ -155,9 +196,9 @@
         <div class="panel panel-default" style="height:90px;">
         <div class="panel-heading" style="text-align:center">
             {{#if isNominationTime}}
-                <h2 class="panel-title">Awaiting nomination by {{currentNominatingPlayer}}</h2>
+                <h2 class="panel-title">Awaiting nomination from {{currentNominatingPlayer}}</h2>
             {{else}}
-                <h2 class="panel-title">{{personBeingBidOn}} - {{time}}</h2>
+                <h2 class="panel-title">{{personBeingBidOn}} - <b id="timeRemaining">{{time}}</b></h2>
             {{/if}}
         </div>
         {{#if isNominationTime}}
@@ -171,3 +212,5 @@
         </div>
     </div>
 </template>
+
+
