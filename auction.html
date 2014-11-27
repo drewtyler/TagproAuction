@@ -43,7 +43,6 @@
                 $(".winningTeam").remove();
             }
         }
-        
 
         setInterval(checkForAnimation, 250);
 
@@ -85,7 +84,7 @@
                 Log in to Chat
             {{/if}}
         </div>
-        <ul class="list-group" id="messageLog" style="height: 500px; overflow: scroll;">
+        <ul class="list-group" id="messageLog" style="height: 500px; overflow: scroll;overflow-x: hidden;">
             {{#each messages}}
                 {{#if text}}
                     <li class="list-group-item {{messageColor messageType}}" style="word-break: break-all;">{{text}}</li>
@@ -118,7 +117,9 @@
                         </li>
                         {{#each players teamname ./teamname}}
                             <li class="list-group-item" style="padding: 2px 2px; height:25px">
-                            <span>
+                            {{#if name}}
+
+                            <span style="width:20px; display:inline-block;">
                             {{#if captain}}
                                 <img src="/captain.png">
                             {{else}}
@@ -133,7 +134,11 @@
                                 {{/if}}
                             {{/if}}
                             </span>
-                            {{name}}
+                                {{name}}
+                                <div style="float:right; padding-right:8px">
+                                {{cost}}
+                                </div>
+                            {{/if}}
                             </li>
                             {{/each}}
                         </ul>
