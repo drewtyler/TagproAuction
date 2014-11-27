@@ -144,7 +144,6 @@ if (Meteor.isClient) {
       {
         var balance = TeamNames.findOne({"captain":Meteor.user().username}).money;
         var minBid = AuctionData.findOne().currentBid;
-        console.log("Balance: ", balance, " Minbid: ", minBid);
         if(balance < minBid) {
           return false;
         }

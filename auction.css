@@ -17,14 +17,14 @@ body {
 	font-size: 14px;
 }
 #li.red-division {
-	background-color: #EB7E7E;
+	background-color: rgb(235, 126, 126);
 }
 
 #li.blue-division {
-	background-color: #86C6E6;
+	background-color: rgb(134, 198, 230);
 }
 .highlight-color {
-	background-color: #7EEB7E;
+	background-color: rgb(255, 245, 0);
 }
 
 .list-group-item {
