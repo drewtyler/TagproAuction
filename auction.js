@@ -68,10 +68,6 @@ if (Meteor.isClient) {
   });
 
   // display_time (aka bid status)
-  Template.display_time.events(
-    {
-    }
-  );
   Template.display_time.helpers(
     {
       time : function() {
@@ -188,6 +184,7 @@ if (Meteor.isClient) {
       return true;
     },
     messageColor: function(messageType) {
+      // Class to add to the message (for coloring or sending information to the client)
       if(messageType == "winningBid") {
         return "list-group-item-success";
       }
@@ -197,7 +194,7 @@ if (Meteor.isClient) {
       else if(messageType == "nomination") {
         return "list-group-item-info"
       }
-      else if(messageType == "animate") {
+      else if(messageType == "animate") { 
         return "hidden winningTeam"
       }
       else {
@@ -213,7 +210,7 @@ if (Meteor.isClient) {
         console.log("Message text:", event.target.text.value);
         if(!Meteor.userId()) {
          return false;
-        }
+        } 
         var text = Meteor.user().username + ": " + event.target.text.value;
         Meteor.call("insertMessage", text, new Date(), "textMessage");
         event.target.text.value = "";
@@ -273,7 +270,6 @@ Meteor.methods({
         var randskip = Math.floor(Math.random() * captains.length);
         var nominator = captains[randskip];
         Nominators.update({name:nominator.name}, {$set:{nominated:true}});
-
         AuctionData.remove({});
         return AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+10000, Nominator: nominator.name});
       }

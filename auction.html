@@ -9,6 +9,7 @@
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/auction.css">
+    <link rel="stylesheet" href="http://elrumordelaluz.github.io/csshake/css/csshake.min.css">
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,10 +19,12 @@
         var blueColor = "rgb(134, 198, 230)";
         var redColor = "rgb(235, 126, 126)";
         var intime = 50;
-        var outtime = 1500;
+        var outtime = 2500;
 
         function animateTeam(name, intime, outtime) {
-            team = $("#team_"+name.replace(" ","_"));
+            var team = $("#team_"+name.replace(" ","_"));
+            team.parent().parent().addClass("shake shake-constant");
+            /*
             color = '';
             if(team.css("background-color") === redColor) {
                 color = redColor;
@@ -30,7 +33,12 @@
                 color = blueColor;
             }
             team.animate({backgroundColor:highlightColor}, intime, function () {
-                team.animate({backgroundColor:color}, outtime)});
+                team.animate({backgroundColor:color}, outtime); team.parent().parent().
+                removeClass("shake shake-constant hover-stop");});
+            */
+            setTimeout(function () {
+                team.parent().parent().removeClass("shake shake-constant")
+            }, 4000);
         }
 
         function checkForAnimation() {
@@ -117,8 +125,6 @@
                         </li>
                         {{#each players teamname ./teamname}}
                             <li class="list-group-item" style="padding: 2px 2px; height:25px">
-                            {{#if name}}
-
                             <span style="width:20px; display:inline-block;">
                             {{#if captain}}
                                 <img src="/captain.png">
@@ -134,6 +140,7 @@
                                 {{/if}}
                             {{/if}}
                             </span>
+                            {{#if name}}
                                 {{name}}
                                 <div style="float:right; padding-right:8px">
                                 {{cost}}
