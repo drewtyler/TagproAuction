@@ -53,20 +53,6 @@ if (Meteor.isClient) {
           return "rgb(134, 198, 230)";
         }
       },
-      needToAnimate: function(team) {
-        // This doesn't work - when the roster template is rendered there isn't any data for the auction
-        // so we can't see who the winning team was
-        // anything that gets the 'needs-animation' class will be animated
-        var state = AuctionData.findOne();
-        var nominating = state.State === "Nominating";
-        if(nominating && winningTeam == team) {
-          winningTeam = "NO TEAM";
-          return "needs-animation";
-        }
-        else {
-          return "";
-        }
-      },
   });
 
   Template.funds_remaining.helpers(
