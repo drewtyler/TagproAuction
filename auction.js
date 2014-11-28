@@ -40,7 +40,7 @@ if (Meteor.isClient) {
         return TeamNames.find({"division" : division});
       },
       teamID: function(teamname) {
-        return teamname.replace(" ", "_");
+        return teamname.split(" ").join("_");
       },
       players : function(teamname) {
         return TeamData.find({"teamname" : teamname}, {sort : {order : 1}});
@@ -58,12 +58,15 @@ if (Meteor.isClient) {
   Template.funds_remaining.helpers(
   {
     getBalance: function () {
-       return TeamNames.findOne({"captain":Meteor.user().username}).money;
+      if( Meteor.user() !== undefined && Meteor.userId()) {
+        return TeamNames.findOne({"captain":Meteor.user().username}).money;
+      }
+      return false;
     },
     isCaptain: function() {
-      if(!Meteor.userId())
-        return false;
-      return (TeamData.findOne({"name" : Meteor.user().username, "captain" : true}))
+      if(Meteor.user() !== undefined && Meteor.userId())
+        return (TeamData.findOne({"name":Meteor.user().username, "captain" : true}))
+      return false;
     },
   });
 
@@ -71,6 +74,7 @@ if (Meteor.isClient) {
   Template.display_time.helpers(
     {
       time : function() {
+        if(AuctionData.findOne() !== undefined) {
         var curtime = Session.get('time') + Session.get('serverTimeOffset');
         var remainingTime = AuctionData.findOne().nextExpiryDate;
         var secsLeft = Math.ceil((remainingTime - curtime)/100)/10;
@@ -86,30 +90,37 @@ if (Meteor.isClient) {
           }
           return formattedSeconds;
         }
+      }
       },
       currentNominatingPlayer : function() {
+        if(AuctionData.findOne() !== undefined)
           return AuctionData.findOne().Nominator;
       },
       personBeingBidOn : function() {
+        if(AuctionData.findOne() !== undefined)
           return AuctionData.findOne().currentPlayer;
       },
       bidAmount :function()
       {
+        if(AuctionData.findOne() !== undefined)
           return AuctionData.findOne().currentBid;
       },
       lastBidder : function()
       {
-        return AuctionData.findOne().lastBidder;
+        if(AuctionData.findOne() !== undefined)
+          return AuctionData.findOne().lastBidder;
       },
       isNominationTime: function()
       {
-        return AuctionData.findOne().State == "Nominating";
+        if(AuctionData.findOne() !== undefined)
+          return AuctionData.findOne().State == "Nominating";
       },
       isTurnToNominate: function()
       {
         if(!Meteor.userId())
           return false;
-        return (AuctionData.findOne().Nominator == Meteor.user().username);
+        if(AuctionData.findOne() !== undefined)
+          return (AuctionData.findOne().Nominator == Meteor.user().username);
       }
     }
   );
@@ -122,7 +133,8 @@ if (Meteor.isClient) {
       return (TeamData.findOne({"name" : Meteor.user().username, "captain" : true}))
     },
     isNominationTime: function() {
-      return AuctionData.findOne().State == "Nominating";
+      if(AuctionData.findOne() !== undefined)
+        return AuctionData.findOne().State == "Nominating";
     },
     isTurnToNominate: function()
       {
@@ -131,6 +143,9 @@ if (Meteor.isClient) {
         return (AuctionData.findOne().Nominator == Meteor.user().username);
       },
       canBid: function() {
+        if(!Meteor.userId())
+          return false;
+
         if(AuctionData.findOne().lastBidder == Meteor.user().username) {
           return false;
         }
@@ -138,14 +153,17 @@ if (Meteor.isClient) {
       },
       sufficientFunds: function()
       {
-        var balance = TeamNames.findOne({"captain":Meteor.user().username}).money;
-        var minBid = AuctionData.findOne().currentBid;
-        if(balance < minBid) {
-          return false;
+        if(Meteor.userId() && Meteor.user() !== undefined && AuctionData.findOne() !== undefined) {
+          var balance = TeamNames.findOne({"captain":Meteor.user().username}).money;
+          var minBid = parseInt(AuctionData.findOne().currentBid)+1;
+          if(balance < minBid) {
+            return false;
+          }
+          else {
+            return true;
+          }
         }
-        else {
-          return true;
-        }
+        return false;
       },
   });
 
@@ -201,7 +219,7 @@ if (Meteor.isClient) {
         return "";
       }
     }
-  });
+  }); 
   Template.messages.events(
     {
       'submit' : function(event)
@@ -230,49 +248,55 @@ Meteor.methods({
       Messages.insert({text:texttowrite,createdAt:new Date(),messageType:messageType});
   },
   toggleState: function(playerNominated, bid) {
-    if(Meteor.isServer) {
-      // Get current state
-      var state = AuctionData.findOne();
+      console.log("Checking toggle state");
+      if(Meteor.isServer) {
+        console.log("Server toggling state");
+        // Get current state
+        var state = AuctionData.findOne();
 
-      if(state.State == "Nominating") {
-        if(TeamNames.findOne({captain:state.Nominator}).money < bid) {
-         return false;
+        if(state !== undefined && state.State == "Nominating") {
+          console.log("State is nominating");
+          if(TeamNames.findOne({captain:state.Nominator}).money < bid) {
+           return false;
+          }
+          AuctionData.remove({});
+          // Log message
+          Meteor.call("insertMessage", state.Nominator + " nominates " + playerNominated + " with an initial bid of " + bid, new Date(), "nomination");
+
+          // Start bidding baby
+
+          return AuctionData.insert({State: "Bidding", nextExpiryDate: new Date().getTime()+30000, currentBid: bid, currentPlayer: playerNominated, lastBidder: state.Nominator});
         }
-        // Log message
-        Meteor.call("insertMessage", state.Nominator + " nominates " + playerNominated + " with an initial bid of " + bid, new Date(), "nomination");
+        else if (state !== undefined)
+        { 
+          AuctionData.remove({});
+          console.log("Not nominating... someone won!");
+          var team = TeamNames.findOne({"captain" : state.lastBidder});
+          var playerWon = state.currentPlayer;
 
-        // Start bidding baby
-        AuctionData.remove({});
-        return AuctionData.insert({State: "Bidding", nextExpiryDate: new Date().getTime()+30000, currentBid: bid, currentPlayer: playerNominated, lastBidder: state.Nominator});
-      }
-      else
-      {
-        var team = TeamNames.findOne({"captain" : state.lastBidder});
-        var playerWon = state.currentPlayer;
+          // ALL CAPS-specific thing here
+          if(state.lastBidder == "YOSSARIAN") {
+            playerWon = playerWon.toUpperCase();
+          }
+          var playerOrder = parseInt(team.count) + 1;
 
-        // ALL CAPS-specific thing here
-        if(state.lastBidder == "YOSSARIAN") {
-          playerWon = playerWon.toUpperCase();
+          // Put him in the roster
+          TeamData.update({"teamname": team.teamname, "order" : playerOrder}, {$set: {"name": playerWon, "cost": state.currentBid}});
+          TeamNames.update({"teamname": team.teamname}, {$set: {"count":playerOrder, "money":(team.money-state.currentBid)}});
+          // Log message
+          var text = state.lastBidder + " wins " + playerWon + " for " + state.currentBid + "!";
+          Meteor.call("insertMessage", text, new Date(), "winningBid");
+          Meteor.call("insertMessage", team.teamname, new Date(), "animate");
+
+
+          // Reset state
+          var captains = Nominators.find({nominated:false}).fetch();
+          var randskip = Math.floor(Math.random() * captains.length);
+          var nominator = captains[randskip];
+          Nominators.update({name:nominator.name}, {$set:{nominated:true}});
+
+          return AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+10000, Nominator: nominator.name});
         }
-        var playerOrder = parseInt(team.count) + 1;
-
-        // Put him in the roster
-        TeamData.update({"teamname": team.teamname, "order" : playerOrder}, {$set: {"name": playerWon, "cost": state.currentBid}});
-        TeamNames.update({"teamname": team.teamname}, {$set: {"count":playerOrder, "money":(team.money-state.currentBid)}});
-        // Log message
-        var text = state.lastBidder + " wins " + playerWon + " for " + state.currentBid + "!";
-        Meteor.call("insertMessage", text, new Date(), "winningBid");
-        Meteor.call("insertMessage", team.teamname, new Date(), "animate");
-
-
-        // Reset state
-        var captains = Nominators.find({nominated:false}).fetch();
-        var randskip = Math.floor(Math.random() * captains.length);
-        var nominator = captains[randskip];
-        Nominators.update({name:nominator.name}, {$set:{nominated:true}});
-        AuctionData.remove({});
-        return AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+10000, Nominator: nominator.name});
-      }
     }
   },
   checkForToggle: function() {
