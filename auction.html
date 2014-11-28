@@ -67,17 +67,17 @@
 
 <body>
     <div class="container-fluid">
-        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <nav class="navbar navbar-default" role="navigation">
             <ul class="nav navbar-nav navbar-right">
             <li style="margin-right:20px;">{{> funds_remaining}}</li>
-            <li style="margin-right:30px;"><p class="navbar-text">{{> loginButtons align="right"}}</p></li>
+            <li style="margin-right:20px;"><p class="navbar-text">{{> loginButtons align="right"}}</p></li>
             </ul>
         </nav>
         <div class="row" style="padding-top:50px;">
-            <div class="col-md-8">
+            <div class="col-sm-8 col-xs-12">
                 {{> rosters}}
             </div>
-            <div class="col-md-4" style="padding-top:50px;">
+            <div class="col-sm-4 col-xs-12" style="padding-top:50px;">
                 {{> display_bidding_options}}
                 {{> display_time}}
                 {{> messages}}
@@ -88,7 +88,7 @@
 
 <template name="messages">
 <div class="row">
-    <div class="col-sm-10 col-sm-offset-1">
+    <div class="col-sm-10 col-sm-offset-1 col-xs-12">
     <div class="panel panel-default">
         <div class="panel-heading">
             {{#if canSendMessage}}
@@ -122,9 +122,9 @@
 <template name="rosters">
     <div class="row" style="padding-top:30px;">
       {{#each divisions}}
-              <div class="col-sm-2"></div>
+              <div class="col-md-2"></div>
               {{#each teams division ./division}}
-                 <div class="col-sm-2 team" style="">
+                 <div class="col-md-2 col-sm-6 col-xs-12 team" style="">
                         <ul class="list-group">
                         <li class="list-group-item" id="team_{{teamID teamname}}" style="text-align:center;background-color:{{inRedDivision division}}">
                             {{teamname}} 
@@ -159,7 +159,7 @@
                         </ul>
                     </div>
               {{/each}}
-              <div class="clearfix visible-sm"></div>
+              <div class="clearfix visible-md"></div>
       {{/each}}
     </div>
 </template>
