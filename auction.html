@@ -18,13 +18,16 @@
         var highlightColor = "rgb(255, 245, 0)";
         var blueColor = "rgb(134, 198, 230)";
         var redColor = "rgb(235, 126, 126)";
-        var intime = 50;
-        var outtime = 2500;
+        var intime = 150;
+        var outtime = 3000;
+        var firstLiCheck = 0;
 
         function animateTeam(name, intime, outtime) {
-            var team = $("#team_"+name.replace(" ","_"));
+            var team = $("#team_"+name.split(" ").join("_"));
             team.parent().parent().addClass("shake shake-constant");
-            /*
+            //setTimeout(function () {
+            //    team.parent().parent().removeClass("shake shake-constant")
+            //}, 2500);
             color = '';
             if(team.css("background-color") === redColor) {
                 color = redColor;
@@ -32,27 +35,32 @@
             else {
                 color = blueColor;
             }
-            team.animate({backgroundColor:highlightColor}, intime, function () {
-                team.animate({backgroundColor:color}, outtime); team.parent().parent().
-                removeClass("shake shake-constant hover-stop");});
-            */
-            setTimeout(function () {
-                team.parent().parent().removeClass("shake shake-constant")
-            }, 4000);
+            team.animate({backgroundColor:highlightColor}, intime, 
+                function () {
+                    team.animate({backgroundColor:color}, outtime, function() {
+                        team.parent().parent().removeClass("shake shake-constant hover-stop");
+                        
+                    }); 
+                });
         }
 
         function checkForAnimation() {
-            if($(".winningTeam").length == 1) {
-                teamname = $(".winningTeam").html().split("] ")[1]
-                animateTeam(teamname);
+            if(firstLiCheck == 0) {
                 $(".winningTeam").remove();
+                firstLiCheck = 1;
             }
             else {
-                $(".winningTeam").remove();
+                if($(".winningTeam").length == 1) {
+                    teamname = $(".winningTeam").html().split("] ")[1]
+                    animateTeam(teamname);
+                    $(".winningTeam").remove();
+                }
+                else {
+                    $(".winningTeam").remove();
+                }
             }
         }
-
-        setInterval(checkForAnimation, 250);
+        setInterval(checkForAnimation, 1000);
 
     </script>
 </head>
@@ -178,7 +186,7 @@
         {{else}}
             {{#if sufficientFunds}}
             <form class="form-inline bid-on-player">
-                <input type="text" class="form-control" name="amount" placeholder="Input a bid amount" style="width:83%">
+                <input type="text" class="form-control" name="amount" placeholder="Input a bid amount" style="width:83%" onfocus="if(this.value != '') {this.value=''}">
                 {{#if canBid}}
                     <button type="submit" class="btn btn-success">Bid</button>
                 {{else}}
