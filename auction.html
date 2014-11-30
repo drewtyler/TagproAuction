@@ -1,19 +1,19 @@
 
 <head>
   <title>Tagpro MLTP Auction</title>
-    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-    <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-    <script type="text/javascript" src="//code.jquery.com/ui/1.11.2/jquery-ui.min.js"></script>
+    
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/bootstrap.min.css">
+    <link rel="stylesheet" href="/flat-ui.min.css">
+
     <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="/auction.css">
     <link rel="stylesheet" href="http://elrumordelaluz.github.io/csshake/css/csshake.min.css">
     <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="/jquery-1.11.1.js"></script> 
+    <script type="text/javascript" src="/bootstrap.min.js"></script> 
+    <script type="text/javascript" src="/flat-ui.min.js"></script> 
     
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script type="text/javascript">
         var highlightColor = "rgb(255, 245, 0)";
         var blueColor = "rgb(134, 198, 230)";
@@ -62,25 +62,65 @@
         }
         setInterval(checkForAnimation, 1000);
 
+
+
+        var substringMatcher = function(strs) {
+          return function findMatches(q, cb) {
+            var matches, substrRegex;
+         
+            // an array that will be populated with substring matches
+            matches = [];
+         
+            // regex used to determine if a string contains the substring `q`
+            substrRegex = new RegExp(q, 'i');
+         
+            // iterate through the pool of strings and for any string that
+            // contains the substring `q`, add it to the `matches` array
+            $.each(strs, function(i, str) {
+              if (substrRegex.test(str)) {
+                // the typeahead jQuery plugin expects suggestions to a
+                // JavaScript object, refer to typeahead docs for more info
+                matches.push({ value: str });
+              }
+            });
+         
+            cb(matches);
+          };
+        };
+
+        playerData = ["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"];
+        /*$('#playerSearch').typeahead({
+            hint: true,
+            highlight:true,
+            minLength: 1},
+            {
+            name: 'players',
+            displayKey: 'value',
+            source: playerData
+            }
+        );*/
+
     </script>
 </head>
 
 <body>
     <div class="container-fluid">
-        <nav class="navbar navbar-default" role="navigation">
+    <div id="fixme">
+        <nav class="navbar navbar-default" role="navigation" style="width:100%;">
             <ul class="nav navbar-nav navbar-right">
             <li style="margin-right:20px;">{{> funds_remaining}}</li>
             <li style="margin-right:20px;"><p class="navbar-text">{{> loginButtons align="right"}}</p></li>
             </ul>
         </nav>
-        <div class="row" style="padding-top:50px;">
-            <div class="col-sm-8 col-xs-12">
-                {{> rosters}}
-            </div>
-            <div class="col-sm-4 col-xs-12" style="padding-top:50px;">
+        </div>
+        <div class="row" style="padding-top:25px;">
+            <div class="col-sm-4 col-sm-push-8 col-xs-12" style="padding-top:0px;">
                 {{> display_bidding_options}}
                 {{> display_time}}
                 {{> messages}}
+            </div>
+            <div class="col-sm-8 col-sm-pull-4 col-xs-12">
+                {{> rosters}}
             </div>
         </div>
     </div>
@@ -124,7 +164,7 @@
       {{#each divisions}}
               <div class="col-md-2"></div>
               {{#each teams division ./division}}
-                 <div class="col-md-2 col-sm-6 col-xs-12 team" style="">
+                 <div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 team" style="">
                         <ul class="list-group">
                         <li class="list-group-item" id="team_{{teamID teamname}}" style="text-align:center;background-color:{{inRedDivision division}}">
                             {{teamname}} 
@@ -159,7 +199,7 @@
                         </ul>
                     </div>
               {{/each}}
-              <div class="clearfix visible-md"></div>
+              <div class="clearfix visible-sm visible-md visible-lg"></div>
       {{/each}}
     </div>
 </template>
@@ -173,13 +213,21 @@
         {{#if isNominationTime}}
             {{#if isTurnToNominate}}
                 <form class="form-inline nominate-player" role="form">
-                        <input type="text" name="player" class="form-control" placeholder="Input a player name" />
+                        <input type="text" name="player" class="form-control" id="playerSearch" list="players" placeholder="Input a player name" />
+                        <datalist id="players" style="display:hidden">
+                            <option value="Internet Explorer"></option>
+                            <option value="Firefox" ></option>
+                            <option value="Chrome" ></option>
+                            <option value="Opera" ></option>
+                            <option value="Safari" ></option>
+                        </datalist>
+
                         <input type="text" name="amount" class="form-control" placeholder="Initial bid (blank = 0)" />
                         <button type="submit" class="btn btn-success">Nominate</button>
                 </form>
             {{else}}
                 <form class="form-inline bid-on-player" role="form">
-                        <input type="text" disabled name="amount" class="form-control" placeholder="Input a bid amount" style="width:83%">
+                        <input type="text" disabled name="amount" class="form-control" placeholder="Waiting for nomination" style="width:83%">
                         <button type="submit" disabled class="btn btn-success">Bid</button>
                 </form>
             {{/if}}

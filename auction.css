@@ -15,7 +15,31 @@ body {
 	margin: 0;
 
 	font-size: 14px;
+
 }
+
+
+@media (max-width:1024px) {
+.navbar-collapse.collapse {
+display: block!important;
+}
+
+.navbar-nav>li, .navbar-nav {
+float: left !important;
+}
+
+.navbar-nav.navbar-right:last-child {
+margin-right: -15px !important;
+}
+
+.navbar-right {
+float: right!important;
+}
+
+
+#fixme {position: float;left: 0;right: 0; top:0;}
+}
+
 #li.red-division {
 	background-color: rgb(235, 126, 126);
 }
@@ -63,17 +87,4 @@ header .hide-completed {
 
 .toggle-private {
 	margin-left: 5px;
-}
-
-@media (max-width: 600px) {
-	li {
-		padding: 12px 15px;
-	}
-	.search {
-		width: 150px;
-		clear: both;
-	}
-	.new-task input {
-		padding-bottom: 5px;
-	}
 }
