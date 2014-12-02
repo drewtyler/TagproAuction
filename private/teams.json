@@ -44,20 +44,6 @@
   "cost": 0,
   "division" : "Pacific",
   "teamname": "12 Angry Balls"
-},
-{
-  "name": "",
-  "order": 7,
-  "cost": 0,
-  "division" : "Pacific",
-  "teamname": "12 Angry Balls"
-},
-{
-  "name": "",
-  "order": 8,
-  "cost": 0,
-  "division" : "Pacific",
-  "teamname": "12 Angry Balls"
 }
 ,{
   "name": "Legman",
@@ -101,20 +87,6 @@
 {
   "name": "",
   "order": 6,
-  "cost": 0,
-  "division" : "Northeast",
-  "teamname": "30 SMB"
-},
-{
-  "name": "",
-  "order": 7,
-  "cost": 0,
-  "division" : "Northeast",
-  "teamname": "30 SMB"
-},
-{
-  "name": "",
-  "order": 8,
   "cost": 0,
   "division" : "Northeast",
   "teamname": "30 SMB"
@@ -164,20 +136,6 @@
   "cost": 0,
   "division" : "Northeast",
   "teamname": "ALL CAPS"
-},
-{
-  "name": "",
-  "order": 7,
-  "cost": 0,
-  "division" : "Northeast",
-  "teamname": "ALL CAPS"
-},
-{
-  "name": "",
-  "order": 8,
-  "cost": 0,
-  "division" : "Northeast",
-  "teamname": "ALL CAPS"
 }
 ,{
   "name": "Capernicus",
@@ -221,20 +179,6 @@
 {
   "name": "",
   "order": 6,
-  "cost": 0,
-  "division" : "Pacific",
-  "teamname": "The Antagonists"
-},
-{
-  "name": "",
-  "order": 7,
-  "cost": 0,
-  "division" : "Pacific",
-  "teamname": "The Antagonists"
-},
-{
-  "name": "",
-  "order": 8,
   "cost": 0,
   "division" : "Pacific",
   "teamname": "The Antagonists"
@@ -284,20 +228,6 @@
   "cost": 0,
   "division" : "Atlantic",
   "teamname": "Ballchimedes"
-},
-{
-  "name": "",
-  "order": 7,
-  "cost": 0,
-  "division" : "Atlantic",
-  "teamname": "Ballchimedes"
-},
-{
-  "name": "",
-  "order": 8,
-  "cost": 0,
-  "division" : "Atlantic",
-  "teamname": "Ballchimedes"
 }
 ,{
   "name": "eagles",
@@ -341,20 +271,6 @@
 {
   "name": "",
   "order": 6,
-  "cost": 0,
-  "division" : "Central",
-  "teamname": "Capitalists"
-},
-{
-  "name": "",
-  "order": 7,
-  "cost": 0,
-  "division" : "Central",
-  "teamname": "Capitalists"
-},
-{
-  "name": "",
-  "order": 8,
   "cost": 0,
   "division" : "Central",
   "teamname": "Capitalists"
@@ -404,20 +320,6 @@
   "cost": 0,
   "division" : "Northeast",
   "teamname": "Ghostboosters"
-},
-{
-  "name": "",
-  "order": 7,
-  "cost": 0,
-  "division" : "Northeast",
-  "teamname": "Ghostboosters"
-},
-{
-  "name": "",
-  "order": 8,
-  "cost": 0,
-  "division" : "Northeast",
-  "teamname": "Ghostboosters"
 }
 ,{
   "name": "Bull",
@@ -461,20 +363,6 @@
 {
   "name": "",
   "order": 6,
-  "cost": 0,
-  "division" : "Pacific",
-  "teamname": "Cyber Ballies"
-},
-{
-  "name": "",
-  "order": 7,
-  "cost": 0,
-  "division" : "Pacific",
-  "teamname": "Cyber Ballies"
-},
-{
-  "name": "",
-  "order": 8,
   "cost": 0,
   "division" : "Pacific",
   "teamname": "Cyber Ballies"
@@ -524,20 +412,6 @@
   "cost": 0,
   "division" : "Central",
   "teamname": "idk"
-},
-{
-  "name": "",
-  "order": 7,
-  "cost": 0,
-  "division" : "Central",
-  "teamname": "idk"
-},
-{
-  "name": "",
-  "order": 8,
-  "cost": 0,
-  "division" : "Central",
-  "teamname": "idk"
 }
 ,{
   "name": "Stalin",
@@ -581,20 +455,6 @@
 {
   "name": "",
   "order": 6,
-  "cost": 0,
-  "division" : "Atlantic",
-  "teamname": "KGBallers"
-},
-{
-  "name": "",
-  "order": 7,
-  "cost": 0,
-  "division" : "Atlantic",
-  "teamname": "KGBallers"
-},
-{
-  "name": "",
-  "order": 8,
   "cost": 0,
   "division" : "Atlantic",
   "teamname": "KGBallers"
@@ -644,20 +504,6 @@
   "cost": 0,
   "division" : "Northeast",
   "teamname": "Knights of Cap-A-Lot"
-},
-{
-  "name": "",
-  "order": 7,
-  "cost": 0,
-  "division" : "Northeast",
-  "teamname": "Knights of Cap-A-Lot"
-},
-{
-  "name": "",
-  "order": 8,
-  "cost": 0,
-  "division" : "Northeast",
-  "teamname": "Knights of Cap-A-Lot"
 }
 ,{
   "name": "Ballymandias",
@@ -701,20 +547,6 @@
 {
   "name": "",
   "order": 6,
-  "cost": 0,
-  "division" : "Central",
-  "teamname": "Lagprone"
-},
-{
-  "name": "",
-  "order": 7,
-  "cost": 0,
-  "division" : "Central",
-  "teamname": "Lagprone"
-},
-{
-  "name": "",
-  "order": 8,
   "cost": 0,
   "division" : "Central",
   "teamname": "Lagprone"
@@ -764,20 +596,6 @@
   "cost": 0,
   "division" : "Central",
   "teamname": "MBM"
-},
-{
-  "name": "",
-  "order": 7,
-  "cost": 0,
-  "division" : "Central",
-  "teamname": "MBM"
-},
-{
-  "name": "",
-  "order": 8,
-  "cost": 0,
-  "division" : "Central",
-  "teamname": "MBM"
 }
 ,{
   "name": "nlfn",
@@ -821,20 +639,6 @@
 {
   "name": "",
   "order": 6,
-  "cost": 0,
-  "division" : "Atlantic",
-  "teamname": "Pi Rats"
-},
-{
-  "name": "",
-  "order": 7,
-  "cost": 0,
-  "division" : "Atlantic",
-  "teamname": "Pi Rats"
-},
-{
-  "name": "",
-  "order": 8,
   "cost": 0,
   "division" : "Atlantic",
   "teamname": "Pi Rats"
@@ -884,20 +688,6 @@
   "cost": 0,
   "division" : "Pacific",
   "teamname": "Probots"
-},
-{
-  "name": "",
-  "order": 7,
-  "cost": 0,
-  "division" : "Pacific",
-  "teamname": "Probots"
-},
-{
-  "name": "",
-  "order": 8,
-  "cost": 0,
-  "division" : "Pacific",
-  "teamname": "Probots"
 }
 ,{
   "name": "Fez",
@@ -941,20 +731,6 @@
 {
   "name": "",
   "order": 6,
-  "cost": 0,
-  "division" : "Atlantic",
-  "teamname": "Rektiles"
-},
-{
-  "name": "",
-  "order": 7,
-  "cost": 0,
-  "division" : "Atlantic",
-  "teamname": "Rektiles"
-},
-{
-  "name": "",
-  "order": 8,
   "cost": 0,
   "division" : "Atlantic",
   "teamname": "Rektiles"
@@ -1004,20 +780,6 @@
   "cost": 0,
   "division" : "Atlantic",
   "teamname": "SOHB"
-},
-{
-  "name": "",
-  "order": 7,
-  "cost": 0,
-  "division" : "Atlantic",
-  "teamname": "SOHB"
-},
-{
-  "name": "",
-  "order": 8,
-  "cost": 0,
-  "division" : "Atlantic",
-  "teamname": "SOHB"
 }
 ,{
   "name": "Troball",
@@ -1061,20 +823,6 @@
 {
   "name": "",
   "order": 6,
-  "cost": 0,
-  "division" : "Central",
-  "teamname": "Tears for Spheres"
-},
-{
-  "name": "",
-  "order": 7,
-  "cost": 0,
-  "division" : "Central",
-  "teamname": "Tears for Spheres"
-},
-{
-  "name": "",
-  "order": 8,
   "cost": 0,
   "division" : "Central",
   "teamname": "Tears for Spheres"
@@ -1124,21 +872,8 @@
   "cost": 0,
   "division" : "Northeast",
   "teamname": "wsp"
-},
-{
-  "name": "",
-  "order": 7,
-  "cost": 0,
-  "division" : "Northeast",
-  "teamname": "wsp"
-},
-{
-  "name": "",
-  "order": 8,
-  "cost": 0,
-  "division" : "Northeast",
-  "teamname": "wsp"
-},{
+}
+,{
   "name": "Ballee Lama",
   "order": 1,
   "captain":true,
@@ -1180,20 +915,6 @@
 {
   "name": "",
   "order": 6,
-  "cost": 0,
-  "division" : "Pacific",
-  "teamname": "Walla Walla Ballas"
-},
-{
-  "name": "",
-  "order": 7,
-  "cost": 0,
-  "division" : "Pacific",
-  "teamname": "Walla Walla Ballas"
-},
-{
-  "name": "",
-  "order": 8,
   "cost": 0,
   "division" : "Pacific",
   "teamname": "Walla Walla Ballas"
