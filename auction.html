@@ -4,10 +4,10 @@
     
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="/bootstrap.min.css">
-    <link rel="stylesheet" href="/flat-ui.min.css">
+    <link rel="stylesheet" href="/csshake.min.css">
+    <link rel="stylesheet" href="/auction.css">
 
     <!-- Optional theme -->
-    <link rel="stylesheet" href="http://elrumordelaluz.github.io/csshake/css/csshake.min.css">
     <!-- Latest compiled and minified JavaScript -->
     <script type="text/javascript" src="/jquery-1.11.1.js"></script> 
     <script type="text/javascript" src="/bootstrap.min.js"></script> 
@@ -19,8 +19,6 @@
         var highlightColor = "rgb(255, 245, 0)";
         var blueColor = "rgb(134, 198, 230)";
         var redColor = "rgb(235, 126, 126)";
-        var intime = 150;
-        var outtime = 2000;
         var firstLiCheck = 0;
 
         function animateTeam(name) {
@@ -30,7 +28,7 @@
             grandparent.addClass("shake shake-constant");
             setTimeout(function () {
                 grandparent.removeClass("shake shake-constant")
-            }, outtime*2);
+            }, 3000);
             /*
             color = '';
             if(team.css("background-color") === redColor) {
@@ -145,9 +143,13 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             {{#if canSendMessage}}
-                <form class="form-inline new-post" role="form">
-                        <input type="text" class="form-control" name="text" placeholder="Type a message" style="width:83%">
-                        <button class="btn btn-primary" type="submit">Send</button>
+                <form class="new-post">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="text" placeholder="Type a message">
+                        <span class="input-group-btn">
+                              <button class="btn btn-primary" type="submit">Send</button>
+                        </span>
+                    </div>
                 </form>
             {{else}}
                 Log in to Chat
@@ -239,25 +241,37 @@
                         <button type="submit" class="btn btn-success">Nominate</button>
                 </form>
             {{else}}
-                <form class="form-inline bid-on-player" role="form">
-                        <input type="text" disabled name="amount" class="form-control" placeholder="Waiting for nomination" style="width:83%">
-                        <button type="submit" disabled class="btn btn-success">Bid</button>
+                <form class="bid-on-player" role="form">
+                    <div class="input-group">
+                        <input type="text" disabled name="amount" class="form-control" placeholder="Waiting for nomination">
+                        <span class="input-group-btn">
+                            <button type="submit" disabled class="btn btn-success">Bid</button>
+                        </span>
+                        </div>
                 </form>
             {{/if}}
         {{else}}
             {{#if sufficientFunds}}
-            <form class="form-inline bid-on-player">
-                <input type="text" class="form-control" name="amount" placeholder="Input a bid amount" style="width:83%" onfocus="if(this.value != '') {this.value=''}">
+            <form class="bid-on-player">
+                <div class="input-group">
+                <input type="text" class="form-control" name="amount" placeholder="Input a bid amount"  onfocus="if(this.value != '') {this.value=''}">
+                <span class="input-group-btn">
                 {{#if canBid}}
                     <button type="submit" class="btn btn-success">Bid</button>
                 {{else}}
                     <button type="submit" disabled class="btn btn-success">Bid</button>
                 {{/if}}
+                  </span>
+                </div>
             </form>
             {{else}}
-                <form class="form-inline bid-on-player" role="form">
-                        <input type="text" disabled name="amount" class="form-control" placeholder="Insufficient Funds" style="width:83%">
+                <form class="bid-on-player" role="form">
+                <div class="input-group">
+                    <input type="text" disabled name="amount" class="form-control" placeholder="Insufficient Funds">
+                    <span class="input-group-btn">
                         <button type="submit" disabled class="btn btn-danger">Bid</button>
+                    </span>
+                </div>
                 </form>
             {{/if}}
         {{/if}}

@@ -24,6 +24,12 @@ body {
 display: block!important;
 }
 
+.form-inline .form-control {
+	width:auto;
+}
+.form-inline .form-group {
+	display: inline-block;
+}
 .navbar-nav>li, .navbar-nav {
 float: left !important;
 }
@@ -36,15 +42,14 @@ margin-right: -15px !important;
 float: right!important;
 }
 
-
 #fixme {position: float;left: 0;right: 0; top:0;}
 }
 
-#li.red-division {
+li.red-division {
 	background-color: rgb(235, 126, 126);
 }
 
-#li.blue-division {
+li.blue-division {
 	background-color: rgb(134, 198, 230);
 }
 .highlight-color {
