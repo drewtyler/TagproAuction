@@ -12,22 +12,26 @@
     <script type="text/javascript" src="/jquery-1.11.1.js"></script> 
     <script type="text/javascript" src="/bootstrap.min.js"></script> 
     <script type="text/javascript" src="/flat-ui.min.js"></script> 
-    
+    <script type="text/javascript" src="/jquery.vibrate.min.js"></script>
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script type="text/javascript">
         var highlightColor = "rgb(255, 245, 0)";
         var blueColor = "rgb(134, 198, 230)";
         var redColor = "rgb(235, 126, 126)";
         var intime = 150;
-        var outtime = 3000;
+        var outtime = 2000;
         var firstLiCheck = 0;
 
-        function animateTeam(name, intime, outtime) {
+        function animateTeam(name) {
             var team = $("#team_"+name.split(" ").join("_"));
-            team.parent().parent().addClass("shake shake-constant");
-            //setTimeout(function () {
-            //    team.parent().parent().removeClass("shake shake-constant")
-            //}, 2500);
+            var grandparent = team.parent().parent();
+
+            grandparent.addClass("shake shake-constant");
+            setTimeout(function () {
+                grandparent.removeClass("shake shake-constant")
+            }, outtime*2);
+            /*
             color = '';
             if(team.css("background-color") === redColor) {
                 color = redColor;
@@ -37,11 +41,18 @@
             }
             team.animate({backgroundColor:highlightColor}, intime, 
                 function () {
-                    team.animate({backgroundColor:color}, outtime, function() {
-                        team.parent().parent().removeClass("shake shake-constant hover-stop");
-                        
-                    }); 
+                    team.animate({backgroundColor:color}, outtime); 
+            });
+            */
+            var canVibrate = "vibrate" in navigator || "mozVibrate" in navigator;
+            if (canVibrate && !("vibrate" in navigator))
+                navigator.vibrate = navigator.mozVibrate;
+            if(canVibrate) {
+                $("#vibrate").vibrate({
+                    pattern: [200, 400, 200]
                 });
+                $("#vibrate").click();            
+            }
         }
 
         function checkForAnimation() {
@@ -51,7 +62,8 @@
             }
             else {
                 if($(".winningTeam").length == 1) {
-                    teamname = $(".winningTeam").html().split("] ")[1]
+                    teamname = $(".winningTeam").html().split("] ")[1];
+                    console.log(teamname);
                     animateTeam(teamname);
                     $(".winningTeam").remove();
                 }
@@ -123,6 +135,7 @@
                 {{> rosters}}
             </div>
         </div>
+        <div class="button" id="vibrate" style="display:hidden"></div>
     </div>
 </body>
 
@@ -134,7 +147,7 @@
             {{#if canSendMessage}}
                 <form class="form-inline new-post" role="form">
                         <input type="text" class="form-control" name="text" placeholder="Type a message" style="width:83%">
-                        <button class="btn btn-primary" type="button">Send</button>
+                        <button class="btn btn-primary" type="submit">Send</button>
                 </form>
             {{else}}
                 Log in to Chat
