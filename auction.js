@@ -55,7 +55,7 @@ if (Meteor.isClient) {
       },
   });
 
-  Template.funds_remaining.helpers(
+  Template.get_funds.helpers(
   {
     getBalance: function () {
       if( Meteor.user() !== undefined && Meteor.userId()) {

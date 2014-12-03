@@ -115,19 +115,12 @@
 
 <body>
     <div class="container-fluid">
-    <div id="fixme">
-        <nav class="navbar navbar-default" role="navigation" style="width:100%;">
-            <ul class="nav navbar-nav navbar-right">
-            <li style="margin-right:20px;">{{> funds_remaining}}</li>
-            <li style="margin-right:20px;"><p class="navbar-text">{{> loginButtons align="right"}}</p></li>
-            </ul>
-        </nav>
-        </div>
         <div class="row" style="padding-top:25px;">
             <div class="col-sm-4 col-sm-push-8 col-xs-12" style="padding-top:0px;">
-                {{> display_bidding_options}}
-                {{> display_time}}
-                {{> messages}}
+                {{> get_funds }}
+                {{> display_bidding_options }}
+                {{> display_time }}
+                {{> messages }}
             </div>
             <div class="col-sm-8 col-sm-pull-4 col-xs-12">
                 {{> rosters}}
@@ -136,6 +129,21 @@
         <div class="button" id="vibrate" style="display:hidden"></div>
     </div>
 </body>
+
+<template name="get_funds">
+<div class="row">
+    <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            {{#if isCaptain}}
+                    <p class="pull-right">Balance: <b>{{getBalance}}</b></p>
+            {{/if}}
+            {{> loginButtons}}
+        </div>
+    </div>
+    </div>
+</div>
+</template>
 
 <template name="messages">
 <div class="row">
@@ -167,15 +175,8 @@
 </div>
 </template>
 
-<template name="funds_remaining">
-{{#if isCaptain}}
-        <p class="navbar-text navbar-right">Balance: <b>{{getBalance}}</b></p>
-{{/if}}
-</template>
-
-
 <template name="rosters">
-    <div class="row" style="padding-top:30px;">
+    <div class="row">
       {{#each divisions}}
               <div class="col-md-2"></div>
               {{#each teams division ./division}}
