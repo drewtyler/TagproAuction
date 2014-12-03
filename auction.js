@@ -135,7 +135,7 @@ if (Meteor.isClient) {
     isNominationTime: function() {
       if(AuctionData.findOne() !== undefined)
         return AuctionData.findOne().State == "Nominating";
-    },
+    }, 
     isTurnToNominate: function()
       {
         if(!Meteor.userId())
