@@ -1,9 +1,23 @@
 [
-  {"name" : "nlfn", "nominated" : false},
-  {"name" : "Fez", "nominated" : false},
+  //{"name" : "nlfn", "nominated" : false},
+  //{"name" : "Fez", "nominated" : false},
   {"name" : "Spiller", "nominated" : false},
   {"name" : "eagles.", "nominated" : false},
-  {"name" : "KPow", "nominated" : false},
+  //{"name" : "KPow", "nominated" : false},
   {"name" : "Legman", "nominated" : false},
-  {"name" : "Stalin", "nominated" : false}
+  {"name" : "Stalin", "nominated" : false},
+    //{"name" : "Capernicus", "nominated" : false},
+  {"name" : "Bull", "nominated" : false},
+  //{"name" : "Troball", "nominated" : false},
+  {"name" : "Ballymandias", "nominated" : false},
+  //{"name" : "Jagdpanther", "nominated" : false},
+  //{"name" : "YOSSARIAN", "nominated" : false},
+  //{"name" : "Mikero", "nominated" : false},
+  {"name" : "SirDan", "nominated" : false},
+  //{"name" : "Xile", "nominated" : false},
+  //{"name" : "Chalksy", "nominated" : false},
+  //{"name" : "RoughJustice", "nominated" : false},
+  //{"name" : "Ballee Lama", "nominated" : false},
+  {"name" : "WowSuchPro", "nominated" : false}
+
 ]
