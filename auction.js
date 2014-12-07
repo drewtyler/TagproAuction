@@ -10,6 +10,7 @@ Nominators = new Mongo.Collection('nominators');
 Keepers = new Mongo.Collection('keepers');
 NextNominator = new Mongo.Collection('nextnominator');
 CurrentPick = new Mongo.Collection('currentpick');
+Admins = new Mongo.Collection("admin");
 
 var bidTime = 30000;
 var additionTime = 10000;
@@ -209,12 +210,12 @@ if (Meteor.isClient) {
   })
 
   Template.admin.helpers({
-    isAdmin: function() {
-      admins = ["Spiller", "eagles."];
-        if(Meteor.user() !== undefined) {
-          if(admins.indexOf(Meteor.user().username) >= 0) {
-            return true;
-          } 
+    admin : function() {
+      if(Meteor.user() !== undefined) {
+        admins = ["Dino", "Spiller", "eagles.", "Troball", "Bull"];
+        if(admins.indexOf(Meteor.user().username) >= 0) {
+          return true;
+        }
       }
       return false;
     },
@@ -272,7 +273,7 @@ if (Meteor.isClient) {
         return "";
       }
     }
-  }); 
+  });
   Template.messages.events(
     {
       'submit' : function(event)
@@ -292,8 +293,15 @@ if (Meteor.isClient) {
 }
 
 Meteor.methods({
+  isAdmin: function(playername) {
+    admins = ["Dino", "Spiller", "eagles.", "Troball", "Bull"];
+    if(admins.indexOf(playername) >= 0)
+      return true;
+    return false;
+    },
   undoNomination : function(person) {
-    nominator = AuctionData.findOne({}).nominator;
+    ad = AuctionData.findOne({});
+
     console.log(nominator);
     if(nominator !== undefined) {
       AuctionData.remove({});
@@ -537,6 +545,7 @@ if (Meteor.isServer) {
     PausedAuction.remove({});
     CurrentPick.insert({"pick":1});
     BidHistory.remove({});
+    Admins.remove({});
 
     // Load state
     var initialRosterData = {};
@@ -544,6 +553,14 @@ if (Meteor.isServer) {
     for(i = 0; i < initialRosterData.length; i++) {
       var obj = initialRosterData[i];
       Nominators.insert(obj);
+    }
+
+    var admins = {};
+
+    admins = JSON.parse(Assets.getText('admins.json'));
+    for(i = 0; i < admins.length; i++) {
+      var obj = admins[i];
+      Admins.insert(obj);
     }
 
     keepers = JSON.parse(Assets.getText('keepers.json'));
