@@ -1,6 +1,4 @@
 {
-	"name":"TagproAuction",
-	"version":"1",
 	"engines": {
 		"node":"0.10.21"
 	}
