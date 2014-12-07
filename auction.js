@@ -355,7 +355,6 @@ Meteor.methods({
       var captains = Nominators.find({nominated:false}).fetch();
       var randskip = Math.floor(Math.random() * captains.length);
       var nominator = captains[randskip];
-      nominator = {"name":"eagles."};
       var text = "Waiting for "+nominator.name +" to nominate pick "+CurrentPick.findOne({}).pick+" of the draft.";
       Meteor.call("insertMessage", text, new Date());
 
