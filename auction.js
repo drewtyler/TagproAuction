@@ -323,15 +323,18 @@ Meteor.methods({
     }
   },
   removeLastBid : function(person) {
-      lastbid = BidHistory.find({},{sort:{"createdAt":-1}, limit:1});
-      BidHistory.remove(lastbid);
-      newLastBid = BidHistory.find({}, {sort:{"createdAt":-1}, limit:1});
-      AuctionData.update(
-        {State: "Bidding"},
-        {$set: {currentBid: newLastBid.amount, lastBidder: newLastBid.bidder}}
-      );
-      var text = "Last bid removed by " + person;
-      Meteor.call("insertMessage", text, new Date());
+    if(Meteor.isServer) {
+    var currentState = AuctionData.findOne();
+    var lastbid = BidHistory.findOne({"player": currentState.currentPlayer},{sort:{"createdAt":1}});
+    BidHistory.remove({"_id" : lastbid._id});
+    var lastbid2 = BidHistory.findOne({"player":currentState.currentPlayer},{sort:{"createdAt":1}});
+    AuctionData.update(
+    {State: "Bidding"},
+    {$set: {currentBid: lastbid2.amount, lastBidder: lastbid2.bidder}}
+    );
+    var text = "Last bid removed by " + person;
+    Meteor.call("insertMessage", text, new Date());
+    }
   },
   resumeAuction : function (person) {
       pa = PausedAuction.findOne();
@@ -399,6 +402,7 @@ Meteor.methods({
           // Log message
           Meteor.call("insertMessage", state.Nominator + " nominates " + playerNominated + " with an initial bid of " + bid, new Date(), "nomination");
 
+          BidHistory.insert({bidder: state.Nominator, amount: bid, player: playerNominated, createdAt: new Date()});
           // Start bidding baby
           return AuctionData.insert({State: "Bidding", nextExpiryDate: new Date().getTime()+bidTime, currentBid: bid, currentPlayer: playerNominated, lastBidder: state.Nominator});
         }
