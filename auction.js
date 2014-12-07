@@ -6,6 +6,8 @@ DraftablePlayers = new Mongo.Collection('players');
 Messages = new Mongo.Collection('messages');
 BidHistory = new Mongo.Collection('bids');
 Nominators = new Mongo.Collection('nominators');
+Keepers = new Mongo.Collection('keepers');
+
 
 Meteor.setServerTime = function() {
   Meteor.call("getServerTime", function(error, serverMS) {
@@ -154,7 +156,12 @@ if (Meteor.isClient) {
       sufficientFunds: function()
       {
         if(Meteor.userId() && Meteor.user() !== undefined && AuctionData.findOne() !== undefined) {
-          var balance = TeamNames.findOne({"captain":Meteor.user().username}).money;
+          var team = TeamNames.findOne({"captain":Meteor.user().username})
+          var keepers = Keepers.findOne({"captain":Meteor.user().username}, {"keepers":1})
+          var balance = team.money;
+          if(keepers.indexOf(AuctionData.findOne().currentPlayer) > 0) {
+            balance += team.keepermoney
+          }
           var minBid = parseInt(AuctionData.findOne().currentBid)+1;
           if(balance < minBid) {
             return false;
@@ -265,14 +272,14 @@ Meteor.methods({
 
           // Start bidding baby
 
-          return AuctionData.insert({State: "Bidding", nextExpiryDate: new Date().getTime()+30000, currentBid: bid, currentPlayer: playerNominated, lastBidder: state.Nominator});
+          return AuctionData.insert({State: "Bidding", nextExpiryDate: new Date().getTime()+5000, currentBid: bid, currentPlayer: playerNominated, lastBidder: state.Nominator});
         }
         else if (state !== undefined)
         { 
           AuctionData.remove({});
           console.log("Not nominating... someone won!");
           var team = TeamNames.findOne({"captain" : state.lastBidder});
-          var playerWon = state.currentPlayer;
+          var playerWon = state.currentPlayer; 
 
           // ALL CAPS-specific thing here
           if(state.lastBidder == "YOSSARIAN") {
@@ -280,9 +287,29 @@ Meteor.methods({
           }
           var playerOrder = parseInt(team.count) + 1;
 
+          // handle keepers
+          keepers = Keepers.findOne({"name":state.lastBidder}).keepers;
+          var keepermoney = team.keepermoney;
+          var money = team.money;
+          console.log(money, keepermoney);
+          if(keepers.indexOf(playerWon) > 0) { 
+            console.log("Player is a keeper!");
+            keepermoney = keepermoney - state.currentBid;
+            console.log(keepermoney);
+
+            if(keepermoney < 0) {
+              money = money - Math.abs(keepermoney);
+              keepermoney = 0;
+              console.log(keepermoney, money);
+            }
+          }
+          else {
+            money = money - state.currentBid;
+          }
+
           // Put him in the roster
           TeamData.update({"teamname": team.teamname, "order" : playerOrder}, {$set: {"name": playerWon, "cost": state.currentBid}});
-          TeamNames.update({"teamname": team.teamname}, {$set: {"count":playerOrder, "money":(team.money-state.currentBid)}});
+          TeamNames.update({"teamname": team.teamname}, {$set: {"count":playerOrder, "money":money, "keepermoney":keepermoney}});
           // Log message
           var text = state.lastBidder + " wins " + playerWon + " for " + state.currentBid + "!";
           Meteor.call("insertMessage", text, new Date(), "winningBid");
@@ -390,7 +417,7 @@ if (Meteor.isServer) {
     TeamNames.remove({});
     Messages.remove({});
     Nominators.remove({});
-
+    Keepers.remove({});
     // Load state
     var initialRosterData = {};
     initialRosterData = JSON.parse(Assets.getText('nominations.json'));
@@ -399,10 +426,15 @@ if (Meteor.isServer) {
       Nominators.insert(obj);
     }
 
+    keepers = JSON.parse(Assets.getText('keepers.json'));
+    for(i = 0; i < keepers.length; i++) {
+      var obj = keepers[i];
+      Keepers.insert(obj);
+    }
     var captains = Nominators.find({nominated:false}).fetch();
     var randskip = Math.floor(Math.random() * captains.length);
     var nominator = captains[randskip];
-    nominator = {"name":"Bull"};
+    nominator = {"name":"eagles."};
 
 
     Nominators.update({name:nominator.name}, {$set:{nominated:true}});
