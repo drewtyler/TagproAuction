@@ -1,1 +1,1 @@
-web: meteor auction.js
+web: ./meteor/meteor auction.js
