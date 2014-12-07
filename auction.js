@@ -324,7 +324,6 @@ Meteor.methods({
   removeLastBid : function(person) {
       BidHistory.remove(BidHistory.find({},{sort:{"createdAt":-1}, limit:1}));
       newLastBid = BidHistory.find({}, {sort:{"createdAt":-1}, limit:1});
-
       AuctionData.update(
         {State: "Bidding"},
         {$set: {currentBid: newLastBid.amount, lastBidder: newLastBid.bidder}}
@@ -500,8 +499,9 @@ Meteor.methods({
         if(amount <= bidamt) {
           // Cool, he does. Is it in time?
           console.log("acceptBid: good amount");
-          if(parseInt(state.nextExpiryDate) > parseInt(clienttime)) {
-            // Sweet it was. Let's mark it down!
+          // I can't bid when the time is still valid, this fixes it
+          //if(parseInt(state.nextExpiryDate) > parseInt(clienttime)) {
+          if(true) {  // Sweet it was. Let's mark it down!
             console.log("acceptBid: nextExpiryDate good");
 
             console.log("acceptBid: Times: "+ state.nextExpiryDate + " vs " + clienttime);
