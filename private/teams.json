@@ -143,7 +143,7 @@
   "captain":true,
   "cost": 0,
   "division" : "Pacific",
-  "teamname": "The Antagonists"
+  "teamname": "Rollin Golden Boulders"
 },
 {
   "name": "",
@@ -151,7 +151,7 @@
   "cocaptain":true,
   "cost": 0,
   "division" : "Pacific",
-  "teamname": "The Antagonists"
+  "teamname": "Rollin Golden Boulders"
 },
 {
   "name": "",
@@ -159,7 +159,7 @@
   "mltp":true,
   "cost": 0,
   "division" : "Pacific",
-  "teamname": "The Antagonists"
+  "teamname": "Rollin Golden Boulders"
 },
 {
   "name": "",
@@ -167,21 +167,21 @@
   "mltp":true,
   "cost": 0,
   "division" : "Pacific",
-  "teamname": "The Antagonists"
+  "teamname": "Rollin Golden Boulders"
 },
 {
   "name": "",
   "order": 5,
   "cost": 0,
   "division" : "Pacific",
-  "teamname": "The Antagonists"
+  "teamname": "Rollin Golden Boulders"
 },
 {
   "name": "",
   "order": 6,
   "cost": 0,
   "division" : "Pacific",
-  "teamname": "The Antagonists"
+  "teamname": "Rollin Golden Boulders"
 }
 ,{
   "name": "Chalksy",
@@ -373,7 +373,7 @@
   "captain":true,
   "cost": 0,
   "division" : "Central",
-  "teamname": "idk"
+  "teamname": "4O's"
 },
 {
   "name": "",
@@ -381,7 +381,7 @@
   "cocaptain":true,
   "cost": 0,
   "division" : "Central",
-  "teamname": "idk"
+  "teamname": "4O's"
 },
 {
   "name": "",
@@ -389,7 +389,7 @@
   "mltp":true,
   "cost": 0,
   "division" : "Central",
-  "teamname": "idk"
+  "teamname": "4O's"
 },
 {
   "name": "",
@@ -397,21 +397,7 @@
   "mltp":true,
   "cost": 0,
   "division" : "Central",
-  "teamname": "idk"
-},
-{
-  "name": "",
-  "order": 5,
-  "cost": 0,
-  "division" : "Central",
-  "teamname": "idk"
-},
-{
-  "name": "",
-  "order": 6,
-  "cost": 0,
-  "division" : "Central",
-  "teamname": "idk"
+  "teamname": "4O's"
 }
 ,{
   "name": "Stalin",
@@ -560,7 +546,7 @@
   "teamname": "MBM"
 },
 {
-  "name": "romulus",
+  "name": "",
   "order": 2,
   "cocaptain":true,
   "cost": 0,
@@ -568,7 +554,7 @@
   "teamname": "MBM"
 },
 {
-  "name": "mr.thot",
+  "name": "",
   "order": 3,
   "mltp":true,
   "cost": 0,
@@ -576,23 +562,9 @@
   "teamname": "MBM"
 },
 {
-  "name": "espeluznante",
+  "name": "",
   "order": 4,
   "mltp":true,
-  "cost": 0,
-  "division" : "Central",
-  "teamname": "MBM"
-},
-{
-  "name": "ball OON",
-  "order": 5,
-  "cost": 0,
-  "division" : "Central",
-  "teamname": "MBM"
-},
-{
-  "name": "fuzz ball",
-  "order": 6,
   "cost": 0,
   "division" : "Central",
   "teamname": "MBM"

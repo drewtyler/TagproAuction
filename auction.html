@@ -80,6 +80,7 @@
         <div class="row" style="padding-top:25px;">
             <div class="col-sm-4 col-sm-push-8 col-xs-12" style="padding-top:0px;">
                 {{> get_funds }}
+                {{> admin }}
                 {{> display_bidding_options }}
                 {{> display_time }}
                 {{> messages }}
@@ -145,29 +146,55 @@
           source: substringMatcher(states)
         });
         */
-
-        setTimeout( function() {
-            $('#playerSearch .typeahead').typeahead({
-              hint: true,
-              minLength: 1
-            },
-            {
-              name: 'players',
-              displayKey: 'value',
-              source: substringMatcher(players)
-            });
-            $(".tt-dropdown-menu").css("width", $(".typeahead").css("width"));
-            $(".tt-dropdown-menu").css(
-                {"max-height": "150px", "overflow-y":"auto", "background-color":"white", "padding-left":"5px"});
-            $("#initialBid").css("width", "none");
-
-        }, 1500);
+        var dirty = 1;
+        setInterval( function() {
+            if($("#playerSearch .typeahead").length == 1 && dirty) {
+                console.log("Fixing it up");
+                dirty = 0;
+                $('#playerSearch .typeahead').typeahead({
+                  hint: true,
+                  minLength: 1
+                },
+                {
+                  name: 'players',
+                  displayKey: 'value',
+                  source: substringMatcher(players)
+                });
+                $(".tt-dropdown-menu").css("width", $(".typeahead").css("width"));
+                $(".tt-dropdown-menu").css(
+                    {"max-height": "150px", "overflow-y":"auto", "background-color":"white", "padding-left":"5px"});
+                $("#initialBid").css("width", "none");
+            }
+            else {
+                dirty=1;
+            }
+        }, 750);
 
 
 </script>
 
 
 </body>
+
+<template name="admin">
+{{#if isAdmin}}
+<div class="row">
+    <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+        <div class="btn-group">
+            <div class="btn btn-primary resume-auction">Resume</div>
+            <div class="btn btn-primary pause-auction">Pause</div>
+            <div class="btn btn-primary start-auction">Start</div>
+            <div class="btn btn-primary undo-bid">Undo Bid</div>
+            <div class="btn btn-primary undo-nomination">Undo Nomination</div>
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
+{{/if}}
+</template>
 
 <template name="get_funds">
 <div class="row">
@@ -205,7 +232,7 @@
         <ul class="list-group" id="messageLog" style="height: 500px; overflow: scroll;overflow-x: hidden;">
             {{#each messages}}
                 {{#if text}}
-                    <li class="list-group-item {{messageColor messageType}}" style="word-break: break-all;">{{text}}</li>
+                    <li class="list-group-item {{messageColor messageType}}" style="word-break: normal;">{{text}}</li>
                 {{/if}}
             {{/each}}
         </ul>
@@ -285,10 +312,10 @@
                 </form>
             {{/if}}
         {{else}}
-            {{#if sufficientFunds}}
+            {{#if sufficientFunds }}
             <form class="bid-on-player">
                 <div class="input-group">
-                <input type="text" class="form-control" name="amount" placeholder="Input a bid amount">
+                <input type="text" class="form-control" name="amount" placeholder="Input a bid amount (blank increases current bid by 1)">
                 <span class="input-group-btn">
                 {{#if canBid}}
                     <button type="submit" class="btn btn-success">Bid</button>
@@ -301,13 +328,13 @@
             {{else}}
                 <form class="bid-on-player" role="form">
                 <div class="input-group">
-                    <input type="text" disabled name="amount" class="form-control" placeholder="Insufficient Funds">
+                    <input type="text" disabled name="amount" class="form-control" placeholder="Insufficient Funds or Auction Paused">
                     <span class="input-group-btn">
                         <button type="submit" disabled class="btn btn-danger">Bid</button>
                     </span>
                 </div>
                 </form>
-            {{/if}}
+,            {{/if}}
         {{/if}}
         </div>
         </div>
@@ -328,6 +355,7 @@
             {{/if}}
         </div>
         {{#if isNominationTime}}
+
         {{else}}
             <div class="panel-body" style="text-align:center">
             <h4 class="panel-title">{{lastBidder}} bid {{bidAmount}}</h4>
