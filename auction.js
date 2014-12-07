@@ -246,7 +246,7 @@ if (Meteor.isClient) {
   // Messages
   Template.messages.helpers({
     messages: function() {
-      return Messages.find({}, {sort: {createdAt: -1}});
+      return Messages.find({}, {sort: {createdAt: -1}, limit:100});
     },
     canSendMessage: function() {
       if(!Meteor.userId())
