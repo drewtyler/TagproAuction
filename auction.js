@@ -324,7 +324,7 @@ Meteor.methods({
   removeLastBid : function(person) {
       BidHistory.remove(BidHistory.find({},{sort:{"createdAt":-1}, limit:1}));
       newLastBid = BidHistory.find({}, {sort:{"createdAt":-1}, limit:1});
-      
+
       AuctionData.update(
         {State: "Bidding"},
         {$set: {currentBid: newLastBid.amount, lastBidder: newLastBid.bidder}}
@@ -359,6 +359,7 @@ Meteor.methods({
   startAuction: function(person) {
     nominator = Meteor.call('pickNominator');
     Nominators.update({name:nominator.name}, {$set:{nominated:true}});
+    AuctionData.remove({});
     AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+bidTime, Nominator: nominator.name});
     Meteor.call("insertMessage", "Auction started by "+person, new Date());
   },
@@ -372,7 +373,7 @@ Meteor.methods({
   },
   toggleState: function(playerNominated, bid) {
       console.log("Checking toggle state");
-
+ 
       if(Meteor.isServer) {
         console.log("1 Server toggling state");
         console.log("2 Server toggling state");
@@ -383,9 +384,16 @@ Meteor.methods({
 
         if(state !== undefined && state.State == "Nominating") {
           console.log("State is nominating");
-          if(parseInt(TeamNames.findOne({captain:state.Nominator}).money) < parseInt(bid)) {
+          var team = TeamNames.findOne({captain:state.Nominator});
+
+          var money = team.money;
+          if(Meteor.call("isKeeper", state.Nominator, playerNominated)) {
+            money = team.money + team.keepermoney;
+          }
+          if(money < parseInt(bid)) {
            return false;
           }
+
           AuctionData.remove({});
           // Log message
           Meteor.call("insertMessage", state.Nominator + " nominates " + playerNominated + " with an initial bid of " + bid, new Date(), "nomination");
@@ -398,7 +406,7 @@ Meteor.methods({
           AuctionData.remove({});
           console.log("Not nominating... someone won!");
           var team = TeamNames.findOne({"captain" : state.lastBidder});
-          var playerWon = state.currentPlayer; 
+          var playerWon = state.currentPlayer;
 
           // ALL CAPS-specific thing here
           if(state.lastBidder == "YOSSARIAN") {
@@ -432,10 +440,9 @@ Meteor.methods({
           Meteor.call("insertMessage", team.teamname, new Date(), "animate");
 
           // Reset state
-          CurrentPick.update({}, {$set:{'pick':+CurrentPick.findOne({}).pick }});
-          
           nominator = Meteor.call("pickNominator");
           Meteor.call("insertMessage", text, new Date());
+          CurrentPick.update({}, {$inc:{'pick':1}});
           var text = "Waiting for "+nominator +" to nominate the "+CurrentPick.findOne({}).pick+" pick of the draft.";
           Nominators.update({name:nominator.name}, {$set:{nominated:true}});
           return AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+10000, Nominator: nominator.name});
