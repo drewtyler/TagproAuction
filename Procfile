@@ -1,1 +1,1 @@
-web: ./meteor/meteor
+web: meteor
