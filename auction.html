@@ -169,6 +169,12 @@
                 dirty=1;
             }
         }, 750);
+
+
+        $("#bidbutton").click( function() {
+            $("#bidamount").val("");
+            }
+        });
 </script>
 
 
@@ -217,9 +223,9 @@
             {{#if canSendMessage}}
                 <form class="new-post">
                     <div class="input-group">
-                        <input type="text" class="form-control" name="text" placeholder="Type a message">
+                        <input type="text" class="form-control" name="text" id="bidamount" placeholder="Type a message">
                         <span class="input-group-btn">
-                              <button class="btn btn-primary" type="submit">Send</button>
+                              <button class="btn btn-primary" type="submit" id="bidbutton">Send</button>
                         </span>
                     </div>
                 </form>
