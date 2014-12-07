@@ -235,7 +235,7 @@
         <ul class="list-group" id="messageLog" style="height: 500px; overflow: scroll;overflow-x: hidden;">
             {{#each messages }}
                 {{#if text}}
-                    <li class="list-group-item {{messageColor messageType}}" style="word-break: normal;">{{text}}{{#if admin}}<span class="delete pull-right glyphicon" aria-hidden="true">X</span>{{/if}}</li>
+                    <li class="list-group-item {{messageColor messageType}}" style="word-break: normal;">{{text}}</li>
                 {{/if}}
             {{/each}}
         </ul>
