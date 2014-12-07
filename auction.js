@@ -191,15 +191,19 @@ if (Meteor.isClient) {
 
   Template.admin.events({
     'click .undo-bid' : function(event) {
+      console.log("Removing last bid")
       Meteor.call("removeLastBid", Meteor.user().username);
     },
     'click .pause-auction' : function(event) {
+      console.log("Pausing auction")
       Meteor.call("pauseAuction", Meteor.user().username);
     },
     'click .resume-auction' : function(event) {
+      console.log("Resuming auction")
       Meteor.call("resumeAuction", Meteor.user().username);
     },
     'click .start-auction' : function(event) {
+      console.log("Start auction")
       Meteor.call("startAuction", Meteor.user().username);
     },
     'click .undo-nomination' : function(event) {
@@ -224,9 +228,6 @@ if (Meteor.isClient) {
       'submit .bid-on-player' : function(event)
       {
         var bid = parseInt(event.target.amount.value);
-        if(!bid) {
-          bid = parseInt(AuctionData.findOne().currentBid) + 1;
-        }
         Meteor.call("acceptBid", Meteor.user().username, bid, new Date().getTime());
         return false;
       },
