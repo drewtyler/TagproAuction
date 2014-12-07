@@ -1,1 +1,1 @@
-web: node auction.js
+web: meteor auction.js
