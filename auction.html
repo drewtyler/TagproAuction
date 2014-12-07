@@ -9,10 +9,10 @@
 
     <!-- Optional theme -->
     <!-- Latest compiled and minified JavaScript -->
-    <script type="text/javascript" src="/jquery-1.11.1.js"></script> 
+    <script type="text/javascript" src="/jquery-1.11.1.min.js"></script> 
     <script type="text/javascript" src="/bootstrap.min.js"></script> 
-    <script type="text/javascript" src="/flat-ui.min.js"></script> 
     <script type="text/javascript" src="/jquery.vibrate.min.js"></script>
+    <script type="text/javascript" src="/typeahead.jquery.min.js"></script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script type="text/javascript">
@@ -72,7 +72,31 @@
         }
         setInterval(checkForAnimation, 1000);
 
+    </script>
+</head>
 
+<body>
+    <div class="container-fluid">
+        <div class="row" style="padding-top:25px;">
+            <div class="col-sm-4 col-sm-push-8 col-xs-12" style="padding-top:0px;">
+                {{> get_funds }}
+                {{> display_bidding_options }}
+                {{> display_time }}
+                {{> messages }}
+            </div>
+            <div class="col-sm-8 col-sm-pull-4 col-xs-12">
+                {{> rosters}}
+            </div>
+        </div>
+        <div class="button" id="vibrate" style="display:hidden"></div>
+    </div>
+
+
+
+
+<script>
+
+        var players = ['i1337', 'Nawse', '2P1S', 'veezy', 'ThePirate', 'Kazoo', 'Micaso', 'Buppy', 'El Sacko', 'ProTagonist_', 'Ballrog', 'Frozty', 'timeboy', 'Tottenham', 'Ess', '3.1 Thor', 'WowSuchPro', 'Mace', 'dodsfall', 'Sunna', 'Ashmungashma', 'Ibis', 'ZumgAPanda', 'Marz', 'Mr.Gone', 'LoweJ', 'MFSamson', 'Holdmaballs', 'HarkMollis', 'Esoog', 'SUPERSANS', 'Atomic', 'Nqoba', 'PrivateMajor', 'Raven', 'Ballymandias', 'bdl', 'demman32', 'yiss', 'Sweep', 'P K Subball', 'ballparts', 'Big Swingin', 'port', 'Dr.Bob', 'bowtie', 'Curl', 'Ninjroid', 'Windomac', 'Razgriz', 'That Kid', 'RoughJustice', 'crosky', 'Rocket', 'Fresh', 'Some Man 7', 'Skee-Ball', '1baller', 'karlwithak', 'DudeMcGuy', 'Milk Steak', '_Noah', 'Mr.Baggins', 'Walrus', 'BilldaCat', 'superdiglett', 'GriefSeeds', 'KPow', 'ballpit', 'Manbear', 'Nebuchanezar', 'Shabba', 'Asa Akira', 'FLYMOLO', 'Carp', 'Yossarian', 'BigMeaty', 'GreenBastard', 'Crossover', 'wayne', 'Nugazasagae', 'BallDontLie', 'TroBall', 'Ballee Lama', 'Anne Frank', 'Test_Ball', 'Lej', 'CHECKNATE.', 'Iron_Ball', 'Maurice', 'memeganoob', 'Deez Nutz', 'quarky.', 'MrJoehobo', 'Syniikal', 'Gubbles', 'PopSecret', 'Creothcean', 'GnastyKnate', 'ludifisk', 'PetyrBaelish', 'A-A-ron', 'Toobis', 'OJdude', 'donuts42', 'newfren', 'CC', 'Tiza', 'Curry4Three', 'mc ride', 'Bobbay', 'Trondby', 'Hoog', 'Nick_Corso', 'klosec12', 'TheOnlyBall', 'Baz', 'I|m Batman', 'Mack Daddy', 'jackals', 'Ballsagnia', 'Dennit', 'Scott', 'd0pe', 'Kitten Panda', 'Herky', 'CIutch', 'Chalksy', 'Gman8181', 'Kludge95', 'SirCamWatts', 'Tony Allen', 'BAllstar', 'craigbiggio', 'jwart', 'Aero', 'Heisenberg', 'eltenelliott', 'Arbybear', 'donk', 'supermesh', 'poopv', 'themagpie', 'dywz', 'sweater', 'blithering', 'Jesus', 'JBaayBaay', 'Sentry', 'TurdFerguson', 'Breesus', 'Jay', 'lukemoo', 'Marquis', 'Aniball', 'TOJO', 'TagUpTurnUp', 'BG', 'TheBob18', 'Saint Enigma', 'nickramyoga', 'PavelDatsyuk', 'Bob Loblaw', 'TheWonder', 'honeybear', 'Bongo', 'Matty_Ice', 'Danny', 'Green Eggs', 'Snowball', 'trendygrub', 'Odog', 'ooo killem', 'ChelseaFc', 'Hulzy', 'adhi', 'Itzulpena', 'lu', 'HayBunny', 'lifeisgood', 'Shaze', 'Tantrew', 'BlissMC', 'khaleesii', 'penis pl0x', 'srby', 'Bweurp', 'Atlas_', 'ChrisBall', 'ChrisBall', 'Tanador', 'eee', 'JDoeMonopoly', 'swerve', 'Warden', 'Puggins', 'P0P', 'Prizm', 'whiff', 'Pithy', 'Dalek23', 'TarianLegend', 'Crees', 'bigbadball', 'Gargantua', 'might dino', '#Frozen', 'Fence Post', 'The Ferret', 'rub', 'Kamikaze', 'stu.', 'Q(|.|Q)', 'Oddball7', 'Rambo', 'TagProKing', 'c2.', 'Risk', 'Fuzz Ball', 'BrunoCaboclo', 'Blep', 'marwels23', 'statix', 'justhavinfun', 'some name', 'Raptor_Jesus', 'Koala King', 'chuckk', 'Helen Keller', 'Rammstein', 'Ralph Wiggum', 'Thirsty', 'TheAprilFool', 'kwib', 'Dr. Juke', 'Theman', 'abazaba', 'VeridisQuo', 'AJH', 'Dyna', 'Pi 3.1415926', 'Gramps', 'Sundown', 'Outis', 'im high', 'clownmachine', 'Fowlball', 'Canadsian', 'Strategio', 'Kevin Bacon', 'tennisball', 'Apidae', 'Mesut', 'M.Foricer', 'Pinstar', 'Arthree', 'Papi', 'Cignul9', 'Jaycmoney', 'Mary_Poppins', 'Altiger', 'Apopalypse', 'Stann', 'k', 'ovary', 'F2PDynasty', 'rollin', 'Ike13', 'JKarim4', 'Kelvin', 'trav', 'C Bivvey', 'Caduke', 'Dragon Ball', 'Kerball', 'Despair', 'Some 8 Ball', 'Randy Marsh', 'Ninja Jesus', 'sry im new', 'alvin', 'Stormcrow', 'Plleth', 'simon', 'MoJoSto', 'Swergonomics', 'JuicyJuke', 'Jufda', 'Jukeballhero', 'Drave', 'Legman', 'Koala', 'FlutedKnob', 'D Rek', 'Some Ball -1', 'R e t r o', 'Ballox', 'Doc Balliday', 'Infinite Sky', 'nlfn', 'Odog', 'rabbat', 'Jagdpanther', 'Dodge', 'itsacow', 'Knox', 'RonSpawnson', 'Lexanator5', 'josh61616', 'Bonsai', 'Xile', 'PBS', 'intrepid', 'DeadpooI', 'Bull', 'Thiradell', 'quibble', 'PengWin', 'Ball Sac', 'Game Theory', 'Rudey', 'Cashmere Cat', 'ScumBall', 'Matetricks', 'Exquisite', 'yearofme', 'gh0st', 'Abs', 'jegs', 'Coca', 'Sportmonkey', 'Hyamez', 'Schwedd', 'SirDan', 'ballingball', 'Capernicus', 'UnoriginalSN', 'Pnaoxt', 'David Stern', 'Crook', 'Juke King', 'Ballzilla', 'Charlie...', 'in_C', 'RedFive', 'Mercury', 'Catalyst', 'LEBRON*JAMES', 'Turbo', 'Kanyes Maid', 'Guard', 'Swingman', 'steveholt', 'aardvark74', 'ball.i.am', 'espeluznante', 'InaneVoyage', 'bobby13531', 'hola', 'saundy', 'Donkey Kong', 'Anze Capitar', 'Micro', 'Jkells', 'Gryts', 'Romulus', 'yank', 'DICK_LICKER', 'E', 'Envy', 'cz', 'DUBSTEP', 'Left  Nut', 'Zvonvok', 'Stalin', 'Fitz.', 'PavlovsBall', 'Ball OON', 'wassa', 'Hootie', 'DPRK', 'lakeshow', 'slide', 'lolugrumpy', 'Makin Bacon', 'CapnCrunch', 'Errmergerd', 'ballblaster', 'Cripple', 'Teh42', 'Fozzy', 'UberNub', 'FlutedKnob', 'RemoSlice', 'Nitro', 'Pyruvate', 'Fez', 'gingerdg', 'ExitStrategy', 'praoprao', 'mathnasium', 'Kill Ball', 'BBQchicken', 'SAPSAPSAPSPA', 'eagles.', 'Jwoey', 'poplockndrop', 'Darth Revan', 'theballoseum', 'noblord', 'Moonghost', 'Master Ball', 'Rookie', 'Mufro', 'Mikero', 'Trapsin', 'charly_pims', 'Pepto Dismal', 'Destar', 'KlKI', 'Pinch & Roll', 'ColdDuckTime', 'Spheroid', 'Deidara', '-Messi', 'MRCOW', 'Mr.Nate', 'Tannehill', 'inthesomeday', 'thedeveloper', 'Judy', 'daiCmeRollin', 'dx', 'Magikarp', 'Clovis', 'Ignitius', 'Eminem', 'meatsuite', 'KAIZER', 'mste', 'CommonSense', 'Skinny Chode', 'Quan', 'DJ KHALED', 'Energy Balls', 'popsic_le', 'Vino', 'Pyrrhus', 'SwagHard', 'RON.BURGANDY', 'Alchemist', 'SpittingAtom', 'grant', 'oh_snap!', 'SpInSanity', 'r3ll1sh', 'boogy', 'Aurum', 'whiteflame', 'Jaacs', 'LAMPSHADE', 'Brake', 'Ranger', 'Wolf0fBallSt', 'IllegalToast', 'DareToZlatan', 'Willie', 'Ballaholics', 'Fapst3r', 'Green_Ball', 'Boombox', 'cbtexan04', 'Yakub', 'adm ackball', 'Googy', 'Jernon', 'clownmachine', 'goo', 'Skwid', 'jjpoole', 'BallMillsap', 'GillyBall', 'Big Chimpin', 'Bilbo Baller', '[burrito]', 'imaprostitut', 'samiamjuke', 'I_mess_up', 'dutch', 'frostie', 'BennyV23', 'Hashtag', 'JUKEBOX!', 'Sora', 'ImTrying', 'Yashi', 'FunkyMnky', 'turtlemansam', 'target 2.0', 'Bad Guy', 'Mr. Thot', 'Deoxys', 'Some Ball 11', 'Xionwalker', '>>-->', 'TheIndian', 'sweg|', 'InYourCourt', 'Don|t->Flush', 'RASCAL', 'Demo', 'Sasuke', 'BANG!!', 'TOEMEIST', 'hashball', 'dogethedoge', 'Partytime', 'slutman', 'RIP Taveras', 'Snr.Baseball', 'BluMyself', 'Defendaball', 'Perpetualist', 'itunes', 'J0$H_Da_B0$$', 'DougFane', 'Snooker', 'Tokoloco', 'Thee Ball', 'Gyaraderp', 'Chocas', 'Rudey', 'spicynewt', 'Captivated', 'Ill Fayze', 'Rubes', '[POP]touch', 'SphereItself', 'Kermit69', 'bagina', 'Simon Pegg', 'Atheist', '-Obama-', 'somegirl', 'Rectangle', 'Whata Baller', 'A Straw Hat', 'Chuggles', 'DaisyJukes', 'Rasputin', 'assy nougat', 'Durden', 'elfballer', 'Qubert', 'superpapergun', 'J Balls', 'reddy', 'Zuko', 'Krowbar', 'Superstar', 'Camus', 'Juggle', 'Trobo', 'minecraftpro907', 'Dead Nan', 'MonteeBall', 'CondoKP', 'BALLoCRUSHER', 'slowpolka', 'i am on re', 'i am on re', 'Teal', 'aris.', 'Eminem', 'maxmears3', 'bozonz', 'Not Matt', 'Buffalo Ball', 'wonsu', 'itsacow', 'DanseNoire.', 'Simplicity', 'El Scorpio', 'ArtVandelay', 'yash', 'R0CK$T4R', 'Doris', 'Snack', 'mste', 'Tplattapus', 'Ba|al', 'gspoon', 'Scrooball', 'StikRokTurd', 'Henrik', 'Rammstein', 'coys', 't("t)', 'Halophile', 'The Loo', 'NEUhusky', 'Bowlarity', 'InTents', 'Spiller', 'BallyWest', 'Pleionosis', 'Manowar', 'Mace Windex', 'Ebola', 'Rectangle', 'Fronj', 'josheb', 'KCIN', 'Yung~$avage', 'Vitur', 'Tonto', 'Doris', 'Fawlty', 'Howard', 'Schweddys', 'Russia|', 'Spherecules', '-salt-', 'McNerdy', 'InTheMood', 'asdf', 'Vials', 'blaziken', '@//|@', 'Jukeinabox', 'Dequabian', 'martymoo', 'Brainiac', 'BlazeMaster', 'Rimsucker', 'yungbull', 'Al Sharpton', 'Vials', 'UBU', 'CpBear', '-salt-', 'quarky.', 'fragrantfowl', 'DougFane', 'Ball Murray', 'Huevo Crush', 'VetDave', 'Ill Fayze', 'Ill Fayze', 'godot', 'Tumblewood', 'JukesOfHazrd', 'Dubai', 'Noobkin', 'Psi', 'Rick O|Shea', 'Konichiwa', 'Pocketweed', '4piR^2', 'Hawka', 'MasterCard78', 'sweaty', 'WheresBaldo', 'Shakalaka', 'Paps', 'Aerrow', 'Flail', 'Mr Bucket', 'Chocas', 'Checko', 'My Lumps', 'beke', 'B][', '*H Y D R O', 'Sorry', 'Ball God', 'Tpr', 'Electron', 'bad', 'idowhatiwant', 'notsomeball', 'Gem', 'ooo kill |em', 'PrimeTime21', 'mrfruitzy', 'AlysBrangwin', 'BallOReilly', 'Starboard', 'tblazers127', 'tsu', 'OG ALMIN $$', 'NotSome Ball', 'P-d0g', 'K1nn1ck', 'Ball-Mart', 'ClayRocks', 'Grill_Gamer', 'Shrimpster', 'JMART', 'spencebron', 'Tyrus', 'smartrobot', 'sidewalk', 'KingGopher', 'jadeboy7', 'fauxedo', 'UnderTheBall', 'Dance', 'chili6f', 'Ambrose', 'Coil', 'Subglacious', 'Rislyeu', 'okthen', 'Mary_Poppins', 'JGibbs', '@(-_-)@', '@(-_-)@', 'Butthurt?', 'banzai', '@(^_^)@', 'The Biggen', 'Dino', 'BilboTaggins', 'Rislyeu', 'StufedBurger', 'mhawk10', 'Sun_Tzu', 'G1nseng', 'oSo Squiggly', 'Zua', 'Felix', '@(-_-)@', '@(^_^)@', 'Denna', 'uihiu', 'Butter Churn', 'PopSecret', 'boat shoes', 'Ill Fayze', 'Oh No!', 'NimbusBP1729', 'BlissMC', 'Jayu', 'OG Mudbone.', 'Xenocide.', 'Biggy Balls', 'VanillaBear', 'Im A Goat', 'BrunoCaboclo', 'PoroPinger', 'ONECUPOFSUGA', 'Cap|n Kush', 'Jake from SF', 'LegionOBoom', 'Newtruckfund', 'JukeStick', 'PATTT', 'KCIN', 'Juke Master', 'Jesse', 'Wee D', 'Rohit', 'cheese place', 'SwagCannon', 'sambea', 'TheStrangerJr', 'Tea', 'YEEZUS*', 'Wee D', 'wawaweewa', 'Dad', 'SchoolBall Q', 'Baby Bunny', 'Bob Dole', 'Bob Dole', 'TheRealYOLO', 'ChillOut', 'real shade', 'hellyea', 'GoochTickler', 'GoochTickler', 'capturebro', 'Bluntz', 'Blu Balls', 'Pink Floyd', 'skeletor', 'SpiKing', 'nub', 'Trane', 'GoochTickler', 'The Dentist (AKA "Bo")', 'supaspike', 'Wee D', 'Wee D', 'Bric', 'Jet2', ' LOdragon34', 'FUCKING LAG', 'VorTeXx', 'BallMeMaybe', 'Jimmy Ballon', 'teddybear', 'Da Burrs'];
 
         var substringMatcher = function(strs) {
           return function findMatches(q, cb) {
@@ -97,37 +121,52 @@
             cb(matches);
           };
         };
+         
+        var states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
+          'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii',
+          'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana',
+          'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota',
+          'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire',
+          'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota',
+          'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island',
+          'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont',
+          'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
+        ];
+              
+        /*   
+        $('#playerSearch .typeahead').typeahead({
+          hint: true,
+          highlight: true,
+          minLength: 1
+        },
+        {
+          name: 'states',
+          displayKey: 'value',
+          source: substringMatcher(states)
+        });
+        */
 
-        playerData = ["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"];
-        /*$('#playerSearch').typeahead({
-            hint: true,
-            highlight:true,
-            minLength: 1},
+        setTimeout( function() {
+            $('#playerSearch .typeahead').typeahead({
+              hint: true,
+              minLength: 1
+            },
             {
-            name: 'players',
-            displayKey: 'value',
-            source: playerData
-            }
-        );*/
+              name: 'players',
+              displayKey: 'value',
+              source: substringMatcher(players)
+            });
+            $(".tt-dropdown-menu").css("width", $(".typeahead").css("width"));
+            $(".tt-dropdown-menu").css(
+                {"max-height": "150px", "overflow-y":"auto", "background-color":"white", "padding-left":"5px"});
+            $("#initialBid").css("width", "none");
 
-    </script>
-</head>
+        }, 1500);
 
-<body>
-    <div class="container-fluid">
-        <div class="row" style="padding-top:25px;">
-            <div class="col-sm-4 col-sm-push-8 col-xs-12" style="padding-top:0px;">
-                {{> get_funds }}
-                {{> display_bidding_options }}
-                {{> display_time }}
-                {{> messages }}
-            </div>
-            <div class="col-sm-8 col-sm-pull-4 col-xs-12">
-                {{> rosters}}
-            </div>
-        </div>
-        <div class="button" id="vibrate" style="display:hidden"></div>
-    </div>
+
+</script>
+
+
 </body>
 
 <template name="get_funds">
@@ -136,7 +175,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             {{#if isCaptain}}
-                    <p class="pull-right">Balance: <b>{{getBalance}}</b></p>
+                    <p class="pull-right">Balance: <b>{{getBalance}} ({{getKeepermoney}})</b></p>
             {{/if}}
             {{> loginButtons}}
         </div>
@@ -228,17 +267,11 @@
         <div class="panel-heading">
         {{#if isNominationTime}}
             {{#if isTurnToNominate}}
-                <form class="form-inline nominate-player" role="form">
-                        <input type="text" name="player" class="form-control" id="playerSearch" list="players" placeholder="Input a player name" />
-                        <datalist id="players" style="display:hidden">
-                            <option value="Internet Explorer"></option>
-                            <option value="Firefox" ></option>
-                            <option value="Chrome" ></option>
-                            <option value="Opera" ></option>
-                            <option value="Safari" ></option>
-                        </datalist>
-
-                        <input type="text" name="amount" class="form-control" placeholder="Initial bid (blank = 0)" />
+                <form class="form-group nominate-player" role="form">
+                    <div id="playerSearch" class="" style="display:inline">
+                        <input type="text" name="player" class="typeahead form-control" placeholder="Input a player name" />
+                        </div>
+                        <input type="text" name="amount" id="initialBid" class="form-control" placeholder="Initial bid (blank = 0)" style="width:auto; display:inline;" />
                         <button type="submit" class="btn btn-success">Nominate</button>
                 </form>
             {{else}}
@@ -255,7 +288,7 @@
             {{#if sufficientFunds}}
             <form class="bid-on-player">
                 <div class="input-group">
-                <input type="text" class="form-control" name="amount" placeholder="Input a bid amount"  onfocus="if(this.value != '') {this.value=''}">
+                <input type="text" class="form-control" name="amount" placeholder="Input a bid amount">
                 <span class="input-group-btn">
                 {{#if canBid}}
                     <button type="submit" class="btn btn-success">Bid</button>
@@ -305,5 +338,3 @@
         </div>
     </div>
 </template>
-
-

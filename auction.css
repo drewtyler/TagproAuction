@@ -24,12 +24,6 @@ body {
 display: block!important;
 }
 
-.form-inline .form-control {
-	width:auto;
-}
-.form-inline .form-group {
-	display: inline-block;
-}
 .navbar-nav>li, .navbar-nav {
 float: left !important;
 }
@@ -92,4 +86,9 @@ header .hide-completed {
 
 .toggle-private {
 	margin-left: 5px;
+}
+
+.tt-dropdown-menu {
+  max-height: 150px;
+  overflow-y: auto;
 }

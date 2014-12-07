@@ -65,6 +65,12 @@ if (Meteor.isClient) {
       }
       return false;
     },
+    getKeepermoney: function () {
+      if( Meteor.user() !== undefined && Meteor.userId()) {
+        return TeamNames.findOne({"captain":Meteor.user().username}).keepermoney;
+      }
+      return false;
+    },
     isCaptain: function() {
       if(Meteor.user() !== undefined && Meteor.userId())
         return (TeamData.findOne({"name":Meteor.user().username, "captain" : true}))
@@ -160,7 +166,7 @@ if (Meteor.isClient) {
           var keepers = Keepers.findOne({"captain":Meteor.user().username}, {"keepers":1})
           var balance = team.money;
           if(keepers.indexOf(AuctionData.findOne().currentPlayer) > 0) {
-            balance += team.keepermoney
+            balance += team.keepermoney;
           }
           var minBid = parseInt(AuctionData.findOne().currentBid)+1;
           if(balance < minBid) {
@@ -291,16 +297,13 @@ Meteor.methods({
           keepers = Keepers.findOne({"name":state.lastBidder}).keepers;
           var keepermoney = team.keepermoney;
           var money = team.money;
-          console.log(money, keepermoney);
           if(keepers.indexOf(playerWon) > 0) { 
-            console.log("Player is a keeper!");
+            console.log(playerWon, " is a keeper!");
             keepermoney = keepermoney - state.currentBid;
-            console.log(keepermoney);
 
             if(keepermoney < 0) {
               money = money - Math.abs(keepermoney);
               keepermoney = 0;
-              console.log(keepermoney, money);
             }
           }
           else {
