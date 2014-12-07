@@ -255,6 +255,15 @@ if (Meteor.isClient) {
         return false;
       return true;
     },
+    admin : function() {
+      if(Meteor.user() !== undefined) {
+        admins = ["Dino", "Spiller", "eagles.", "Troball", "Bull"];
+        if(admins.indexOf(Meteor.user().username) >= 0) {
+          return true;
+        }
+      }
+      return false;
+    },
     messageColor: function(messageType) {
       // Class to add to the message (for coloring or sending information to the client)
       if(messageType == "winningBid") {
@@ -287,12 +296,18 @@ if (Meteor.isClient) {
         Meteor.call("insertMessage", text, new Date(), "textMessage");
         event.target.text.value = "";
         return false;
-      }
+      },
+    'click .delete' : function() {
+      Meteor.call("removeMessage", this._id);
     }
+  }
   );
 }
 
 Meteor.methods({
+  removeMessage : function(messageid) {
+    Messages.remove(messageid);
+  },
   isAdmin: function(playername) {
     admins = ["Dino", "Spiller", "eagles.", "Troball", "Bull"];
     if(admins.indexOf(playername) >= 0)

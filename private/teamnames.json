@@ -13,7 +13,7 @@
   {"teamname":"Capitalists", "division" : "Central", "money" : 100, "keepermoney":10, "captain" : "eagles.", "count" : 1},
   {"teamname":"MBM", "division" : "Central", "money" : 60, "keepermoney":10, "captain" : "KPow", "count" : 1},
   {"teamname":"Lagprone", "division" : "Central", "money" : 100, "keepermoney":0, "captain" : "Ballymandias", "count" : 1},
-  {"teamname":"4O's", "division" : "Central", "money" : 100, "keepermoney":10, "captain" : "Jagdpanther", "count" : 1},
+  {"teamname":"4O's", "division" : "Central", "money" : 60, "keepermoney":10, "captain" : "Jagdpanther", "count" : 1},
   {"teamname":"ALL CAPS", "division" : "Northeast", "money" : 100, "keepermoney":10, "captain" : "YOSSARIAN", "count" : 1},
   {"teamname":"Ghostboosters", "division" : "Northeast", "money" : 100, "keepermoney":10, "captain" : "Mikero", "count" : 1},
   {"teamname":"Knights of Cap-A-Lot", "division" : "Northeast", "money" : 100, "keepermoney":10, "captain" : "SirDan", "count" : 1},
