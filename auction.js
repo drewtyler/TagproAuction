@@ -322,7 +322,8 @@ Meteor.methods({
     }
   },
   removeLastBid : function(person) {
-      BidHistory.remove(BidHistory.find({},{sort:{"createdAt":-1}, limit:1}));
+      lastbid = BidHistory.find({},{sort:{"createdAt":-1}, limit:1});
+      BidHistory.remove(lastbid);
       newLastBid = BidHistory.find({}, {sort:{"createdAt":-1}, limit:1});
       AuctionData.update(
         {State: "Bidding"},
