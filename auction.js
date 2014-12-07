@@ -178,8 +178,6 @@ if (Meteor.isClient) {
           }
           var minBid = parseInt(AuctionData.findOne({}).currentBid)+1;
 
-          //console.log(minBid, balance);
-
           if(balance < minBid) {
             return false;
           }
@@ -316,10 +314,8 @@ Meteor.methods({
     },
   undoNomination : function(person) {
     ad = AuctionData.findOne({});
-
-    console.log(nominator);
-    if(nominator !== undefined) {
-      AuctionData.remove({});
+    if(ad.Nominator !== undefined) {
+      AuctionData.remove({});    
       AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+bidTime, Nominator: nominator.name});
       var text = "Last nomination removed by " + person;
       Meteor.call("insertMessage", text, new Date());
@@ -327,10 +323,11 @@ Meteor.methods({
   },
   removeLastBid : function(person) {
       BidHistory.remove(BidHistory.find({},{sort:{"createdAt":-1}, limit:1}));
-      lastBid = BidHistory.find({}, {sort:{"createdAt":-1}, limit:1});
+      newLastBid = BidHistory.find({}, {sort:{"createdAt":-1}, limit:1});
+      
       AuctionData.update(
         {State: "Bidding"},
-        {$set: {currentBid: lastBid.amount, lastBidder: lastBid.bidder}}
+        {$set: {currentBid: newLastBid.amount, lastBidder: newLastBid.bidder}}
       );
       var text = "Last bid removed by " + person;
       Meteor.call("insertMessage", text, new Date());
@@ -357,7 +354,6 @@ Meteor.methods({
       var nominator = captains[randskip];
       var text = "Waiting for "+nominator.name +" to nominate pick "+CurrentPick.findOne({}).pick+" of the draft.";
       Meteor.call("insertMessage", text, new Date());
-
       return nominator;
   },
   startAuction: function(person) {
@@ -436,11 +432,12 @@ Meteor.methods({
           Meteor.call("insertMessage", team.teamname, new Date(), "animate");
 
           // Reset state
+          CurrentPick.update({}, {$set:{'pick':+CurrentPick.findOne({}).pick }});
+          
           nominator = Meteor.call("pickNominator");
-          Nominators.update({name:nominator.name}, {$set:{nominated:true}});
-          CurrentPick.update({}, {$set:{'pick':pick+1}});
-          var text = "Waiting for "+nominator +" to nominate the "+CurrentPick.findOne({}).pick+" pick of the draft.";
           Meteor.call("insertMessage", text, new Date());
+          var text = "Waiting for "+nominator +" to nominate the "+CurrentPick.findOne({}).pick+" pick of the draft.";
+          Nominators.update({name:nominator.name}, {$set:{nominated:true}});
           return AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+10000, Nominator: nominator.name});
         }
     }
@@ -489,11 +486,11 @@ Meteor.methods({
         // K cool, does the player have this much money?
         team = TeamNames.findOne({captain:bidder});
         var bidamt = team.money;
-        if(Meteor.call("isKeeper", bidder, AuctionData.findOne({}).currentPlayer)) {
+        if(Meteor.call("isKeeper", bidder, state.currentPlayer)) {
           bidamt += team.keepermoney;
         }
 
-        if(amount < bidamt) {
+        if(amount <= bidamt) {
           // Cool, he does. Is it in time?
           console.log("acceptBid: good amount");
           if(parseInt(state.nextExpiryDate) > parseInt(clienttime)) {
@@ -523,6 +520,7 @@ Meteor.methods({
               if(parseInt(state.nextExpiryDate - new Date().getTime()) < 15000) {
                 AuctionData.update({State: "Bidding"}, {$set: {nextExpiryDate: new Date().getTime()+20000}});
               }
+
               return true;
 
             } else {

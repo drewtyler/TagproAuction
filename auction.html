@@ -230,10 +230,8 @@
         <ul class="list-group" id="messageLog" style="height: 500px; overflow: scroll;overflow-x: hidden;">
             {{#each messages }}
                 {{#if text}}
-                    <li class="list-group-item {{messageColor messageType}}" style="word-break: normal;">{{text}}                    {{#if admin}}
-                        <button class="delete pull-right">&times;</button>
-                    {{/if}}
-</li>
+                    <li class="list-group-item {{messageColor messageType}}" style="word-break: normal;">{{text}}{{#if admin}}
+                        <span class="delete pull-right glyphicon" aria-hidden="true">X</span>{{/if}}</li>
                 {{/if}}
             {{/each}}
         </ul>
@@ -319,7 +317,7 @@
                 <input type="text" class="form-control" name="amount" placeholder="Input a bid amount (blank increases current bid by 1)">
                 <span class="input-group-btn">
                 {{#if canBid}}
-                    <button type="submit" class="btn btn-success">Bid</button>
+                    <button type="submit" class="btn btn-success bid-button">Bid</button>
                 {{else}}
                     <button type="submit" disabled class="btn btn-success">Bid</button>
                 {{/if}}
