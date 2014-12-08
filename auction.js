@@ -150,7 +150,7 @@ if (Meteor.isClient) {
     isNominationTime: function() {
       if(AuctionData.findOne({}) !== undefined)
         return AuctionData.findOne({}).State == "Nominating";
-    }, 
+    },
     isTurnToNominate: function()
       {
         if(!Meteor.userId())
@@ -274,7 +274,7 @@ if (Meteor.isClient) {
       else if(messageType == "nomination") {
         return "list-group-item-info"
       }
-      else if(messageType == "animate") { 
+      else if(messageType == "animate") {
         return "hidden winningTeam"
       }
       else {
@@ -290,7 +290,7 @@ if (Meteor.isClient) {
         console.log("Message text:", event.target.text.value);
         if(!Meteor.userId()) {
          return false;
-        } 
+        }
         var text = Meteor.user().username + ": " + event.target.text.value;
         Meteor.call("insertMessage", text, new Date(), "textMessage");
         event.target.text.value = "";
@@ -321,7 +321,7 @@ Meteor.methods({
   undoNomination : function(person) {
     ad = AuctionData.findOne({});
     if(ad.Nominator !== undefined) {
-      AuctionData.remove({});    
+      AuctionData.remove({});
       AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+bidTime, Nominator: nominator.name});
       var text = "Last nomination removed by " + person;
       Meteor.call("insertMessage", text, new Date());
@@ -349,7 +349,7 @@ Meteor.methods({
       Meteor.call("insertMessage", "Auction resumed by "+person, new Date());
   },
   pauseAuction : function(person) {
-      ad = AuctionData.findOne();    
+      ad = AuctionData.findOne();
       secondsLeft = ad.nextExpiryDate - new Date().getTime();
       delete ad._id;
       PausedAuction.insert(ad);
@@ -382,7 +382,7 @@ Meteor.methods({
   },
   toggleState: function(playerNominated, bid) {
       console.log("Checking toggle state");
- 
+
       if(Meteor.isServer) {
         console.log("1 Server toggling state");
         console.log("2 Server toggling state");
@@ -412,7 +412,7 @@ Meteor.methods({
           return AuctionData.insert({State: "Bidding", nextExpiryDate: new Date().getTime()+bidTime, currentBid: bid, currentPlayer: playerNominated, lastBidder: state.Nominator});
         }
         else if (state !== undefined)
-        { 
+        {
           AuctionData.remove({});
           console.log("Not nominating... someone won!");
           var team = TeamNames.findOne({"captain" : state.lastBidder});
@@ -428,7 +428,7 @@ Meteor.methods({
           keepers = Keepers.findOne({"captain":state.lastBidder}).keepers;
           var keepermoney = team.keepermoney;
           var money = team.money;
-          if(keepers.indexOf(playerWon) >= 0) { 
+          if(keepers.indexOf(playerWon) >= 0) {
             console.log(playerWon, " is a keeper!");
             keepermoney = keepermoney - state.currentBid;
 
@@ -473,10 +473,10 @@ Meteor.methods({
   },
   isKeeper: function(bidder, player) {
     keepers = Keepers.findOne({"captain":bidder}).keepers;
-          if(keepers.indexOf(player) >= 0) { 
-            return true;
-          }
-          return false;
+    if(keepers.indexOf(player) >= 0) {
+      return true;
+    }
+    return false;
   },
   acceptBid: function(bidder, amount, clienttime) {
     if(Meteor.isServer) {
@@ -489,6 +489,7 @@ Meteor.methods({
       {
         console.log("acceptBid: bid from " + Meteor.user().username);
       }
+
       // Check state of auction
       var state = AuctionData.findOne({});
       if(state.State == "Nominating") {
@@ -498,16 +499,18 @@ Meteor.methods({
 
       // Alright let's check this thang out.
       console.log("acceptBid: Got State & we're bidding");
+
       // First, is the bid enough?
       if(parseInt(state.currentBid) < parseInt(amount)) {
+
         // K cool, does the player have this much money?
         team = TeamNames.findOne({captain:bidder});
-        var bidamt = team.money;
+        var availablebidamt = parseInt(team.money);
         if(Meteor.call("isKeeper", bidder, state.currentPlayer)) {
-          bidamt += team.keepermoney;
+          availablebidamt += parseInt(team.keepermoney);
         }
 
-        if(amount <= bidamt) {
+        if(parseInt(amount) <= parseInt(availablebidamt)) {
           // Cool, he does. Is it in time?
           console.log("acceptBid: good amount");
           // I can't bid when the time is still valid, this fixes it
