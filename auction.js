@@ -298,7 +298,7 @@ if (Meteor.isClient) {
       },
     'click .delete' : function() {
       Meteor.call("removeMessage", this._id);
-    }
+    },
   }
   );
 }
@@ -334,12 +334,6 @@ Meteor.methods({
     );
     var text = "Last bid removed by " + person;
     Meteor.call("insertMessage", text, new Date());
-    },
-  'submit .add-nomination' : function(event) {
-      var name = event.target.player.value;
-      console.log(name);
-      Meteor.call("toggleState", player, 0);
-      return false;
     }
   },
   resumeAuction : function (person) {
