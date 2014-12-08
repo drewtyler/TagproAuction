@@ -4,7 +4,7 @@
   {"teamname":"KGBallers", "division" : "Atlantic", "money" : 100, "keepermoney":10, "captain" : "Stalin", "count" : 1},
   {"teamname":"SOHB", "division" : "Atlantic", "money" : 100, "keepermoney":10, "captain" : "Xile", "count" : 1},
   {"teamname":"Ballchimedes", "division" : "Atlantic", "money" : 100, "keepermoney":10, "captain" : "Chalksy", "count" : 1},
-  {"teamname":"Probots", "division" : "Pacific", "money" : 100, "keepermoney":0, "captain" : "RoughJustice", "count" : 1},
+  {"teamname":"Probots", "division" : "Pacific", "money" : 100, "keepermoney":10, "captain" : "RoughJustice", "count" : 1},
   {"teamname":"Walla Walla Ballas", "division" : "Pacific", "money" : 100, "keepermoney":10, "captain" : "Ballee Lama", "count" : 1},
   {"teamname":"12 Angry Balls", "division" : "Pacific", "money" : 100, "keepermoney":10, "captain" : "Spiller", "count" : 1},
   {"teamname":"Rollin Golden Boulders", "division" : "Pacific", "money" : 100, "keepermoney":10, "captain" : "Capernicus", "count" : 1},
