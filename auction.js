@@ -299,6 +299,11 @@ if (Meteor.isClient) {
     'click .delete' : function() {
       Meteor.call("removeMessage", this._id);
     },
+    'submit .add-nomination' : function(event) {
+      var name = event.target.player.value;
+      Meteor.call("toggleState", name, 0);
+      return false;
+    }
   }
   );
 }
