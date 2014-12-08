@@ -209,11 +209,6 @@ if (Meteor.isClient) {
     'click .undo-nomination' : function(event) {
       Meteor.call("undoNomination", Meteor.user().username);
     },
-    'submit .add-nomination' : function(event) {
-      var name = event.target.player.value;
-      Meteor.call("addNomination", name);
-      return false;
-    }
   })
 
   Template.admin.helpers({
@@ -318,10 +313,6 @@ Meteor.methods({
       return true;
     return false;
     },
-  addNomination : function(player) {
-    Meteor.call("toggleState", player, 0);
-    return false;
-  },
   undoNomination : function(person) {
     ad = AuctionData.findOne({});
     if(ad.Nominator !== undefined) {
@@ -343,6 +334,12 @@ Meteor.methods({
     );
     var text = "Last bid removed by " + person;
     Meteor.call("insertMessage", text, new Date());
+    },
+  'submit .add-nomination' : function(event) {
+      var name = event.target.player.value;
+      console.log(name);
+      Meteor.call("toggleState", player, 0);
+      return false;
     }
   },
   resumeAuction : function (person) {
@@ -411,7 +408,7 @@ Meteor.methods({
           // Log message
           Meteor.call("insertMessage", state.Nominator + " nominates " + playerNominated + " with an initial bid of " + bid, new Date(), "nomination");
 
-          BidHistory.insert({bidder: state.Nominator, amount: bid, player: playerNominated, createdAt: new Date.getTime()});
+          BidHistory.insert({bidder: state.Nominator, amount: bid, player: playerNominated, createdAt: new Date().getTime()});
           // Start bidding baby
           return AuctionData.insert({State: "Bidding", nextExpiryDate: new Date().getTime()+bidTime, currentBid: bid, currentPlayer: playerNominated, lastBidder: state.Nominator});
         }
@@ -526,7 +523,7 @@ Meteor.methods({
                 bidder: bidder,
                 amount: amount,
                 player: state.currentPlayer,
-                createdAt: new Date.getTime()
+                createdAt: new Date().getTime()
               });
 
               AuctionData.update(
