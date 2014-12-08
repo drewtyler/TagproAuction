@@ -366,6 +366,7 @@ Meteor.methods({
       return nominator;
   },
   startAuction: function(person) {
+    console.log("Starting auction");
     nominator = Meteor.call('pickNominator');
     Nominators.update({name:nominator.name}, {$set:{nominated:true}});
     AuctionData.remove({});

@@ -76,6 +76,14 @@
 </head>
 
 <body>
+    <div class="hidden">
+        <audio id="nomination">
+            <source src="/sounds/nomination.mp3" type="audio/mpeg" />
+        </audio>
+        <audio id="my-nomination">
+            <source src="/sounds/myNomination.mp3" type="audio/mpeg" />
+        </audio>
+    </div>
     <div class="container-fluid">
         <div class="row" style="padding-top:25px;">
             <div class="col-sm-4 col-sm-push-8 col-xs-12" style="padding-top:0px;">
@@ -303,6 +311,7 @@
         <div class="panel-heading">
         {{#if isNominationTime}}
             {{#if isTurnToNominate}}
+                <script>document.getElementById('my-nomination').play();</script>
                 <form class="form-group nominate-player" role="form">
                     <div id="playerSearch" class="" style="display:inline">
                         <input type="text" name="player" class="typeahead form-control" placeholder="Input a player name" />
@@ -311,6 +320,7 @@
                         <button type="submit" class="btn btn-success">Nominate</button>
                 </form>
             {{else}}
+                <script>document.getElementById('nomination').play();</script>
                 <form class="bid-on-player" role="form">
                     <div class="input-group">
                         <input type="text" disabled name="amount" class="form-control" placeholder="Waiting for nomination">
