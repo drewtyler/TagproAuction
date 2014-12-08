@@ -212,7 +212,6 @@ if (Meteor.isClient) {
     'submit .add-nomination' : function(event) {
       var name = event.target.player.value;
       Meteor.call("addNomination", name);
-      console.log(name);
       return false;
     }
   })
@@ -319,12 +318,10 @@ Meteor.methods({
       return true;
     return false;
     },
-
   addNomination : function(player) {
     Meteor.call("toggleState", player, 0);
     return false;
   },
-
   undoNomination : function(person) {
     ad = AuctionData.findOne({});
     if(ad.Nominator !== undefined) {
