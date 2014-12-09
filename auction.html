@@ -28,7 +28,7 @@
             grandparent.addClass("shake shake-constant");
             setTimeout(function () {
                 grandparent.removeClass("shake shake-constant")
-            }, 3000);
+            }, 2500);
             /*
             color = '';
             if(team.css("background-color") === redColor) {
@@ -49,7 +49,7 @@
                 $("#vibrate").vibrate({
                     pattern: [200, 400, 200]
                 });
-                $("#vibrate").click();            
+                $("#vibrate").click();
             }
         }
 
@@ -78,11 +78,17 @@
 <body>
     <div class="hidden">
         <audio id="nomination">
-            <source src="/sounds/nomination.mp3" type="audio/mpeg" />
+            <source src="/nomination.mp3" type="audio/mpeg" />
         </audio>
         <audio id="my-nomination">
-            <source src="/sounds/myNomination.mp3" type="audio/mpeg" />
+            <source src="/myNomination.mp3" type="audio/mpeg" />
         </audio>
+        <audio id="my-bid">
+            <source src="/myBid.mp3" type="audio/mpeg" />
+        </audio>
+        <audio id="player-won">
+            <source src="/playerWon.mp3" type="audio/mpeg" />
+        </audio>        
     </div>
     <div class="container-fluid">
         <div class="row" style="padding-top:25px;">
@@ -131,29 +137,6 @@
           };
         };
          
-        var states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
-          'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii',
-          'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana',
-          'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota',
-          'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire',
-          'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota',
-          'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island',
-          'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont',
-          'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
-        ];
-              
-        /*   
-        $('#playerSearch .typeahead').typeahead({
-          hint: true,
-          highlight: true,
-          minLength: 1
-        },
-        {
-          name: 'states',
-          displayKey: 'value',
-          source: substringMatcher(states)
-        });
-        */
         var dirty = 1;
         setInterval( function() {
             if($("#playerSearch .typeahead").length == 1 && dirty) {
@@ -184,27 +167,26 @@
 </body>
 
 <template name="admin">
-{{#if admin }}
+{{#if admin}}
 <div class="row">
     <div class="col-sm-10 col-sm-offset-1 col-xs-12">
     <div class="panel panel-default">
         <div class="panel-heading">
         <div class="btn-group">
             <div class="btn btn-primary resume-auction">Resume</div>
-            <div class="btn btn-primary pause-auction">Pause</div>
-            <div class="btn btn-primary start-auction">Start</div>
+            <div class="btn start-auction btn-success">Start</div>
+            <div class="btn btn-danger pause-auction">Pause</div>
             <div class="btn btn-primary undo-bid">Undo Bid</div>
             <div class="btn btn-primary undo-nomination">Undo Nomination</div>
             </div>
             <br>
             <form class="form-group add-nomination" role="form">
-            <div class="input-group" style="padding-top:5px;">
-            
-            <input type="text" name="player" class="form-control" placeholder="Nominate Player" style="" />
-            <span class="input-group-btn">
-                <button type="" class="btn btn-success ">Nominate</button>
-            </span>
-            </div>
+                <div class="input-group" style="padding-top:5px;">
+                    <input type="text" name="player" class="form-control" placeholder="Nominate Player" style="" />
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-success">Nominate</button>
+                    </span>
+                </div>
             </form>
         </div>
     </div>
@@ -236,9 +218,9 @@
             {{#if canSendMessage}}
                 <form class="new-post">
                     <div class="input-group">
-                        <input type="text" class="form-control" name="text" id="bidamount" placeholder="Type a message">
+                        <input type="text" class="form-control" name="text" placeholder="Type a message">
                         <span class="input-group-btn">
-                              <button class="btn btn-primary" type="submit" id="bidbutton">Send</button>
+                              <button class="btn btn-primary" type="submit">Send</button>
                         </span>
                     </div>
                 </form>
@@ -308,10 +290,9 @@
     <div class="row">
         <div class="col-sm-10 col-sm-offset-1">
         <div class="panel panel-default">
-        <div class="panel-heading">
+        <div class="panel-heading text-center">
         {{#if isNominationTime}}
             {{#if isTurnToNominate}}
-                <script>document.getElementById('my-nomination').play();</script>
                 <form class="form-group nominate-player" role="form">
                     <div id="playerSearch" class="" style="display:inline">
                         <input type="text" name="player" class="typeahead form-control" placeholder="Input a player name" />
@@ -320,7 +301,6 @@
                         <button type="submit" class="btn btn-success">Nominate</button>
                 </form>
             {{else}}
-                <script>document.getElementById('nomination').play();</script>
                 <form class="bid-on-player" role="form">
                     <div class="input-group">
                         <input type="text" disabled name="amount" class="form-control" placeholder="Waiting for nomination">
@@ -334,16 +314,27 @@
             {{#if sufficientFunds }}
             <form class="bid-on-player">
                 <div class="input-group">
-                <input type="text" class="form-control" name="amount" placeholder="Input a bid amount (blank increases current bid by 1)">
+                <input type="text" class="form-control" name="amount"  onclick="$(this).val('')" placeholder="Input a bid amount (blank increases current bid by 1)">
                 <span class="input-group-btn">
                 {{#if canBid}}
-                    <button type="submit" class="btn btn-success bid-button">Bid</button>
+                    <button type="submit" class="btn btn-success">Bid</button>
                 {{else}}
                     <button type="submit" disabled class="btn btn-success">Bid</button>
                 {{/if}}
                   </span>
                 </div>
             </form>
+                <div class="btn-group" style="padding-top:5px;">
+                {{#if canBid}}
+                    {{#each bids}}
+                    <button type="btn" class="btn btn-primary bid-button" amount="{{bid}}">{{bid}}</button>
+                    {{/each}}
+                {{else}}
+                    {{#each bids}}
+                        <button type="btn" class="btn btn-primary bid-button" disabled amount="{{bid}}">{{bid}}</button>
+                    {{/each}}
+                {{/if}}
+                  </div>
             {{else}}
                 <form class="bid-on-player" role="form">
                 <div class="input-group">
@@ -353,7 +344,11 @@
                     </span>
                 </div>
                 </form>
-,            {{/if}}
+                {{#each bids}}
+                    <button type="btn" class="btn btn-danger bid-button" disabled amount="{{bid}}">{{bid}}</button>
+                {{/each}}
+
+            {{/if}}
         {{/if}}
         </div>
         </div>
@@ -374,11 +369,16 @@
             {{/if}}
         </div>
         {{#if isNominationTime}}
-
         {{else}}
+            {{#if auctionPaused}}
+            <div class="panel-body" style="text-align:center">
+            <h4 class="panel-title">Auction currently paused</h4>
+            </div>
+            {{else}}
             <div class="panel-body" style="text-align:center">
             <h4 class="panel-title">{{lastBidder}} bid {{bidAmount}}</h4>
             </div>
+            {{/if}}
         {{/if}}
 
         </div>
