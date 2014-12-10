@@ -727,7 +727,7 @@ if (Meteor.isServer) {
     console.log("Loading it up");
     // Clear state
 
-    renewData = false;
+    var renewData = false;
 
     AuctionData.remove({});
     AuctionStatus.remove({})
@@ -735,7 +735,7 @@ if (Meteor.isServer) {
     AuctionLock.remove({});
     AuctionLock.insert({"locked":0}); 
 
-    if(rewewData) { 
+    if(renewData) { 
       TeamNames.remove({});
       var teamnames = {};
       teamnames = JSON.parse(Assets.getText('teamnames.json'));
