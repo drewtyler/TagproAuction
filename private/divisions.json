@@ -1,6 +1,6 @@
 [
-  {"division": "Pacific"},
-  {"division": "Central"},
-  {"division": "Atlantic"},
-  {"division": "Northeast"}
+  {"division": "Pacific", "order":0},
+  {"division": "Central", "order":1},
+  {"division": "Atlantic", "order":2},
+  {"division": "Northeast", "order":3}
 ]

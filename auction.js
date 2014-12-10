@@ -729,62 +729,64 @@ if (Meteor.isServer) {
 
     renewData = false;
 
-    TeamNames.remove({});
-    var teamnames = {};
-    teamnames = JSON.parse(Assets.getText('teamnames.json'));
-    for(i = 0; i < teamnames.length; i++) {
-      var obj = teamnames[i];
-      TeamNames.insert(obj);
-    }
-
-
-    Divisions.remove({});
-    var divisions = {};
-    divisions = JSON.parse(Assets.getText('divisions.json'));
-    for(i = 0; i < divisions.length; i++) {
-      var obj = divisions[i];
-      Divisions.insert(obj);
-    }
-
     AuctionData.remove({});
     AuctionStatus.remove({})
     AuctionStatus.insert({"status":"Not Started"});
     AuctionLock.remove({});
     AuctionLock.insert({"locked":0}); 
-    TeamData.remove({});
-    //Messages.remove({});
-    Nominators.remove({});
-    Keepers.remove({});
-    CurrentPick.remove({});
-    PausedAuction.remove({});
-    CurrentPick.insert({"pick":1});
-    BidHistory.remove({});
 
-    // Load state
-    var initialRosterData = {};
-    initialRosterData = JSON.parse(Assets.getText('nominations.json'));
-    for(i = 0; i < initialRosterData.length; i++) {
-      var obj = initialRosterData[i];
-      Nominators.insert(obj);
-    }
+    if(rewewData) { 
+      TeamNames.remove({});
+      var teamnames = {};
+      teamnames = JSON.parse(Assets.getText('teamnames.json'));
+      for(i = 0; i < teamnames.length; i++) {
+        var obj = teamnames[i];
+        TeamNames.insert(obj);
+      }
 
-    var admins = {};
-    admins = JSON.parse(Assets.getText('admins.json'));
-    for(i = 0; i < admins.length; i++) {
-      var obj = admins[i];
-      Admins.insert(obj);
-    }
+      Divisions.remove({});
+      var divisions = {};
+      divisions = JSON.parse(Assets.getText('divisions.json'));
+      for(i = 0; i < divisions.length; i++) {
+        var obj = divisions[i];
+        Divisions.insert(obj);
+      }
 
-    keepers = JSON.parse(Assets.getText('keepers.json'));
-    for(i = 0; i < keepers.length; i++) {
-      var obj = keepers[i];
-      Keepers.insert(obj);
-    }
+      TeamData.remove({});
+      //Messages.remove({});
+      Nominators.remove({});
+      Keepers.remove({});
+      CurrentPick.remove({});
+      PausedAuction.remove({});
+      CurrentPick.insert({"pick":1});
+      BidHistory.remove({});
 
-    initialRosterData = JSON.parse(Assets.getText('teams.json'));
-    for(i = 0; i < initialRosterData.length; i++) {
-      var obj = initialRosterData[i];
-      TeamData.insert(obj);
+      // Load state
+      var initialRosterData = {};
+      initialRosterData = JSON.parse(Assets.getText('nominations.json'));
+      for(i = 0; i < initialRosterData.length; i++) {
+        var obj = initialRosterData[i];
+        Nominators.insert(obj);
+      }
+
+      var admins = {};
+      admins = JSON.parse(Assets.getText('admins.json'));
+      for(i = 0; i < admins.length; i++) {
+        var obj = admins[i];
+        Admins.insert(obj);
+      }
+
+      keepers = JSON.parse(Assets.getText('keepers.json'));
+      for(i = 0; i < keepers.length; i++) {
+        var obj = keepers[i];
+        Keepers.insert(obj);
+      }
+
+      initialRosterData = JSON.parse(Assets.getText('teams.json'));
+      for(i = 0; i < initialRosterData.length; i++) {
+        var obj = initialRosterData[i];
+        TeamData.insert(obj);
+      }
     }
 
     Meteor.publish("divisions", function() {
