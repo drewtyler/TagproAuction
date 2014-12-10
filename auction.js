@@ -54,6 +54,7 @@ if (Meteor.isClient) {
     Meteor.subscribe("messages");
     Meteor.subscribe("bids");
     Meteor.subscribe("previousauctiondata");
+    Meteor.subscribe("keepers");
 
     //console.log(Messages.find({}).fetch());
 
@@ -269,12 +270,10 @@ if (Meteor.isClient) {
       {
         var bids = [];
         var currentBid = parseInt(AuctionData.findOne({}).currentBid);
-
         bids.push({'bid':currentBid+1});
         bids.push({'bid':currentBid+2});
         bids.push({'bid':currentBid+5});
         bids.push({'bid':currentBid+10});
-
         return bids;
       },
 
@@ -328,6 +327,7 @@ if (Meteor.isClient) {
       {
         var bid = parseInt(event.target.amount.value);
         Meteor.call("acceptBid", Meteor.user().username, bid, new Date().getTime());
+        new Audio('sound/bid.mp3').play();
         return false;
       },
       'submit .nominate-player' : function(event)
@@ -343,6 +343,7 @@ if (Meteor.isClient) {
       'click .bid-button' : function(event) {
         var bid = parseInt(event.currentTarget.getAttribute('amount'));
         Meteor.call("acceptBid", Meteor.user().username, bid, new Date().getTime());
+        new Audio('sound/bid.mp3').play();
         return false;
       }
     }
@@ -371,7 +372,7 @@ if (Meteor.isClient) {
     messageColor: function(messageType) {
       // Class to add to the message (for coloring or sending information to the client)
       if(messageType == "winningBid") {
-        return "list-group-item-success";
+        return "winningbid";
       }
       else if(messageType == "bid") {
         return "list-group-item-warning";
@@ -610,10 +611,9 @@ Meteor.methods({
             var text = state.lastBidder + " wins " + playerWon + " for " + state.currentBid + "!";
             Meteor.call("insertMessage", text, new Date(), "winningBid");
             Meteor.call("insertMessage", team.teamname, new Date(), "animate");
-
+            
             // Reset state
             nominator = Meteor.call("pickNominator");
-            Meteor.call("insertMessage", text, new Date());
             CurrentPick.update({}, {$inc:{'pick':1}});
             var text = "Waiting for "+nominator +" to nominate the "+CurrentPick.findOne({}).pick+" pick of the draft.";
             Nominators.update({name:nominator.name}, {$set:{nominated:true}});
@@ -808,6 +808,7 @@ if (Meteor.isServer) {
     Meteor.publish("currentpick", function() {return CurrentPick.find()});
     Meteor.publish("bids", function() { return BidHistory.find()});
     Meteor.publish("previousauctiondata", function() {return PreviousAuctionData.find()});
+    Meteor.publish("keepers", function() {return Keepers.find()});
     //Keepers = new Mongo.Collection('keepers');
 
 

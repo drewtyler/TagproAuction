@@ -163,6 +163,19 @@
             }
         }, 1000);
 
+
+        var dirtyButtons = 0;
+        setInterval(function() { 
+            if($(".buttontime").length > 0 && !dirtyButtons) {
+                dirtyButtons = 1;
+                setTimeout(function() {
+                    $(".buttontime").prop("disabled", false);
+                    $(".buttontime").removeClass("buttontime")
+                    dirtyButtons = 0;                        
+                }, 2000);
+            }
+        }, 500);
+
 </script>
 
 
@@ -349,7 +362,7 @@
                 <div class="btn-group" style="padding-top:5px;">
                 {{#if canBid}}
                     {{#each bids}}
-                    <button type="btn" class="btn btn-primary bid-button" amount="{{bid}}">{{bid}}</button>
+                     <button type="btn" class="btn btn-primary bid-button buttontime" disabled amount="{{bid}}">{{bid}}</button>
                     {{/each}}
                 {{else}}
                     {{#each bids}}

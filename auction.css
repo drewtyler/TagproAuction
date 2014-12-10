@@ -19,6 +19,12 @@ body {
 }
 
 
+.winningbid {
+	font-weight:bold !important;
+	background-color:rgba(0, 100, 0, 0.98) !important;
+	color:white !important;
+}
+
 @media (max-width:1024px) {
 .navbar-collapse.collapse {
 display: block!important;
