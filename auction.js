@@ -57,15 +57,14 @@ if (Meteor.isClient) {
     Meteor.subscribe("keepers");
 
     //console.log(Messages.find({}).fetch());
-
   });
 
   // Need usernames
   Accounts.ui.config({
     passwordSignupFields: "USERNAME_ONLY"
   });
-  // Rosters
 
+  // Rosters
   Template.renderteam.helpers({
     teams : function(division) {
       return TeamNames.find({"division" : division}, {fields:{teamname:1, keepermoney:1, money:1, division:1}, sort:{order:1}});
@@ -218,7 +217,6 @@ if (Meteor.isClient) {
       document.getElementById('nomination').play();
   }
 
-
   // Bidding options
   Template.display_bidding_options.helpers({
     isCaptain: function() {
@@ -275,11 +273,7 @@ if (Meteor.isClient) {
         bids.push({'bid':currentBid+5});
         bids.push({'bid':currentBid+10});
         return bids;
-      },
-
-
-
-
+      }
   });
 
   Template.admin.events({
@@ -306,7 +300,7 @@ if (Meteor.isClient) {
       var name = event.target.player.value;
       Meteor.call("toggleState", name, 0);
       return false;
-    }    
+    }
   })
 
   Template.admin.helpers({
@@ -511,19 +505,9 @@ Meteor.methods({
       AuctionStatus.update({}, {"status":"Paused"});
       AuctionData.remove({})
   },
-  pickNominator : function() {
-      var captains = Nominators.find({nominated:false}).fetch();
-      var randskip = Math.floor(Math.random() * captains.length);
-      var nominator = captains[randskip];
-      nominator = {"name":"eagles."};
-      var text = "Waiting for "+nominator.name +" to nominate pick "+CurrentPick.findOne({}).pick+" of the draft.";
-      Meteor.call("insertMessage", text, new Date());
-      return nominator;
-  },
   startAuction: function(person) {
     console.log("Starting auction");
     nominator = Meteor.call('pickNominator');
-    Nominators.update({name:nominator.name}, {$set:{nominated:true}});
     AuctionData.remove({});
     AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+bidTime, Nominator: nominator.name});
     AuctionStatus.update({}, {"status":"Live"});
@@ -585,12 +569,12 @@ Meteor.methods({
             if(state.lastBidder == "YOSSARIAN") {
               playerWon = playerWon.toUpperCase();
             }
-            var playerOrder = parseInt(team.count) + 1;
 
             // handle keepers
             keepers = Keepers.findOne({"captain":state.lastBidder}).keepers;
             var keepermoney = team.keepermoney;
             var money = team.money;
+
             if(keepers.indexOf(playerWon) >= 0) {
               console.log(playerWon, " is a keeper!");
               keepermoney = keepermoney - state.currentBid;
@@ -604,14 +588,19 @@ Meteor.methods({
               money = money - state.currentBid;
             }
 
+            var playerOrder = parseInt(team.count) + 1;
             // Put him in the roster
             TeamData.update({"teamname": team.teamname, "order" : playerOrder}, {$set: {"name": playerWon, "cost": state.currentBid}});
             TeamNames.update({"teamname": team.teamname}, {$set: {"count":playerOrder, "money":money, "keepermoney":keepermoney}});
+            // Check if he's the last one for his team
+            if(playerOrder == team.numrosterspots) {
+              Nominators.update({"name": state.lastBidder}, {$set: {"rosterfull": true}});
+            }
             // Log message
             var text = state.lastBidder + " wins " + playerWon + " for " + state.currentBid + "!";
             Meteor.call("insertMessage", text, new Date(), "winningBid");
             Meteor.call("insertMessage", team.teamname, new Date(), "animate");
-            
+
             // Reset state
             nominator = Meteor.call("pickNominator");
             CurrentPick.update({}, {$inc:{'pick':1}});
@@ -679,44 +668,48 @@ Meteor.methods({
           // Cool, he does. Is it in time?
           console.log("acceptBid: good amount");
           // I can't bid when the time is still valid, this fixes it
-          //if(parseInt(state.nextExpiryDate) > parseInt(clienttime)) {
-          if(true) {  // Sweet it was. Let's mark it down!
-            console.log("acceptBid: nextExpiryDate good");
+          //if() {
+          if(team.count < team.numrosterspots) {
+            if(parseInt(state.nextExpiryDate) > parseInt(new Date().getTime())) {  // Sweet it was. Let's mark it down!
+              console.log("acceptBid: nextExpiryDate good");
 
-            console.log("acceptBid: Times: "+ state.nextExpiryDate + " vs " + clienttime);
+              console.log("acceptBid: Times: "+ state.nextExpiryDate + " vs " + clienttime);
 
-            secondsLeft = state.nextExpiryDate - new Date().getTime();
+              secondsLeft = state.nextExpiryDate - new Date().getTime();
 
-            if(!(state.lastBidder == bidder)) {
-              BidHistory.insert({
-                bidder: bidder,
-                amount: amount,
-                player: state.currentPlayer,
-                createdAt: new Date().getTime(),
-                secondsLeft: secondsLeft
-              });
-              AuctionData.update(
-                {State: "Bidding"},
-                {$set: {currentBid: amount, lastBidder: bidder}}
-              );
+              if(!(state.lastBidder == bidder)) {
+                BidHistory.insert({
+                  bidder: bidder,
+                  amount: amount,
+                  player: state.currentPlayer,
+                  createdAt: new Date().getTime(),
+                  secondsLeft: secondsLeft
+                });
+                AuctionData.update(
+                  {State: "Bidding"},
+                  {$set: {currentBid: amount, lastBidder: bidder}}
+                );
 
-              Meteor.call("insertMessage",
-                          bidder + " bids " + amount + " on " + AuctionData.findOne({}).currentPlayer,
-                          new Date(), "bid");
-              console.log("acceptBid: inserted bid");
-              // Do we need to give some time back?
-              if(parseInt(secondsLeft) < 15000) {
-                AuctionData.update({State: "Bidding"}, {$set: {nextExpiryDate: new Date().getTime()+20000}});
+                Meteor.call("insertMessage",
+                            bidder + " bids " + amount + " on " + AuctionData.findOne({}).currentPlayer,
+                            new Date(), "bid");
+                console.log("acceptBid: inserted bid");
+                // Do we need to give some time back?
+                if(parseInt(secondsLeft) < 15000) {
+                  AuctionData.update({State: "Bidding"}, {$set: {nextExpiryDate: new Date().getTime()+20000}});
+                }
+
+                return true;
+
+              } else {
+                 console.log("why would you bid 2x in a row?")
+                 return false;
               }
-
-              return true;
-
             } else {
-               console.log("why would you bid 2x in a row?")
-               return false;
+              console.log("acceptBid: too late: "+ state.nextExpiryDate + " vs " + clienttime);
             }
           } else {
-            console.log("acceptBid: too late: "+ state.nextExpiryDate + " vs " + clienttime);
+            console.log("acceptBid: this captain already has a full roster...");
           }
         }
         else {
@@ -735,15 +728,15 @@ if (Meteor.isServer) {
     console.log("Loading it up");
     // Clear state
 
-    var renewData = false;
+    var renewData = true;
 
     AuctionData.remove({});
     AuctionStatus.remove({})
     AuctionStatus.insert({"status":"Not Started"});
     AuctionLock.remove({});
-    AuctionLock.insert({"locked":0}); 
+    AuctionLock.insert({"locked":0});
 
-    if(renewData) { 
+    if(renewData) {
 
       TeamNames.remove({});
       var teamnames = {};
@@ -770,12 +763,40 @@ if (Meteor.isServer) {
       CurrentPick.insert({"pick":1});
       BidHistory.remove({});
 
-      // Load state
+
+      // Load Nominators
       var initialRosterData = {};
       initialRosterData = JSON.parse(Assets.getText('nominations.json'));
       for(i = 0; i < initialRosterData.length; i++) {
         var obj = initialRosterData[i];
         Nominators.insert(obj);
+      }
+
+      // Fischer-Yates shuffle
+      var shuffle = function(array) {
+        var currentIndex = array.length, temporaryValue, randomIndex ;
+
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex) {
+
+          // Pick a remaining element...
+          randomIndex = Math.floor(Math.random() * currentIndex);
+          currentIndex -= 1;
+
+          // And swap it with the current element.
+          temporaryValue = array[currentIndex];
+          array[currentIndex] = array[randomIndex];
+          array[randomIndex] = temporaryValue;
+        }
+
+        return array;
+      }
+
+      // Set nomination order
+      var captains = Nominators.find({"order":-1}).fetch();
+      captains = shuffle(captains);
+      for(var i = 0; i < captains.length; i++) {
+        Nominators.update({"name":captains[i].name}, {$set: {"order": i}});
       }
 
       var admins = {};
@@ -811,16 +832,31 @@ if (Meteor.isServer) {
     Meteor.publish("keepers", function() {return Keepers.find()});
     //Keepers = new Mongo.Collection('keepers');
 
-
-
-
-
     return true;
-  } );
+  });
   Meteor.methods({
-     getServerTime: function () {
-        var _time = (new Date).getTime();
-        return _time;
-     }
+    getServerTime: function () {
+      var _time = (new Date).getTime();
+      return _time;
+    },
+    pickNominator : function() {
+      var nextInOrder = Nominators.findOne({"name":"nextInOrder"});
+      var nextOrder = nextInOrder.nextorder;
+      var captain = Nominators.findOne({"order":nextOrder});
+      var newnextorder = nextOrder+1;
+      if(nextOrder == 20) {
+        newnextorder = 0;
+      }
+      Nominators.update({"name":"nextInOrder"}, {$set: {"order": newnextorder}});
+
+      // loop through nominators in order until we find one without a full roster
+      if(captain.rosterfull) {
+        return Meteor.call('pickNominator');
+      }
+
+      var text = "Waiting for "+captain.name +" to nominate pick "+CurrentPick.findOne({}).pick+" of the draft.";
+      Meteor.call("insertMessage", text, new Date());
+      return captain.name;
+    }
   });
 }
