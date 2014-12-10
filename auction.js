@@ -43,11 +43,17 @@ if (Meteor.isClient) {
     Meteor.intervalUpdateServerTime = Meteor.setInterval(function() { Meteor.setServerTime(); }, 300000);
 
     Meteor.subscribe("divisions");
-    Meteor.subscribe("auctiondata");
-    Meteor.subscribe("teams");
     Meteor.subscribe("teamnames");
-    Meteor.subscribe("messages");
+    Meteor.subscribe("teams");
+
+    Meteor.subscribe("auctiondata");
     Meteor.subscribe("auctionstatus");
+    Meteor.subscribe("nominators");
+    Meteor.subscribe("currentpick");
+
+    Meteor.subscribe("messages");
+    Meteor.subscribe("bids");
+    Meteor.subscribe("previousauctiondata");
 
     //console.log(Messages.find({}).fetch());
 
@@ -539,6 +545,8 @@ Meteor.methods({
         if(!lock) {
           lock = 1;
         }
+        console.log("Lock: ", lock);
+
         if(lock == 1) {
           console.log("Auction locked");
           var state = AuctionData.findOne();
@@ -560,8 +568,8 @@ Meteor.methods({
 
             BidHistory.insert({bidder: state.Nominator, amount: bid, player: playerNominated, createdAt: new Date().getTime(), secondsLeft:bidTime});
             // Start bidding baby
-            PreviousAuctionData.remove({});
-            PreviousAuctionData.insert(AuctionData.find({}));
+            //PreviousAuctionData.remove({});
+            //PreviousAuctionData.insert(AuctionData.find({}));
             AuctionData.remove({});
             return AuctionData.insert({State: "Bidding", nextExpiryDate: new Date().getTime()+bidTime, currentBid: bid, currentPlayer: playerNominated, lastBidder: state.Nominator, Nominator:state.Nominator});
           }
@@ -736,6 +744,7 @@ if (Meteor.isServer) {
     AuctionLock.insert({"locked":0}); 
 
     if(renewData) { 
+
       TeamNames.remove({});
       var teamnames = {};
       teamnames = JSON.parse(Assets.getText('teamnames.json'));
@@ -789,24 +798,18 @@ if (Meteor.isServer) {
       }
     }
 
-    Meteor.publish("divisions", function() {
-      return Divisions.find();
-    });
-    Meteor.publish("teams", function() {
-      return TeamData.find();
-    });
-    Meteor.publish("teamnames", function() {
-      return TeamNames.find();
-    });
-    Meteor.publish("messages", function() {
-      return Messages.find({}, {sort: {createdAt: -1}, limit:25});
-    });
-    Meteor.publish("auctiondata", function() {
-      return AuctionData.find();
-    });
-    Meteor.publish("auctionstatus", function() {
-      return AuctionStatus.find();
-    });
+    Meteor.publish("divisions", function() {return Divisions.find();});
+    Meteor.publish("teams", function() {return TeamData.find();});
+    Meteor.publish("teamnames", function() {return TeamNames.find()});
+    Meteor.publish("messages", function() {return Messages.find({}, {sort: {createdAt: -1}, limit:25});});
+    Meteor.publish("auctiondata", function() {return AuctionData.find()});
+    Meteor.publish("auctionstatus", function() {return AuctionStatus.find()});
+    Meteor.publish("nominators", function() {return Nominators.find()});
+    Meteor.publish("currentpick", function() {return CurrentPick.find()});
+    Meteor.publish("bids", function() { return BidHistory.find()});
+    Meteor.publish("previousauctiondata", function() {return PreviousAuctionData.find()});
+    //Keepers = new Mongo.Collection('keepers');
+
 
 
 
