@@ -12,9 +12,12 @@ NextNominator = new Mongo.Collection('nextnominator');
 CurrentPick = new Mongo.Collection('currentpick');
 Admins = new Mongo.Collection("admin");
 AuctionStatus = new Mongo.Collection("auctionstatus");
+AuctionLock = new Mongo.Collection("auctionlock");
+PreviousAuctionData = new Mongo.Collection("previousauctiondata")
 
 var bidTime = 30000;
 var additionTime = 10000;
+var lock = 0;
 
 Meteor.setServerTime = function() {
   Meteor.call("getServerTime", function(error, serverMS) {
@@ -24,6 +27,7 @@ Meteor.setServerTime = function() {
     Session.set('serverTimeOffset', serverOffset);
   });
 };
+
 if (Meteor.isClient) {
   Meteor.startup(function() {
     Session.setDefault("serverTimeOffset", 0);
@@ -37,6 +41,16 @@ if (Meteor.isClient) {
     Meteor.intervalUpdateTimeDisplayed = Meteor.setInterval(function() { Session.set('time', new Date().getTime()); }, 50);
     Meteor.clearInterval(Meteor.intervalUpdateServerTime);
     Meteor.intervalUpdateServerTime = Meteor.setInterval(function() { Meteor.setServerTime(); }, 300000);
+
+    Meteor.subscribe("divisions");
+    Meteor.subscribe("auctiondata");
+    Meteor.subscribe("teams");
+    Meteor.subscribe("teamnames");
+    Meteor.subscribe("messages");
+    Meteor.subscribe("auctionstatus");
+
+    //console.log(Messages.find({}).fetch());
+
   });
 
   // Need usernames
@@ -44,6 +58,34 @@ if (Meteor.isClient) {
     passwordSignupFields: "USERNAME_ONLY"
   });
   // Rosters
+
+  Template.renderteam.helpers({
+    teams : function(division) {
+      return TeamNames.find({"division" : division}, {fields:{teamname:1, keepermoney:1, money:1, division:1}});
+    },
+    teamID: function(teamname) {
+      return teamname.split(" ").join("_");
+    },
+    players : function(teamname) {
+      return TeamData.find({"teamname" : teamname}, {sort : {order : 1}, fields:{captain:1, cocaptain:1, mltp:1, name:1, cost:1}});
+    },
+    inRedDivision : function(division) {
+      if(division == "Central" || division == "Pacific") {
+        return "rgb(235, 126, 126)";
+      }
+      else {
+        return "rgb(134, 198, 230)";
+      }
+    }
+
+  })
+
+  Template.renderplayers.helpers({
+      players : function(teamname) {
+        return TeamData.find({"teamname" : teamname}, {sort : {order : 1}});
+      }
+  })
+
   Template.rosters.helpers(
     {
       divisions : function() {
@@ -146,9 +188,19 @@ if (Meteor.isClient) {
           Session.set("myTurnToNominate", Meteor.user().username == nominator);
           return (nominator == Meteor.user().username);
         }
+      },
+      auctionPaused : function() {
+        status = AuctionStatus.findOne({}).status;
+        return (status == "Paused" || status == "Not Started");
+    },
+      auctionMessage: function() {
+        status = AuctionStatus.findOne({}).status;
+        if(status == "Paused")
+          return "Auction is paused"
+        else
+          return "Auction has not started"
       }
-    }
-  );
+  });
 
   Template.display_bidding_options.rendered = function() {
     if(Session.get("myTurnToNominate"))
@@ -218,7 +270,11 @@ if (Meteor.isClient) {
         bids.push({'bid':currentBid+10});
 
         return bids;
-      }
+      },
+
+
+
+
   });
 
   Template.admin.events({
@@ -258,15 +314,6 @@ if (Meteor.isClient) {
       }
       return false;
     },
-    auctionPaused : function() {
-      a = AuctionStatus.findOne({});
-      console.log(a);
-      return AuctionStatus.findOne({}).status == "Paused";
-    },
-    auctionNotStarted: function() {
-      a = AuctionStatus.findOne({});
-      return a.status !== "Live";
-    }
   });
 
   Template.display_bidding_options.events(
@@ -288,8 +335,6 @@ if (Meteor.isClient) {
         return false;
       },
       'click .bid-button' : function(event) {
-        console.log("Inputting Bid");
-        console.log(event.currentTarget);
         var bid = parseInt(event.currentTarget.getAttribute('amount'));
         Meteor.call("acceptBid", Meteor.user().username, bid, new Date().getTime());
         return false;
@@ -297,10 +342,58 @@ if (Meteor.isClient) {
     }
   );
 
+
+  Template.newmessage.helpers({
+    newMessage: function(limit) {
+      return Messages.find({}, {sort: {createdAt: -1}, limit:1});
+    }
+  });
+
+  Template.getmessages.helpers({
+    lastXmessages: function(limit) {
+      return Messages.find({}, {sort: {createdAt: -1}, limit:parseInt(limit)});
+    },
+    admin : function() {
+      if(Meteor.user() !== undefined) {
+        admins = ["Dino", "Spiller", "eagles.", "Troball", "Bull"];
+        if(admins.indexOf(Meteor.user().username) >= 0) {
+          return true;
+        }
+      }
+      return false;
+    },
+    messageColor: function(messageType) {
+      // Class to add to the message (for coloring or sending information to the client)
+      if(messageType == "winningBid") {
+        return "list-group-item-success";
+      }
+      else if(messageType == "bid") {
+        return "list-group-item-warning";
+      }
+      else if(messageType == "nomination") {
+        return "list-group-item-info";
+      }
+      else if(messageType == "animate") {
+        return "hidden winningTeam";
+      }
+      else if(messageType == "started") {
+        return "list-group-item-info";
+      }
+      else if(messageType == "paused") {
+        return "list-group-item-danger";
+      }
+      else {
+        return "";
+      }
+    }
+  });
   // Messages
   Template.messages.helpers({
     messages: function() {
       return Messages.find({}, {sort: {createdAt: -1}, limit:25});
+    },
+    getMessageText: function() {
+      return Messages.findOne({}, {sort: {createdAt: -1}}).text;
     },
     canSendMessage: function() {
       if(!Meteor.userId())
@@ -339,8 +432,8 @@ if (Meteor.isClient) {
     {
       'submit' : function(event)
       {
-        console.log("Got a new message from ", Meteor.user().username);
-        console.log("Message text:", event.target.text.value);
+        //console.log("Got a new message from ", Meteor.user().username);
+        //console.log("Message text:", event.target.text.value);
         if(!Meteor.userId()) {
          return false;
         }
@@ -352,8 +445,7 @@ if (Meteor.isClient) {
     'click .delete' : function() {
       Meteor.call("removeMessage", this._id);
     },
-  }
-  );
+  });
 }
 
 Meteor.methods({
@@ -378,16 +470,19 @@ Meteor.methods({
   },
   removeLastBid : function(person) {
     if(Meteor.isServer) {
-    var currentState = AuctionData.findOne();
-    var lastbid = BidHistory.findOne({"player": currentState.currentPlayer},{sort:{"createdAt":-1}});
-    BidHistory.remove({"_id" : lastbid._id});
-    var lastbid2 = BidHistory.findOne({"player":currentState.currentPlayer},{sort:{"createdAt":-1}});
-    AuctionData.update(
-    {State: "Bidding"},
-    {$set: {currentBid: lastbid2.amount, lastBidder: lastbid2.bidder, nextExpiryDate: new Date().getTime()+bidTime}}
-    );
-    var text = "Last bid removed by " + person;
-    Meteor.call("insertMessage", text, new Date());
+      auctionState = AuctionStatus.find({}).state;
+      if(auctionState !== "Paused") {
+        var currentState = AuctionData.findOne();
+        var lastbid = BidHistory.findOne({"player": currentState.currentPlayer},{sort:{"createdAt":-1}});
+        BidHistory.remove({"_id" : lastbid._id});
+        var lastbid2 = BidHistory.findOne({"player":currentState.currentPlayer},{sort:{"createdAt":-1}});
+        AuctionData.update(
+        {State: "Bidding"},
+        {$set: {currentBid: lastbid2.amount, lastBidder: lastbid2.bidder, nextExpiryDate: new Date().getTime()+bidTime}}
+        );
+        var text = "Last bid removed by " + person;
+        Meteor.call("insertMessage", text, new Date());
+      }
     }
   },
   resumeAuction : function (person) {
@@ -397,7 +492,7 @@ Meteor.methods({
       AuctionStatus.update({}, {"status":"Live"});
       AuctionData.remove({});
       AuctionData.insert(pa);
-      Meteor.call("insertMessage", "Auction resumed by "+person, new Date());
+      Meteor.call("insertMessage", "Auction resumed by "+person, new Date(), "started");
   },
   pauseAuction : function(person) {
       ad = AuctionData.findOne();
@@ -405,7 +500,7 @@ Meteor.methods({
       delete ad._id;
       PausedAuction.insert(ad);
       PausedAuction.update({}, {$set: {"secondsLeft": secondsLeft}});
-      Meteor.call("insertMessage", "Auction paused by "+person, new Date());
+      Meteor.call("insertMessage", "Auction paused by "+person, new Date(), "paused");
       AuctionStatus.update({}, {"status":"Paused"});
       AuctionData.remove({})
   },
@@ -425,7 +520,7 @@ Meteor.methods({
     AuctionData.remove({});
     AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+bidTime, Nominator: nominator.name});
     AuctionStatus.update({}, {"status":"Live"});
-    Meteor.call("insertMessage", "Auction started by "+person, new Date());
+    Meteor.call("insertMessage", "Auction started by "+person, new Date(), "started");
   },
   getAuctionStatus:function() {
     return AuctionData.findOne();
@@ -439,78 +534,85 @@ Meteor.methods({
       console.log("Checking toggle state");
 
       if(Meteor.isServer) {
-        console.log("1 Server toggling state");
-        console.log("2 Server toggling state");
-        console.log("3 Server toggling state");
-        console.log("4 Server toggling state");
         // Get current state
-        var state = AuctionData.findOne();
-
-        if(state !== undefined && state.State == "Nominating") {
-          console.log("State is nominating");
-          var team = TeamNames.findOne({captain:state.Nominator});
-
-          var money = team.money;
-          if(Meteor.call("isKeeper", state.Nominator, playerNominated)) {
-            money = team.money + team.keepermoney;
-          }
-          if(money < parseInt(bid)) {
-           return false;
-          }
-
-          AuctionData.remove({});
-          // Log message
-          Meteor.call("insertMessage", state.Nominator + " nominates " + playerNominated + " with an initial bid of " + bid, new Date(), "nomination");
-
-          BidHistory.insert({bidder: state.Nominator, amount: bid, player: playerNominated, createdAt: new Date().getTime(), secondsLeft:bidTime});
-          // Start bidding baby    
-          return AuctionData.insert({State: "Bidding", nextExpiryDate: new Date().getTime()+bidTime, currentBid: bid, currentPlayer: playerNominated, lastBidder: state.Nominator, Nominator:state.Nominator});
+        // Meteor doesn't implement collection.findAndModify, which would likely be better to use.
+        if(!lock) {
+          lock = 1;
         }
-        else if (state !== undefined)
-        {
-          AuctionData.remove({});
-          console.log("Not nominating... someone won!");
-          var team = TeamNames.findOne({"captain" : state.lastBidder});
-          var playerWon = state.currentPlayer;
+        if(lock == 1) {
+          console.log("Auction locked");
+          var state = AuctionData.findOne();
 
-          // ALL CAPS-specific thing here
-          if(state.lastBidder == "YOSSARIAN") {
-            playerWon = playerWon.toUpperCase();
-          }
-          var playerOrder = parseInt(team.count) + 1;
+          if(state !== undefined && state.State == "Nominating") {
+            console.log("State is nominating");
+            var team = TeamNames.findOne({captain:state.Nominator});
 
-          // handle keepers
-          keepers = Keepers.findOne({"captain":state.lastBidder}).keepers;
-          var keepermoney = team.keepermoney;
-          var money = team.money;
-          if(keepers.indexOf(playerWon) >= 0) {
-            console.log(playerWon, " is a keeper!");
-            keepermoney = keepermoney - state.currentBid;
-
-            if(keepermoney < 0) {
-              money = money - Math.abs(keepermoney);
-              keepermoney = 0;
+            var money = team.money;
+            if(Meteor.call("isKeeper", state.Nominator, playerNominated)) {
+              money = team.money + team.keepermoney;
             }
-          }
-          else {
-            money = money - state.currentBid;
-          }
+            if(money < parseInt(bid)) {
+             return false;
+            }
 
-          // Put him in the roster
-          TeamData.update({"teamname": team.teamname, "order" : playerOrder}, {$set: {"name": playerWon, "cost": state.currentBid}});
-          TeamNames.update({"teamname": team.teamname}, {$set: {"count":playerOrder, "money":money, "keepermoney":keepermoney}});
-          // Log message
-          var text = state.lastBidder + " wins " + playerWon + " for " + state.currentBid + "!";
-          Meteor.call("insertMessage", text, new Date(), "winningBid");
-          Meteor.call("insertMessage", team.teamname, new Date(), "animate");
+            // Log message
+            Meteor.call("insertMessage", state.Nominator + " nominates " + playerNominated + " with an initial bid of " + bid, new Date(), "nomination");
 
-          // Reset state
-          nominator = Meteor.call("pickNominator");
-          Meteor.call("insertMessage", text, new Date());
-          CurrentPick.update({}, {$inc:{'pick':1}});
-          var text = "Waiting for "+nominator +" to nominate the "+CurrentPick.findOne({}).pick+" pick of the draft.";
-          Nominators.update({name:nominator.name}, {$set:{nominated:true}});
-          return AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+10000, Nominator: nominator.name});
+            BidHistory.insert({bidder: state.Nominator, amount: bid, player: playerNominated, createdAt: new Date().getTime(), secondsLeft:bidTime});
+            // Start bidding baby
+            PreviousAuctionData.remove({});
+            PreviousAuctionData.insert(AuctionData.find({}));
+            AuctionData.remove({});
+            return AuctionData.insert({State: "Bidding", nextExpiryDate: new Date().getTime()+bidTime, currentBid: bid, currentPlayer: playerNominated, lastBidder: state.Nominator, Nominator:state.Nominator});
+          }
+          else if (state !== undefined)
+          {
+            AuctionData.remove({});
+            console.log("Not nominating... someone won!");
+            var team = TeamNames.findOne({"captain" : state.lastBidder});
+            var playerWon = state.currentPlayer;
+
+            // ALL CAPS-specific thing here
+            if(state.lastBidder == "YOSSARIAN") {
+              playerWon = playerWon.toUpperCase();
+            }
+            var playerOrder = parseInt(team.count) + 1;
+
+            // handle keepers
+            keepers = Keepers.findOne({"captain":state.lastBidder}).keepers;
+            var keepermoney = team.keepermoney;
+            var money = team.money;
+            if(keepers.indexOf(playerWon) >= 0) {
+              console.log(playerWon, " is a keeper!");
+              keepermoney = keepermoney - state.currentBid;
+
+              if(keepermoney < 0) {
+                money = money - Math.abs(keepermoney);
+                keepermoney = 0;
+              }
+            }
+            else {
+              money = money - state.currentBid;
+            }
+
+            // Put him in the roster
+            TeamData.update({"teamname": team.teamname, "order" : playerOrder}, {$set: {"name": playerWon, "cost": state.currentBid}});
+            TeamNames.update({"teamname": team.teamname}, {$set: {"count":playerOrder, "money":money, "keepermoney":keepermoney}});
+            // Log message
+            var text = state.lastBidder + " wins " + playerWon + " for " + state.currentBid + "!";
+            Meteor.call("insertMessage", text, new Date(), "winningBid");
+            Meteor.call("insertMessage", team.teamname, new Date(), "animate");
+
+            // Reset state
+            nominator = Meteor.call("pickNominator");
+            Meteor.call("insertMessage", text, new Date());
+            CurrentPick.update({}, {$inc:{'pick':1}});
+            var text = "Waiting for "+nominator +" to nominate the "+CurrentPick.findOne({}).pick+" pick of the draft.";
+            Nominators.update({name:nominator.name}, {$set:{nominated:true}});
+            return AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+10000, Nominator: nominator.name});
+          }
+          lock = 0;
+          console.log("Auction unlocked");
         }
     }
   },
@@ -548,7 +650,7 @@ Meteor.methods({
       // Check state of auction
       var state = AuctionData.findOne({});
       if(state.State == "Nominating") {
-        console.log("acceptBid: Can't bid right now");
+        //console.log("acceptBid: Can't bid right now");
 				return false;
 			}
 
@@ -636,6 +738,8 @@ if (Meteor.isServer) {
     CurrentPick.insert({"pick":1});
     BidHistory.remove({});
     Admins.remove({});
+    AuctionLock.remove({});
+    AuctionLock.insert({"locked":0});
 
     AuctionStatus.remove({})
     AuctionStatus.insert({"status":"Not Started"});
@@ -683,6 +787,29 @@ if (Meteor.isServer) {
       var obj = teamnames[i];
       TeamNames.insert(obj);
     }
+
+    Meteor.publish("divisions", function() {
+      return Divisions.find();
+    });
+    Meteor.publish("teams", function() {
+      return TeamData.find();
+    });
+    Meteor.publish("teamnames", function() {
+      return TeamNames.find();
+    });
+    Meteor.publish("messages", function() {
+      return Messages.find({}, {sort: {createdAt: -1}, limit:25});
+    });
+    Meteor.publish("auctiondata", function() {
+      return AuctionData.find();
+    });
+    Meteor.publish("auctionstatus", function() {
+      return AuctionStatus.find();
+    });
+
+
+
+
     return true;
   });
   Meteor.methods({

@@ -13,6 +13,8 @@
     <script type="text/javascript" src="/bootstrap.min.js"></script> 
     <script type="text/javascript" src="/jquery.vibrate.min.js"></script>
     <script type="text/javascript" src="/typeahead.jquery.min.js"></script>
+    <script type="text/javascript" src="/jquery.foggy.min.js"></script>
+
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script type="text/javascript">
@@ -171,7 +173,7 @@
 <div class="row">
     <div class="col-sm-10 col-sm-offset-1 col-xs-12">
     <div class="panel panel-default">
-        <div class="panel-heading">
+        <div class="panel-heading text-center">
         <div class="btn-group">
             <div class="btn btn-primary resume-auction">Resume</div>
             <div class="btn start-auction btn-success">Start</div>
@@ -181,7 +183,7 @@
             </div>
             <br>
             <form class="form-group add-nomination" role="form">
-                <div class="input-group" style="padding-top:5px;">
+                <div class="input-group" style="padding-top:10px;">
                     <input type="text" name="player" class="form-control" placeholder="Nominate Player" style="" />
                     <span class="input-group-btn">
                         <button type="submit" class="btn btn-success">Nominate</button>
@@ -210,6 +212,7 @@
 </div>
 </template>
 
+
 <template name="messages">
 <div class="row">
     <div class="col-sm-10 col-sm-offset-1 col-xs-12">
@@ -229,57 +232,75 @@
             {{/if}}
         </div>
         <ul class="list-group" id="messageLog" style="height: 500px; overflow: scroll;overflow-x: hidden;">
-            {{#each messages }}
-                {{#if text}}
-                    <li class="list-group-item {{messageColor messageType}}" style="word-break: normal;">{{text}}</li>
-                {{/if}}
-            {{/each}}
+            {{> getmessages}}
         </ul>
     </div>
 </div>
 </div>
 </template>
 
+<template name="newmessage">
+{{#each newmessage}}
+    <li class="list-group-item {{messageColor messageType}}" style="word-break: normal;">{{text}}</li>
+{{/each}}
+</template>
+
+<template name="getmessages">
+    {{> newmessage}}
+    {{#each lastXmessages 25}}
+            <li class="list-group-item {{messageColor messageType}}" style="word-break: normal;">{{text}}</li>
+    {{/each}}
+</template>
+
+
+<template name="renderplayers">
+{{#each players teamname ./teamname}}
+    <li class="list-group-item" style="padding: 2px 2px; height:25px">
+    <span style="width:20px; display:inline-block;">
+    {{#if captain}}
+        <img src="/captain.png">
+    {{else}}
+        {{#if cocaptain}}
+            <img src="/cocaptain.png">
+        {{else}}
+            {{#if mltp}}
+                <img src="/MLTP.png">
+            {{else}}
+
+            {{/if}}
+        {{/if}}
+    {{/if}}
+    </span>
+    {{#if name}}
+        {{name}}
+        <div style="float:right; padding-right:8px">
+        {{cost}}
+        </div>
+    {{/if}}
+    </li>
+    {{/each}}
+</template>
+
+<template name="renderteam">
+{{#each teams division ./division}}
+ <div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 team" style="">
+        <ul class="list-group">
+        <li class="list-group-item" id="team_{{teamID teamname}}" style="text-align:center;background-color:{{inRedDivision division}}">
+            {{teamname}} 
+            <br>
+            {{money}} ({{keepermoney}})
+        </li>
+        {{> renderplayers teamname=teamname}}
+        </ul>
+    </div>
+{{/each}}
+</template>
+
 <template name="rosters">
     <div class="row">
       {{#each divisions}}
               <div class="col-md-2"></div>
-              {{#each teams division ./division}}
-                 <div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 team" style="">
-                        <ul class="list-group">
-                        <li class="list-group-item" id="team_{{teamID teamname}}" style="text-align:center;background-color:{{inRedDivision division}}">
-                            {{teamname}} 
-                            <br>
-                            {{money}} ({{keepermoney}})
-                        </li>
-                        {{#each players teamname ./teamname}}
-                            <li class="list-group-item" style="padding: 2px 2px; height:25px">
-                            <span style="width:20px; display:inline-block;">
-                            {{#if captain}}
-                                <img src="/captain.png">
-                            {{else}}
-                                {{#if cocaptain}}
-                                    <img src="/cocaptain.png">
-                                {{else}}
-                                    {{#if mltp}}
-                                        <img src="/MLTP.png">
-                                    {{else}}
-
-                                    {{/if}}
-                                {{/if}}
-                            {{/if}}
-                            </span>
-                            {{#if name}}
-                                {{name}}
-                                <div style="float:right; padding-right:8px">
-                                {{cost}}
-                                </div>
-                            {{/if}}
-                            </li>
-                            {{/each}}
-                        </ul>
-                    </div>
-              {{/each}}
+                {{> renderteam division=division}}
               <div class="clearfix visible-sm visible-md visible-lg"></div>
       {{/each}}
     </div>
@@ -298,6 +319,7 @@
                         <input type="text" name="player" class="typeahead form-control" placeholder="Input a player name" />
                         </div>
                         <input type="text" name="amount" id="initialBid" class="form-control" placeholder="Initial bid (blank = 0)" style="width:auto; display:inline;" />
+
                         <button type="submit" class="btn btn-success">Nominate</button>
                 </form>
             {{else}}
@@ -370,15 +392,13 @@
         </div>
         {{#if isNominationTime}}
         {{else}}
+            <div class="panel-body" style="text-align:center">
             {{#if auctionPaused}}
-            <div class="panel-body" style="text-align:center">
-            <h4 class="panel-title">Auction currently paused</h4>
-            </div>
+                <h4 class="panel-title">{{auctionMessage}}</h4>
             {{else}}
-            <div class="panel-body" style="text-align:center">
-            <h4 class="panel-title">{{lastBidder}} bid {{bidAmount}}</h4>
-            </div>
+                <h4 class="panel-title">{{lastBidder}} bid {{bidAmount}}</h4>
             {{/if}}
+            </div>
         {{/if}}
 
         </div>
