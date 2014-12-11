@@ -507,11 +507,12 @@ Meteor.methods({
   },
   startAuction: function(person) {
     console.log("Starting auction");
+    Meteor.call("insertMessage", "Auction started by "+person, new Date(), "started");
     nominator = Meteor.call('pickNominator');
+    console.log("nominator is: " + nominator.name);
     AuctionData.remove({});
     AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+bidTime, Nominator: nominator.name});
     AuctionStatus.update({}, {"status":"Live"});
-    Meteor.call("insertMessage", "Auction started by "+person, new Date(), "started");
   },
   getAuctionStatus:function() {
     return AuctionData.findOne();
@@ -840,6 +841,7 @@ if (Meteor.isServer) {
       return _time;
     },
     pickNominator : function() {
+      console.log("pickNominator: started");
       var nextInOrder = Nominators.findOne({"name":"nextInOrder"});
       var nextOrder = nextInOrder.nextorder;
       var captain = Nominators.findOne({"order":nextOrder});
@@ -847,6 +849,9 @@ if (Meteor.isServer) {
       if(nextOrder == 20) {
         newnextorder = 0;
       }
+      console.log("pickNominator: nextOrder: " + nextInOrder.nextorder);
+      console.log("pickNominator: captain: " + captain.name + " rosterfull? " + captain.rosterfull);
+      console.log("pickNominator: newnextorder: " + newnextorder);
       Nominators.update({"name":"nextInOrder"}, {$set: {"order": newnextorder}});
 
       // loop through nominators in order until we find one without a full roster
@@ -856,7 +861,8 @@ if (Meteor.isServer) {
 
       var text = "Waiting for "+captain.name +" to nominate pick "+CurrentPick.findOne({}).pick+" of the draft.";
       Meteor.call("insertMessage", text, new Date());
-      return captain.name;
+      console.log("is Message working?");
+      return captain;
     }
   });
 }

@@ -1,7 +1,7 @@
 
 <head>
   <title>Tagpro MLTP Auction</title>
-    
+
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="/bootstrap.min.css">
     <link rel="stylesheet" href="/csshake.min.css">
@@ -9,8 +9,8 @@
 
     <!-- Optional theme -->
     <!-- Latest compiled and minified JavaScript -->
-    <script type="text/javascript" src="/jquery-1.11.1.min.js"></script> 
-    <script type="text/javascript" src="/bootstrap.min.js"></script> 
+    <script type="text/javascript" src="/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="/bootstrap.min.js"></script>
     <script type="text/javascript" src="/jquery.vibrate.min.js"></script>
     <script type="text/javascript" src="/typeahead.jquery.min.js"></script>
     <script type="text/javascript" src="/jquery.foggy.min.js"></script>
@@ -31,19 +31,6 @@
             setTimeout(function () {
                 grandparent.removeClass("shake shake-constant")
             }, 2500);
-            /*
-            color = '';
-            if(team.css("background-color") === redColor) {
-                color = redColor;
-            }
-            else {
-                color = blueColor;
-            }
-            team.animate({backgroundColor:highlightColor}, intime, 
-                function () {
-                    team.animate({backgroundColor:color}, outtime); 
-            });
-            */
             var canVibrate = "vibrate" in navigator || "mozVibrate" in navigator;
             if (canVibrate && !("vibrate" in navigator))
                 navigator.vibrate = navigator.mozVibrate;
@@ -90,7 +77,7 @@
         </audio>
         <audio id="player-won">
             <source src="/playerWon.mp3" type="audio/mpeg" />
-        </audio>        
+        </audio>
     </div>
     <div class="container-fluid">
         <div class="row" style="padding-top:25px;">
@@ -107,24 +94,19 @@
         </div>
         <div class="button" id="vibrate" style="display:hidden"></div>
     </div>
-
-
-
-
 <script>
-
         var players = ['i1337', 'Nawse', '2P1S', 'veezy', 'ThePirate', 'Kazoo', 'Micaso', 'Buppy', 'El Sacko', 'ProTagonist_', 'Ballrog', 'Frozty', 'timeboy', 'Tottenham', 'Ess', '3.1 Thor', 'WowSuchPro', 'Mace', 'dodsfall', 'Sunna', 'Ashmungashma', 'Ibis', 'ZumgAPanda', 'Marz', 'Mr.Gone', 'LoweJ', 'MFSamson', 'Holdmaballs', 'HarkMollis', 'Esoog', 'SUPERSANS', 'Atomic', 'Nqoba', 'PrivateMajor', 'Raven', 'Ballymandias', 'bdl', 'demman32', 'yiss', 'Sweep', 'P K Subball', 'ballparts', 'Big Swingin', 'port', 'Dr.Bob', 'bowtie', 'Curl', 'Ninjroid', 'Windomac', 'Razgriz', 'That Kid', 'RoughJustice', 'crosky', 'Rocket', 'Fresh', 'Some Man 7', 'Skee-Ball', '1baller', 'karlwithak', 'DudeMcGuy', 'Milk Steak', '_Noah', 'Mr.Baggins', 'Walrus', 'BilldaCat', 'superdiglett', 'GriefSeeds', 'KPow', 'ballpit', 'Manbear', 'Nebuchanezar', 'Shabba', 'Asa Akira', 'FLYMOLO', 'Carp', 'Yossarian', 'BigMeaty', 'GreenBastard', 'Crossover', 'wayne', 'Nugazasagae', 'BallDontLie', 'TroBall', 'Ballee Lama', 'Anne Frank', 'Test_Ball', 'Lej', 'CHECKNATE.', 'Iron_Ball', 'Maurice', 'memeganoob', 'Deez Nutz', 'quarky.', 'MrJoehobo', 'Syniikal', 'Gubbles', 'PopSecret', 'Creothcean', 'GnastyKnate', 'ludifisk', 'PetyrBaelish', 'A-A-ron', 'Toobis', 'OJdude', 'donuts42', 'newfren', 'CC', 'Tiza', 'Curry4Three', 'mc ride', 'Bobbay', 'Trondby', 'Hoog', 'Nick_Corso', 'klosec12', 'TheOnlyBall', 'Baz', 'I|m Batman', 'Mack Daddy', 'jackals', 'Ballsagnia', 'Dennit', 'Scott', 'd0pe', 'Kitten Panda', 'Herky', 'CIutch', 'Chalksy', 'Gman8181', 'Kludge95', 'SirCamWatts', 'Tony Allen', 'BAllstar', 'craigbiggio', 'jwart', 'Aero', 'Heisenberg', 'eltenelliott', 'Arbybear', 'donk', 'supermesh', 'poopv', 'themagpie', 'dywz', 'sweater', 'blithering', 'Jesus', 'JBaayBaay', 'Sentry', 'TurdFerguson', 'Breesus', 'Jay', 'lukemoo', 'Marquis', 'Aniball', 'TOJO', 'TagUpTurnUp', 'BG', 'TheBob18', 'Saint Enigma', 'nickramyoga', 'PavelDatsyuk', 'Bob Loblaw', 'TheWonder', 'honeybear', 'Bongo', 'Matty_Ice', 'Danny', 'Green Eggs', 'Snowball', 'trendygrub', 'Odog', 'ooo killem', 'ChelseaFc', 'Hulzy', 'adhi', 'Itzulpena', 'lu', 'HayBunny', 'lifeisgood', 'Shaze', 'Tantrew', 'BlissMC', 'khaleesii', 'penis pl0x', 'srby', 'Bweurp', 'Atlas_', 'ChrisBall', 'ChrisBall', 'Tanador', 'eee', 'JDoeMonopoly', 'swerve', 'Warden', 'Puggins', 'P0P', 'Prizm', 'whiff', 'Pithy', 'Dalek23', 'TarianLegend', 'Crees', 'bigbadball', 'Gargantua', 'might dino', '#Frozen', 'Fence Post', 'The Ferret', 'rub', 'Kamikaze', 'stu.', 'Q(|.|Q)', 'Oddball7', 'Rambo', 'TagProKing', 'c2.', 'Risk', 'Fuzz Ball', 'BrunoCaboclo', 'Blep', 'marwels23', 'statix', 'justhavinfun', 'some name', 'Raptor_Jesus', 'Koala King', 'chuckk', 'Helen Keller', 'Rammstein', 'Ralph Wiggum', 'Thirsty', 'TheAprilFool', 'kwib', 'Dr. Juke', 'Theman', 'abazaba', 'VeridisQuo', 'AJH', 'Dyna', 'Pi 3.1415926', 'Gramps', 'Sundown', 'Outis', 'im high', 'clownmachine', 'Fowlball', 'Canadsian', 'Strategio', 'Kevin Bacon', 'tennisball', 'Apidae', 'Mesut', 'M.Foricer', 'Pinstar', 'Arthree', 'Papi', 'Cignul9', 'Jaycmoney', 'Mary_Poppins', 'Altiger', 'Apopalypse', 'Stann', 'k', 'ovary', 'F2PDynasty', 'rollin', 'Ike13', 'JKarim4', 'Kelvin', 'trav', 'C Bivvey', 'Caduke', 'Dragon Ball', 'Kerball', 'Despair', 'Some 8 Ball', 'Randy Marsh', 'Ninja Jesus', 'sry im new', 'alvin', 'Stormcrow', 'Plleth', 'simon', 'MoJoSto', 'Swergonomics', 'JuicyJuke', 'Jufda', 'Jukeballhero', 'Drave', 'Legman', 'Koala', 'FlutedKnob', 'D Rek', 'Some Ball -1', 'R e t r o', 'Ballox', 'Doc Balliday', 'Infinite Sky', 'nlfn', 'Odog', 'rabbat', 'Jagdpanther', 'Dodge', 'itsacow', 'Knox', 'RonSpawnson', 'Lexanator5', 'josh61616', 'Bonsai', 'Xile', 'PBS', 'intrepid', 'DeadpooI', 'Bull', 'Thiradell', 'quibble', 'PengWin', 'Ball Sac', 'Game Theory', 'Rudey', 'Cashmere Cat', 'ScumBall', 'Matetricks', 'Exquisite', 'yearofme', 'gh0st', 'Abs', 'jegs', 'Coca', 'Sportmonkey', 'Hyamez', 'Schwedd', 'SirDan', 'ballingball', 'Capernicus', 'UnoriginalSN', 'Pnaoxt', 'David Stern', 'Crook', 'Juke King', 'Ballzilla', 'Charlie...', 'in_C', 'RedFive', 'Mercury', 'Catalyst', 'LEBRON*JAMES', 'Turbo', 'Kanyes Maid', 'Guard', 'Swingman', 'steveholt', 'aardvark74', 'ball.i.am', 'espeluznante', 'InaneVoyage', 'bobby13531', 'hola', 'saundy', 'Donkey Kong', 'Anze Capitar', 'Micro', 'Jkells', 'Gryts', 'Romulus', 'yank', 'DICK_LICKER', 'E', 'Envy', 'cz', 'DUBSTEP', 'Left  Nut', 'Zvonvok', 'Stalin', 'Fitz.', 'PavlovsBall', 'Ball OON', 'wassa', 'Hootie', 'DPRK', 'lakeshow', 'slide', 'lolugrumpy', 'Makin Bacon', 'CapnCrunch', 'Errmergerd', 'ballblaster', 'Cripple', 'Teh42', 'Fozzy', 'UberNub', 'FlutedKnob', 'RemoSlice', 'Nitro', 'Pyruvate', 'Fez', 'gingerdg', 'ExitStrategy', 'praoprao', 'mathnasium', 'Kill Ball', 'BBQchicken', 'SAPSAPSAPSPA', 'eagles.', 'Jwoey', 'poplockndrop', 'Darth Revan', 'theballoseum', 'noblord', 'Moonghost', 'Master Ball', 'Rookie', 'Mufro', 'Mikero', 'Trapsin', 'charly_pims', 'Pepto Dismal', 'Destar', 'KlKI', 'Pinch & Roll', 'ColdDuckTime', 'Spheroid', 'Deidara', '-Messi', 'MRCOW', 'Mr.Nate', 'Tannehill', 'inthesomeday', 'thedeveloper', 'Judy', 'daiCmeRollin', 'dx', 'Magikarp', 'Clovis', 'Ignitius', 'Eminem', 'meatsuite', 'KAIZER', 'mste', 'CommonSense', 'Skinny Chode', 'Quan', 'DJ KHALED', 'Energy Balls', 'popsic_le', 'Vino', 'Pyrrhus', 'SwagHard', 'RON.BURGANDY', 'Alchemist', 'SpittingAtom', 'grant', 'oh_snap!', 'SpInSanity', 'r3ll1sh', 'boogy', 'Aurum', 'whiteflame', 'Jaacs', 'LAMPSHADE', 'Brake', 'Ranger', 'Wolf0fBallSt', 'IllegalToast', 'DareToZlatan', 'Willie', 'Ballaholics', 'Fapst3r', 'Green_Ball', 'Boombox', 'cbtexan04', 'Yakub', 'adm ackball', 'Googy', 'Jernon', 'clownmachine', 'goo', 'Skwid', 'jjpoole', 'BallMillsap', 'GillyBall', 'Big Chimpin', 'Bilbo Baller', '[burrito]', 'imaprostitut', 'samiamjuke', 'I_mess_up', 'dutch', 'frostie', 'BennyV23', 'Hashtag', 'JUKEBOX!', 'Sora', 'ImTrying', 'Yashi', 'FunkyMnky', 'turtlemansam', 'target 2.0', 'Bad Guy', 'Mr. Thot', 'Deoxys', 'Some Ball 11', 'Xionwalker', '>>-->', 'TheIndian', 'sweg|', 'InYourCourt', 'Don|t->Flush', 'RASCAL', 'Demo', 'Sasuke', 'BANG!!', 'TOEMEIST', 'hashball', 'dogethedoge', 'Partytime', 'slutman', 'RIP Taveras', 'Snr.Baseball', 'BluMyself', 'Defendaball', 'Perpetualist', 'itunes', 'J0$H_Da_B0$$', 'DougFane', 'Snooker', 'Tokoloco', 'Thee Ball', 'Gyaraderp', 'Chocas', 'Rudey', 'spicynewt', 'Captivated', 'Ill Fayze', 'Rubes', '[POP]touch', 'SphereItself', 'Kermit69', 'bagina', 'Simon Pegg', 'Atheist', '-Obama-', 'somegirl', 'Rectangle', 'Whata Baller', 'A Straw Hat', 'Chuggles', 'DaisyJukes', 'Rasputin', 'assy nougat', 'Durden', 'elfballer', 'Qubert', 'superpapergun', 'J Balls', 'reddy', 'Zuko', 'Krowbar', 'Superstar', 'Camus', 'Juggle', 'Trobo', 'minecraftpro907', 'Dead Nan', 'MonteeBall', 'CondoKP', 'BALLoCRUSHER', 'slowpolka', 'i am on re', 'i am on re', 'Teal', 'aris.', 'Eminem', 'maxmears3', 'bozonz', 'Not Matt', 'Buffalo Ball', 'wonsu', 'itsacow', 'DanseNoire.', 'Simplicity', 'El Scorpio', 'ArtVandelay', 'yash', 'R0CK$T4R', 'Doris', 'Snack', 'mste', 'Tplattapus', 'Ba|al', 'gspoon', 'Scrooball', 'StikRokTurd', 'Henrik', 'Rammstein', 'coys', 't("t)', 'Halophile', 'The Loo', 'NEUhusky', 'Bowlarity', 'InTents', 'Spiller', 'BallyWest', 'Pleionosis', 'Manowar', 'Mace Windex', 'Ebola', 'Rectangle', 'Fronj', 'josheb', 'KCIN', 'Yung~$avage', 'Vitur', 'Tonto', 'Doris', 'Fawlty', 'Howard', 'Schweddys', 'Russia|', 'Spherecules', '-salt-', 'McNerdy', 'InTheMood', 'asdf', 'Vials', 'blaziken', '@//|@', 'Jukeinabox', 'Dequabian', 'martymoo', 'Brainiac', 'BlazeMaster', 'Rimsucker', 'yungbull', 'Al Sharpton', 'Vials', 'UBU', 'CpBear', '-salt-', 'quarky.', 'fragrantfowl', 'DougFane', 'Ball Murray', 'Huevo Crush', 'VetDave', 'Ill Fayze', 'Ill Fayze', 'godot', 'Tumblewood', 'JukesOfHazrd', 'Dubai', 'Noobkin', 'Psi', 'Rick O|Shea', 'Konichiwa', 'Pocketweed', '4piR^2', 'Hawka', 'MasterCard78', 'sweaty', 'WheresBaldo', 'Shakalaka', 'Paps', 'Aerrow', 'Flail', 'Mr Bucket', 'Chocas', 'Checko', 'My Lumps', 'beke', 'B][', '*H Y D R O', 'Sorry', 'Ball God', 'Tpr', 'Electron', 'bad', 'idowhatiwant', 'notsomeball', 'Gem', 'ooo kill |em', 'PrimeTime21', 'mrfruitzy', 'AlysBrangwin', 'BallOReilly', 'Starboard', 'tblazers127', 'tsu', 'OG ALMIN $$', 'NotSome Ball', 'P-d0g', 'K1nn1ck', 'Ball-Mart', 'ClayRocks', 'Grill_Gamer', 'Shrimpster', 'JMART', 'spencebron', 'Tyrus', 'smartrobot', 'sidewalk', 'KingGopher', 'jadeboy7', 'fauxedo', 'UnderTheBall', 'Dance', 'chili6f', 'Ambrose', 'Coil', 'Subglacious', 'Rislyeu', 'okthen', 'Mary_Poppins', 'JGibbs', '@(-_-)@', '@(-_-)@', 'Butthurt?', 'banzai', '@(^_^)@', 'The Biggen', 'Dino', 'BilboTaggins', 'Rislyeu', 'StufedBurger', 'mhawk10', 'Sun_Tzu', 'G1nseng', 'oSo Squiggly', 'Zua', 'Felix', '@(-_-)@', '@(^_^)@', 'Denna', 'uihiu', 'Butter Churn', 'PopSecret', 'boat shoes', 'Ill Fayze', 'Oh No!', 'NimbusBP1729', 'BlissMC', 'Jayu', 'OG Mudbone.', 'Xenocide.', 'Biggy Balls', 'VanillaBear', 'Im A Goat', 'BrunoCaboclo', 'PoroPinger', 'ONECUPOFSUGA', 'Cap|n Kush', 'Jake from SF', 'LegionOBoom', 'Newtruckfund', 'JukeStick', 'PATTT', 'KCIN', 'Juke Master', 'Jesse', 'Wee D', 'Rohit', 'cheese place', 'SwagCannon', 'sambea', 'TheStrangerJr', 'Tea', 'YEEZUS*', 'Wee D', 'wawaweewa', 'Dad', 'SchoolBall Q', 'Baby Bunny', 'Bob Dole', 'Bob Dole', 'TheRealYOLO', 'ChillOut', 'real shade', 'hellyea', 'GoochTickler', 'GoochTickler', 'capturebro', 'Bluntz', 'Blu Balls', 'Pink Floyd', 'skeletor', 'SpiKing', 'nub', 'Trane', 'GoochTickler', 'The Dentist (AKA "Bo")', 'supaspike', 'Wee D', 'Wee D', 'Bric', 'Jet2', ' LOdragon34', 'FUCKING LAG', 'VorTeXx', 'BallMeMaybe', 'Jimmy Ballon', 'teddybear', 'Da Burrs'];
 
         var substringMatcher = function(strs) {
           return function findMatches(q, cb) {
             var matches, substrRegex;
-         
+
             // an array that will be populated with substring matches
             matches = [];
-         
+
             // regex used to determine if a string contains the substring `q`
             substrRegex = new RegExp(q, 'i');
-         
+
             // iterate through the pool of strings and for any string that
             // contains the substring `q`, add it to the `matches` array
             $.each(strs, function(i, str) {
@@ -134,11 +116,11 @@
                 matches.push({ value: str });
               }
             });
-         
+
             cb(matches);
           };
         };
-         
+
         var dirty = 1;
         setInterval( function() {
             if($("#playerSearch .typeahead").length == 1 && dirty) {
@@ -163,99 +145,96 @@
             }
         }, 1000);
 
-
         var dirtyButtons = 0;
-        setInterval(function() { 
+        setInterval(function() {
             if($(".buttontime").length > 0 && !dirtyButtons) {
                 dirtyButtons = 1;
                 setTimeout(function() {
                     $(".buttontime").prop("disabled", false);
                     $(".buttontime").removeClass("buttontime")
-                    dirtyButtons = 0;                        
+                    dirtyButtons = 0;
                 }, 2000);
             }
         }, 500);
 
 </script>
-
-
 </body>
 
 <template name="admin">
-{{#if admin}}
-<div class="row">
-    <div class="col-sm-10 col-sm-offset-1 col-xs-12">
-    <div class="panel panel-default">
-        <div class="panel-heading text-center">
-        <div class="btn-group">
-            <div class="btn btn-primary resume-auction">Resume</div>
-            <div class="btn start-auction btn-success">Start</div>
-            <div class="btn btn-danger pause-auction">Pause</div>
-            <div class="btn btn-primary undo-bid">Undo Bid</div>
-            <div class="btn btn-primary undo-nomination">Undo Nomination</div>
-            </div>
-            <br>
-            <form class="form-group add-nomination" role="form">
-                <div class="input-group" style="padding-top:10px;">
-                    <input type="text" name="player" class="form-control" placeholder="Nominate Player" style="" />
-                    <span class="input-group-btn">
-                        <button type="submit" class="btn btn-success">Nominate</button>
-                    </span>
+    {{#if admin}}
+        <div class="row">
+            <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading text-center">
+                        <div class="btn-group">
+                            <div class="btn btn-primary resume-auction">Resume</div>
+                            <div class="btn start-auction btn-success">Start</div>
+                            <div class="btn btn-danger pause-auction">Pause</div>
+                            <div class="btn btn-primary undo-bid">Undo Bid</div>
+                            <div class="btn btn-primary undo-nomination">Undo Nomination</div>
+                        </div>
+                        <br>
+                        <form class="form-group add-nomination" role="form">
+                            <div class="input-group" style="padding-top:10px;">
+                                <input type="text" name="player" class="form-control" placeholder="Nominate Player" style="" />
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-success">Nominate</button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-            </form>
+            </div>
         </div>
-    </div>
-    </div>
-</div>
-{{/if}}
+    {{/if}}
 </template>
 
 <template name="get_funds">
-<div class="row">
-    <div class="col-sm-10 col-sm-offset-1 col-xs-12">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            {{#if isCaptain}}
-                    <p class="pull-right">Balance: <b>{{getBalance}} ({{getKeepermoney}})</b></p>
-            {{/if}}
-            {{> loginButtons}}
+    <div class="row">
+        <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{#if isCaptain}}
+                        <p class="pull-right">Balance: <b>{{getBalance}} ({{getKeepermoney}})</b></p>
+                    {{/if}}
+                    {{> loginButtons}}
+                </div>
+            </div>
         </div>
     </div>
-    </div>
-</div>
 </template>
 
 
 <template name="messages">
-<div class="row">
-    <div class="col-sm-10 col-sm-offset-1 col-xs-12">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            {{#if canSendMessage}}
-                <form class="new-post">
-                    <div class="input-group">
-                        <input type="text" class="form-control" name="text" placeholder="Type a message">
-                        <span class="input-group-btn">
-                              <button class="btn btn-primary" type="submit">Send</button>
-                        </span>
-                    </div>
-                </form>
-            {{else}}
-                Log in to Chat
-            {{/if}}
+    <div class="row">
+        <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{#if canSendMessage}}
+                        <form class="new-post">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="text" placeholder="Type a message">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary" type="submit">Send</button>
+                                </span>
+                            </div>
+                        </form>
+                    {{else}}
+                        Log in to Chat
+                    {{/if}}
+                </div>
+                <ul class="list-group" id="messageLog" style="height: 500px; overflow: scroll;overflow-x: hidden;">
+                    {{> getmessages}}
+                </ul>
+            </div>
         </div>
-        <ul class="list-group" id="messageLog" style="height: 500px; overflow: scroll;overflow-x: hidden;">
-            {{> getmessages}}
-        </ul>
     </div>
-</div>
-</div>
 </template>
 
 <template name="newmessage">
-{{#each newmessage}}
-    <li class="list-group-item {{messageColor messageType}}" style="word-break: normal;">{{text}}</li>
-{{/each}}
+    {{#each newmessage}}
+        <li class="list-group-item {{messageColor messageType}}" style="word-break: normal;">{{text}}</li>
+    {{/each}}
 </template>
 
 <template name="getmessages">
@@ -267,55 +246,53 @@
 
 
 <template name="renderplayers">
-{{#each players teamname ./teamname}}
-    <li class="list-group-item" style="padding: 2px 2px; height:25px">
-    <span style="width:20px; display:inline-block;">
-    {{#if captain}}
-        <img src="/captain.png">
-    {{else}}
-        {{#if cocaptain}}
-            <img src="/cocaptain.png">
-        {{else}}
-            {{#if mltp}}
-                <img src="/MLTP.png">
+    {{#each players teamname ./teamname}}
+        <li class="list-group-item" style="padding: 2px 2px; height:25px">
+            <span style="width:20px; display:inline-block;">
+            {{#if captain}}
+                <img src="/captain.png">
             {{else}}
-
+                {{#if cocaptain}}
+                    <img src="/cocaptain.png">
+                {{else}}
+                    {{#if mltp}}
+                        <img src="/MLTP.png">
+                    {{/if}}
+                {{/if}}
             {{/if}}
-        {{/if}}
-    {{/if}}
-    </span>
-    {{#if name}}
-        {{name}}
-        <div style="float:right; padding-right:8px">
-        {{cost}}
-        </div>
-    {{/if}}
-    </li>
+            </span>
+            {{#if name}}
+                {{name}}
+                <div style="float:right; padding-right:8px">
+                    {{cost}}
+                </div>
+            {{/if}}
+        </li>
     {{/each}}
 </template>
 
 <template name="renderteam">
-{{#each teams division ./division}}
- <div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 team" style="">
-        <ul class="list-group">
-        <li class="list-group-item" id="team_{{teamID teamname}}" style="text-align:center;background-color:{{inRedDivision division}}">
-            {{teamname}} 
-            <br>
-            {{money}} ({{keepermoney}})
-        </li>
-        {{> renderplayers teamname=teamname}}
-        </ul>
-    </div>
-{{/each}}
+    {{#each teams division ./division}}
+        <div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 team" style="">
+            <ul class="list-group">
+                <li class="list-group-item" id="team_{{teamID teamname}}" style="text-align:center;background-color:{{inRedDivision division}}">
+                    {{teamname}}
+                    <br>
+                    {{money}} ({{keepermoney}})
+                </li>
+                {{> renderplayers teamname=teamname}}
+            </ul>
+        </div>
+    {{/each}}
 </template>
 
 <template name="rosters">
     <div class="row">
-      {{#each divisions}}
-              <div class="col-md-2"></div>
+        {{#each divisions}}
+            <div class="col-md-2"></div>
                 {{> renderteam division=division}}
-              <div class="clearfix visible-sm visible-md visible-lg"></div>
-      {{/each}}
+            <div class="clearfix visible-sm visible-md visible-lg"></div>
+        {{/each}}
     </div>
 </template>
 
@@ -323,70 +300,69 @@
     {{#if isCaptain}}
     <div class="row">
         <div class="col-sm-10 col-sm-offset-1">
-        <div class="panel panel-default">
-        <div class="panel-heading text-center">
-        {{#if isNominationTime}}
-            {{#if isTurnToNominate}}
-                <form class="form-group nominate-player" role="form">
-                    <div id="playerSearch" class="" style="display:inline">
-                        <input type="text" name="player" class="typeahead form-control" placeholder="Input a player name" />
-                        </div>
-                        <input type="text" name="amount" id="initialBid" class="form-control" placeholder="Initial bid (blank = 0)" style="width:auto; display:inline;" />
+            <div class="panel panel-default">
+                <div class="panel-heading text-center">
+                    {{#if isNominationTime}}
+                        {{#if isTurnToNominate}}
+                            <form class="form-group nominate-player" role="form">
+                                <div id="playerSearch" class="" style="display:inline">
+                                    <input type="text" name="player" class="typeahead form-control" placeholder="Input a player name" />
+                                    </div>
+                                    <input type="text" name="amount" id="initialBid" class="form-control" placeholder="Initial bid (blank = 0)" style="width:auto; display:inline;" />
 
-                        <button type="submit" class="btn btn-success">Nominate</button>
-                </form>
-            {{else}}
-                <form class="bid-on-player" role="form">
-                    <div class="input-group">
-                        <input type="text" disabled name="amount" class="form-control" placeholder="Waiting for nomination">
-                        <span class="input-group-btn">
-                            <button type="submit" disabled class="btn btn-success">Bid</button>
-                        </span>
-                        </div>
-                </form>
-            {{/if}}
-        {{else}}
-            {{#if sufficientFunds }}
-            <form class="bid-on-player">
-                <div class="input-group">
-                <input type="text" class="form-control" name="amount"  onclick="$(this).val('')" placeholder="Input a bid amount (blank increases current bid by 1)">
-                <span class="input-group-btn">
-                {{#if canBid}}
-                    <button type="submit" class="btn btn-success">Bid</button>
-                {{else}}
-                    <button type="submit" disabled class="btn btn-success">Bid</button>
-                {{/if}}
-                  </span>
+                                    <button type="submit" class="btn btn-success">Nominate</button>
+                            </form>
+                        {{else}}
+                            <form class="bid-on-player" role="form">
+                                <div class="input-group">
+                                    <input type="text" disabled name="amount" class="form-control" placeholder="Waiting for nomination">
+                                    <span class="input-group-btn">
+                                        <button type="submit" disabled class="btn btn-success">Bid</button>
+                                    </span>
+                                    </div>
+                            </form>
+                        {{/if}}
+                    {{else}}
+                        {{#if sufficientFunds }}
+                        <form class="bid-on-player">
+                            <div class="input-group">
+                            <input type="text" class="form-control" name="amount"  onclick="$(this).val('')" placeholder="Input a bid amount (blank increases current bid by 1)">
+                            <span class="input-group-btn">
+                            {{#if canBid}}
+                                <button type="submit" class="btn btn-success">Bid</button>
+                            {{else}}
+                                <button type="submit" disabled class="btn btn-success">Bid</button>
+                            {{/if}}
+                              </span>
+                            </div>
+                        </form>
+                            <div class="btn-group" style="padding-top:5px;">
+                            {{#if canBid}}
+                                {{#each bids}}
+                                 <button type="btn" class="btn btn-primary bid-button buttontime" disabled amount="{{bid}}">{{bid}}</button>
+                                {{/each}}
+                            {{else}}
+                                {{#each bids}}
+                                    <button type="btn" class="btn btn-primary bid-button" disabled amount="{{bid}}">{{bid}}</button>
+                                {{/each}}
+                            {{/if}}
+                              </div>
+                        {{else}}
+                            <form class="bid-on-player" role="form">
+                            <div class="input-group">
+                                <input type="text" disabled name="amount" class="form-control" placeholder="Insufficient Funds or Auction Paused">
+                                <span class="input-group-btn">
+                                    <button type="submit" disabled class="btn btn-danger">Bid</button>
+                                </span>
+                            </div>
+                            </form>
+                            {{#each bids}}
+                                <button type="btn" class="btn btn-danger bid-button" disabled amount="{{bid}}">{{bid}}</button>
+                            {{/each}}
+                        {{/if}}
+                    {{/if}}
                 </div>
-            </form>
-                <div class="btn-group" style="padding-top:5px;">
-                {{#if canBid}}
-                    {{#each bids}}
-                     <button type="btn" class="btn btn-primary bid-button buttontime" disabled amount="{{bid}}">{{bid}}</button>
-                    {{/each}}
-                {{else}}
-                    {{#each bids}}
-                        <button type="btn" class="btn btn-primary bid-button" disabled amount="{{bid}}">{{bid}}</button>
-                    {{/each}}
-                {{/if}}
-                  </div>
-            {{else}}
-                <form class="bid-on-player" role="form">
-                <div class="input-group">
-                    <input type="text" disabled name="amount" class="form-control" placeholder="Insufficient Funds or Auction Paused">
-                    <span class="input-group-btn">
-                        <button type="submit" disabled class="btn btn-danger">Bid</button>
-                    </span>
-                </div>
-                </form>
-                {{#each bids}}
-                    <button type="btn" class="btn btn-danger bid-button" disabled amount="{{bid}}">{{bid}}</button>
-                {{/each}}
-
-            {{/if}}
-        {{/if}}
-        </div>
-        </div>
+            </div>
         </div>
     </div>
     {{/if}}
