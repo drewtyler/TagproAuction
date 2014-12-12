@@ -15,6 +15,8 @@ AuctionStatus = new Mongo.Collection("auctionstatus");
 AuctionLock = new Mongo.Collection("auctionlock");
 PreviousAuctionData = new Mongo.Collection("previousauctiondata")
 
+PlayerResponse = new Mongo.Collection("playerResponse");
+
 var bidTime = 30000;
 var additionTime = 10000;
 var lock = 0;
@@ -56,6 +58,7 @@ if (Meteor.isClient) {
     Meteor.subscribe("previousauctiondata");
     Meteor.subscribe("keepers");
 
+    Meteor.subscribe("playerResponse");
     //console.log(Messages.find({}).fetch());
   });
 
@@ -164,8 +167,11 @@ if (Meteor.isClient) {
           return AuctionData.findOne({}).Nominator;
       },
       personBeingBidOn : function() {
-        if(AuctionData.findOne({}) !== undefined)
-          return AuctionData.findOne({}).currentPlayer;
+        if(AuctionData.findOne({}) !== undefined) {
+          name = AuctionData.findOne({}).currentPlayer;
+          currentPlayerInfo = PlayerResponse.findOne({"tagpro":name});
+          return name;
+        }
       },
       bidAmount :function()
       {
@@ -615,6 +621,7 @@ Meteor.methods({
     }
   },
   checkForToggle: function() {
+    console.log("checking for toggle");
     if(Meteor.isServer) {
       console.log("Checking for toggle from client");
       var currentState = AuctionData.findOne();
@@ -764,6 +771,13 @@ if (Meteor.isServer) {
       CurrentPick.insert({"pick":1});
       BidHistory.remove({});
 
+      // load player data
+      PlayerResponse.remove({});
+      var playerResponseData = JSON.parse(Assets.getText('player_response.json'));
+      for(i = 0; i < playerResponseData.length; i++) {
+        var obj = playerResponseData[i];
+        PlayerResponse.insert(obj);
+      }
 
       // Load Nominators
       var initialRosterData = {};
@@ -831,6 +845,7 @@ if (Meteor.isServer) {
     Meteor.publish("bids", function() { return BidHistory.find()});
     Meteor.publish("previousauctiondata", function() {return PreviousAuctionData.find()});
     Meteor.publish("keepers", function() {return Keepers.find()});
+    Meteor.publish("playerResponse", function() {return PlayerResponse.find()});
     //Keepers = new Mongo.Collection('keepers');
 
     return true;
@@ -852,7 +867,7 @@ if (Meteor.isServer) {
       console.log("pickNominator: nextOrder: " + nextInOrder.nextorder);
       console.log("pickNominator: captain: " + captain.name + " rosterfull? " + captain.rosterfull);
       console.log("pickNominator: newnextorder: " + newnextorder);
-      Nominators.update({"name":"nextInOrder"}, {$set: {"order": newnextorder}});
+      Nominators.update({"name":"nextInOrder"}, {$set: {"nextorder": newnextorder}});
 
       // loop through nominators in order until we find one without a full roster
       if(captain.rosterfull) {

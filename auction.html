@@ -5,6 +5,7 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="/bootstrap.min.css">
     <link rel="stylesheet" href="/csshake.min.css">
+    <link rel="stylesheet" href="/tooltipster.css">
     <link rel="stylesheet" href="/auction.css">
 
     <!-- Optional theme -->
@@ -14,6 +15,7 @@
     <script type="text/javascript" src="/jquery.vibrate.min.js"></script>
     <script type="text/javascript" src="/typeahead.jquery.min.js"></script>
     <script type="text/javascript" src="/jquery.foggy.min.js"></script>
+    <script type="text/javascript" src="/jquery.tooltipster.min.js"></script>
 
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -60,6 +62,52 @@
             }
         }
         setInterval(checkForAnimation, 1000);
+
+        var currentTarget = null;
+        function showPlayerInfo(info) {
+            hidePlayerInfo();
+            var html = "<ul class=\"list-group\" style=\"width: 500px\">";
+            if(typeof info === undefined || info == undefined || info == null){
+                showPlayerInfo(currentTarget);
+                html += "<li class=\"list-group-item\" style=\"color:black\"><strong>Error</strong>: Something has gone wrong.  Does this player exist?  Did this player sign up?</li>";
+            } else {
+                currentTarget = info;
+                for(var k in info) {
+                    if(k == "_id") {
+                        continue;
+                    } else if (k == "link") {
+                        html += "<li class=\"list-group-item\" style=\"color:black\"><strong>" + k + "</strong>: <a href=\"javascript:void(0)\" onclick=\"window.open('" + info[k] + "')\">" + info[k] + "</a></li>";
+                    } else {
+                        html += "<li class=\"list-group-item\" style=\"color:black\"><strong>" + k + "</strong>: " + info[k].replace(/\n/g,"<br />") + "</li>";
+                    }
+                }
+            }
+            html += "</ul>";
+            $("#player-info").tooltipster({content:html, autoClose:true, trigger:"click", contentAsHTML:true, position:"left", functionReady: function() {
+                var offset = parseInt($(".tooltipster-base").css("top"));
+                if(offset < 0) {
+                    $(".tooltipster-base").css("top", "0px");
+                    offset = parseInt($(".tooltipster-arrow-left").css("top")) + offset;
+                    $(".tooltipster-arrow-left").css("top", offset + "px");
+                }
+            }});
+            $("#player-info").tooltipster("show");
+            if(parseInt($(".tooltipster-base").css("top")) < 0) {
+                $(".tooltipster-base").css("top", "0px");
+            }
+        }
+
+        function hidePlayerInfo() {
+            if($(".tooltipster-base").length > 0) {
+                $("#player-info").tooltipster("destroy");
+            }
+        }
+
+        $(document).ready(function() {
+            if(typeof currentPlayerInfo !== undefined) {
+                showPlayerInfo(currentPlayerInfo);
+            }
+        });
 
     </script>
 </head>
@@ -372,11 +420,16 @@
     <div class="row">
         <div class="col-sm-10 col-sm-offset-1">
         <div class="panel panel-default" style="height:90px;">
-        <div class="panel-heading" style="text-align:center">
+        <div id="player-info" class="panel-heading" style="text-align:center">
             {{#if isNominationTime}}
                 <h2 class="panel-title">Awaiting nomination from {{currentNominatingPlayer}}</h2>
+                <script>hidePlayerInfo();</script>
             {{else}}
-                <h2 class="panel-title">{{personBeingBidOn}} - <b id="timeRemaining">{{time}}</b></h2>
+                <h2 class="panel-title">
+                    {{personBeingBidOn}} - <b id="timeRemaining">{{time}}</b><br />
+                    <small>Click to show/hide info</small>
+                </h2>
+                <script>showPlayerInfo(currentPlayerInfo);</script>
             {{/if}}
         </div>
         {{#if isNominationTime}}
