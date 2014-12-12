@@ -17,11 +17,17 @@ body {
 	font-size: 14px;
 
 }
+.list-striped>li:nth-child(even) {
+	background-color: rgba(134, 198, 230, .50);
+}
 
+.list-striped>li:nth-child(odd) {
+	background-color: rgba(235, 126, 126, .50);
+}
 
 .winningbid {
 	font-weight:bold !important;
-	background-color:rgba(0, 100, 0, 0.98) !important;
+	background-color:rgba(0, 100, 0, 0.8) !important;
 	color:white !important;
 }
 
@@ -101,3 +107,4 @@ header .hide-completed {
 .tooltipster-base {
   pointer-events: all !important;
 }
+

@@ -15,8 +15,6 @@
     <script type="text/javascript" src="/jquery.vibrate.min.js"></script>
     <script type="text/javascript" src="/typeahead.jquery.min.js"></script>
     <script type="text/javascript" src="/jquery.foggy.min.js"></script>
-    <script type="text/javascript" src="/jquery.tooltipster.min.js"></script>
-
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script type="text/javascript">
@@ -63,51 +61,12 @@
         }
         setInterval(checkForAnimation, 1000);
 
-        var currentTarget = null;
-        function showPlayerInfo(info) {
-            hidePlayerInfo();
-            var html = "<ul class=\"list-group\" style=\"width: 500px\">";
-            if(typeof info === undefined || info == undefined || info == null){
-                showPlayerInfo(currentTarget);
-                html += "<li class=\"list-group-item\" style=\"color:black\"><strong>Error</strong>: Something has gone wrong.  Does this player exist?  Did this player sign up?</li>";
-            } else {
-                currentTarget = info;
-                for(var k in info) {
-                    if(k == "_id") {
-                        continue;
-                    } else if (k == "link") {
-                        html += "<li class=\"list-group-item\" style=\"color:black\"><strong>" + k + "</strong>: <a href=\"javascript:void(0)\" onclick=\"window.open('" + info[k] + "')\">" + info[k] + "</a></li>";
-                    } else {
-                        html += "<li class=\"list-group-item\" style=\"color:black\"><strong>" + k + "</strong>: " + info[k].replace(/\n/g,"<br />") + "</li>";
-                    }
-                }
-            }
-            html += "</ul>";
-            $("#player-info").tooltipster({content:html, autoClose:true, trigger:"click", contentAsHTML:true, position:"left", functionReady: function() {
-                var offset = parseInt($(".tooltipster-base").css("top"));
-                if(offset < 0) {
-                    $(".tooltipster-base").css("top", "0px");
-                    offset = parseInt($(".tooltipster-arrow-left").css("top")) + offset;
-                    $(".tooltipster-arrow-left").css("top", offset + "px");
-                }
-            }});
-            $("#player-info").tooltipster("show");
-            if(parseInt($(".tooltipster-base").css("top")) < 0) {
-                $(".tooltipster-base").css("top", "0px");
-            }
+        function showPlayerInfo() {
+            $("#playerModal").modal("show");
         }
-
         function hidePlayerInfo() {
-            if($(".tooltipster-base").length > 0) {
-                $("#player-info").tooltipster("destroy");
-            }
+            $("#playerModal").modal("hide");
         }
-
-        $(document).ready(function() {
-            if(typeof currentPlayerInfo !== undefined) {
-                showPlayerInfo(currentPlayerInfo);
-            }
-        });
 
     </script>
 </head>
@@ -143,8 +102,6 @@
         <div class="button" id="vibrate" style="display:hidden"></div>
     </div>
 <script>
-        var players = ['i1337', 'Nawse', '2P1S', 'veezy', 'ThePirate', 'Kazoo', 'Micaso', 'Buppy', 'El Sacko', 'ProTagonist_', 'Ballrog', 'Frozty', 'timeboy', 'Tottenham', 'Ess', '3.1 Thor', 'WowSuchPro', 'Mace', 'dodsfall', 'Sunna', 'Ashmungashma', 'Ibis', 'ZumgAPanda', 'Marz', 'Mr.Gone', 'LoweJ', 'MFSamson', 'Holdmaballs', 'HarkMollis', 'Esoog', 'SUPERSANS', 'Atomic', 'Nqoba', 'PrivateMajor', 'Raven', 'Ballymandias', 'bdl', 'demman32', 'yiss', 'Sweep', 'P K Subball', 'ballparts', 'Big Swingin', 'port', 'Dr.Bob', 'bowtie', 'Curl', 'Ninjroid', 'Windomac', 'Razgriz', 'That Kid', 'RoughJustice', 'crosky', 'Rocket', 'Fresh', 'Some Man 7', 'Skee-Ball', '1baller', 'karlwithak', 'DudeMcGuy', 'Milk Steak', '_Noah', 'Mr.Baggins', 'Walrus', 'BilldaCat', 'superdiglett', 'GriefSeeds', 'KPow', 'ballpit', 'Manbear', 'Nebuchanezar', 'Shabba', 'Asa Akira', 'FLYMOLO', 'Carp', 'Yossarian', 'BigMeaty', 'GreenBastard', 'Crossover', 'wayne', 'Nugazasagae', 'BallDontLie', 'TroBall', 'Ballee Lama', 'Anne Frank', 'Test_Ball', 'Lej', 'CHECKNATE.', 'Iron_Ball', 'Maurice', 'memeganoob', 'Deez Nutz', 'quarky.', 'MrJoehobo', 'Syniikal', 'Gubbles', 'PopSecret', 'Creothcean', 'GnastyKnate', 'ludifisk', 'PetyrBaelish', 'A-A-ron', 'Toobis', 'OJdude', 'donuts42', 'newfren', 'CC', 'Tiza', 'Curry4Three', 'mc ride', 'Bobbay', 'Trondby', 'Hoog', 'Nick_Corso', 'klosec12', 'TheOnlyBall', 'Baz', 'I|m Batman', 'Mack Daddy', 'jackals', 'Ballsagnia', 'Dennit', 'Scott', 'd0pe', 'Kitten Panda', 'Herky', 'CIutch', 'Chalksy', 'Gman8181', 'Kludge95', 'SirCamWatts', 'Tony Allen', 'BAllstar', 'craigbiggio', 'jwart', 'Aero', 'Heisenberg', 'eltenelliott', 'Arbybear', 'donk', 'supermesh', 'poopv', 'themagpie', 'dywz', 'sweater', 'blithering', 'Jesus', 'JBaayBaay', 'Sentry', 'TurdFerguson', 'Breesus', 'Jay', 'lukemoo', 'Marquis', 'Aniball', 'TOJO', 'TagUpTurnUp', 'BG', 'TheBob18', 'Saint Enigma', 'nickramyoga', 'PavelDatsyuk', 'Bob Loblaw', 'TheWonder', 'honeybear', 'Bongo', 'Matty_Ice', 'Danny', 'Green Eggs', 'Snowball', 'trendygrub', 'Odog', 'ooo killem', 'ChelseaFc', 'Hulzy', 'adhi', 'Itzulpena', 'lu', 'HayBunny', 'lifeisgood', 'Shaze', 'Tantrew', 'BlissMC', 'khaleesii', 'penis pl0x', 'srby', 'Bweurp', 'Atlas_', 'ChrisBall', 'ChrisBall', 'Tanador', 'eee', 'JDoeMonopoly', 'swerve', 'Warden', 'Puggins', 'P0P', 'Prizm', 'whiff', 'Pithy', 'Dalek23', 'TarianLegend', 'Crees', 'bigbadball', 'Gargantua', 'might dino', '#Frozen', 'Fence Post', 'The Ferret', 'rub', 'Kamikaze', 'stu.', 'Q(|.|Q)', 'Oddball7', 'Rambo', 'TagProKing', 'c2.', 'Risk', 'Fuzz Ball', 'BrunoCaboclo', 'Blep', 'marwels23', 'statix', 'justhavinfun', 'some name', 'Raptor_Jesus', 'Koala King', 'chuckk', 'Helen Keller', 'Rammstein', 'Ralph Wiggum', 'Thirsty', 'TheAprilFool', 'kwib', 'Dr. Juke', 'Theman', 'abazaba', 'VeridisQuo', 'AJH', 'Dyna', 'Pi 3.1415926', 'Gramps', 'Sundown', 'Outis', 'im high', 'clownmachine', 'Fowlball', 'Canadsian', 'Strategio', 'Kevin Bacon', 'tennisball', 'Apidae', 'Mesut', 'M.Foricer', 'Pinstar', 'Arthree', 'Papi', 'Cignul9', 'Jaycmoney', 'Mary_Poppins', 'Altiger', 'Apopalypse', 'Stann', 'k', 'ovary', 'F2PDynasty', 'rollin', 'Ike13', 'JKarim4', 'Kelvin', 'trav', 'C Bivvey', 'Caduke', 'Dragon Ball', 'Kerball', 'Despair', 'Some 8 Ball', 'Randy Marsh', 'Ninja Jesus', 'sry im new', 'alvin', 'Stormcrow', 'Plleth', 'simon', 'MoJoSto', 'Swergonomics', 'JuicyJuke', 'Jufda', 'Jukeballhero', 'Drave', 'Legman', 'Koala', 'FlutedKnob', 'D Rek', 'Some Ball -1', 'R e t r o', 'Ballox', 'Doc Balliday', 'Infinite Sky', 'nlfn', 'Odog', 'rabbat', 'Jagdpanther', 'Dodge', 'itsacow', 'Knox', 'RonSpawnson', 'Lexanator5', 'josh61616', 'Bonsai', 'Xile', 'PBS', 'intrepid', 'DeadpooI', 'Bull', 'Thiradell', 'quibble', 'PengWin', 'Ball Sac', 'Game Theory', 'Rudey', 'Cashmere Cat', 'ScumBall', 'Matetricks', 'Exquisite', 'yearofme', 'gh0st', 'Abs', 'jegs', 'Coca', 'Sportmonkey', 'Hyamez', 'Schwedd', 'SirDan', 'ballingball', 'Capernicus', 'UnoriginalSN', 'Pnaoxt', 'David Stern', 'Crook', 'Juke King', 'Ballzilla', 'Charlie...', 'in_C', 'RedFive', 'Mercury', 'Catalyst', 'LEBRON*JAMES', 'Turbo', 'Kanyes Maid', 'Guard', 'Swingman', 'steveholt', 'aardvark74', 'ball.i.am', 'espeluznante', 'InaneVoyage', 'bobby13531', 'hola', 'saundy', 'Donkey Kong', 'Anze Capitar', 'Micro', 'Jkells', 'Gryts', 'Romulus', 'yank', 'DICK_LICKER', 'E', 'Envy', 'cz', 'DUBSTEP', 'Left  Nut', 'Zvonvok', 'Stalin', 'Fitz.', 'PavlovsBall', 'Ball OON', 'wassa', 'Hootie', 'DPRK', 'lakeshow', 'slide', 'lolugrumpy', 'Makin Bacon', 'CapnCrunch', 'Errmergerd', 'ballblaster', 'Cripple', 'Teh42', 'Fozzy', 'UberNub', 'FlutedKnob', 'RemoSlice', 'Nitro', 'Pyruvate', 'Fez', 'gingerdg', 'ExitStrategy', 'praoprao', 'mathnasium', 'Kill Ball', 'BBQchicken', 'SAPSAPSAPSPA', 'eagles.', 'Jwoey', 'poplockndrop', 'Darth Revan', 'theballoseum', 'noblord', 'Moonghost', 'Master Ball', 'Rookie', 'Mufro', 'Mikero', 'Trapsin', 'charly_pims', 'Pepto Dismal', 'Destar', 'KlKI', 'Pinch & Roll', 'ColdDuckTime', 'Spheroid', 'Deidara', '-Messi', 'MRCOW', 'Mr.Nate', 'Tannehill', 'inthesomeday', 'thedeveloper', 'Judy', 'daiCmeRollin', 'dx', 'Magikarp', 'Clovis', 'Ignitius', 'Eminem', 'meatsuite', 'KAIZER', 'mste', 'CommonSense', 'Skinny Chode', 'Quan', 'DJ KHALED', 'Energy Balls', 'popsic_le', 'Vino', 'Pyrrhus', 'SwagHard', 'RON.BURGANDY', 'Alchemist', 'SpittingAtom', 'grant', 'oh_snap!', 'SpInSanity', 'r3ll1sh', 'boogy', 'Aurum', 'whiteflame', 'Jaacs', 'LAMPSHADE', 'Brake', 'Ranger', 'Wolf0fBallSt', 'IllegalToast', 'DareToZlatan', 'Willie', 'Ballaholics', 'Fapst3r', 'Green_Ball', 'Boombox', 'cbtexan04', 'Yakub', 'adm ackball', 'Googy', 'Jernon', 'clownmachine', 'goo', 'Skwid', 'jjpoole', 'BallMillsap', 'GillyBall', 'Big Chimpin', 'Bilbo Baller', '[burrito]', 'imaprostitut', 'samiamjuke', 'I_mess_up', 'dutch', 'frostie', 'BennyV23', 'Hashtag', 'JUKEBOX!', 'Sora', 'ImTrying', 'Yashi', 'FunkyMnky', 'turtlemansam', 'target 2.0', 'Bad Guy', 'Mr. Thot', 'Deoxys', 'Some Ball 11', 'Xionwalker', '>>-->', 'TheIndian', 'sweg|', 'InYourCourt', 'Don|t->Flush', 'RASCAL', 'Demo', 'Sasuke', 'BANG!!', 'TOEMEIST', 'hashball', 'dogethedoge', 'Partytime', 'slutman', 'RIP Taveras', 'Snr.Baseball', 'BluMyself', 'Defendaball', 'Perpetualist', 'itunes', 'J0$H_Da_B0$$', 'DougFane', 'Snooker', 'Tokoloco', 'Thee Ball', 'Gyaraderp', 'Chocas', 'Rudey', 'spicynewt', 'Captivated', 'Ill Fayze', 'Rubes', '[POP]touch', 'SphereItself', 'Kermit69', 'bagina', 'Simon Pegg', 'Atheist', '-Obama-', 'somegirl', 'Rectangle', 'Whata Baller', 'A Straw Hat', 'Chuggles', 'DaisyJukes', 'Rasputin', 'assy nougat', 'Durden', 'elfballer', 'Qubert', 'superpapergun', 'J Balls', 'reddy', 'Zuko', 'Krowbar', 'Superstar', 'Camus', 'Juggle', 'Trobo', 'minecraftpro907', 'Dead Nan', 'MonteeBall', 'CondoKP', 'BALLoCRUSHER', 'slowpolka', 'i am on re', 'i am on re', 'Teal', 'aris.', 'Eminem', 'maxmears3', 'bozonz', 'Not Matt', 'Buffalo Ball', 'wonsu', 'itsacow', 'DanseNoire.', 'Simplicity', 'El Scorpio', 'ArtVandelay', 'yash', 'R0CK$T4R', 'Doris', 'Snack', 'mste', 'Tplattapus', 'Ba|al', 'gspoon', 'Scrooball', 'StikRokTurd', 'Henrik', 'Rammstein', 'coys', 't("t)', 'Halophile', 'The Loo', 'NEUhusky', 'Bowlarity', 'InTents', 'Spiller', 'BallyWest', 'Pleionosis', 'Manowar', 'Mace Windex', 'Ebola', 'Rectangle', 'Fronj', 'josheb', 'KCIN', 'Yung~$avage', 'Vitur', 'Tonto', 'Doris', 'Fawlty', 'Howard', 'Schweddys', 'Russia|', 'Spherecules', '-salt-', 'McNerdy', 'InTheMood', 'asdf', 'Vials', 'blaziken', '@//|@', 'Jukeinabox', 'Dequabian', 'martymoo', 'Brainiac', 'BlazeMaster', 'Rimsucker', 'yungbull', 'Al Sharpton', 'Vials', 'UBU', 'CpBear', '-salt-', 'quarky.', 'fragrantfowl', 'DougFane', 'Ball Murray', 'Huevo Crush', 'VetDave', 'Ill Fayze', 'Ill Fayze', 'godot', 'Tumblewood', 'JukesOfHazrd', 'Dubai', 'Noobkin', 'Psi', 'Rick O|Shea', 'Konichiwa', 'Pocketweed', '4piR^2', 'Hawka', 'MasterCard78', 'sweaty', 'WheresBaldo', 'Shakalaka', 'Paps', 'Aerrow', 'Flail', 'Mr Bucket', 'Chocas', 'Checko', 'My Lumps', 'beke', 'B][', '*H Y D R O', 'Sorry', 'Ball God', 'Tpr', 'Electron', 'bad', 'idowhatiwant', 'notsomeball', 'Gem', 'ooo kill |em', 'PrimeTime21', 'mrfruitzy', 'AlysBrangwin', 'BallOReilly', 'Starboard', 'tblazers127', 'tsu', 'OG ALMIN $$', 'NotSome Ball', 'P-d0g', 'K1nn1ck', 'Ball-Mart', 'ClayRocks', 'Grill_Gamer', 'Shrimpster', 'JMART', 'spencebron', 'Tyrus', 'smartrobot', 'sidewalk', 'KingGopher', 'jadeboy7', 'fauxedo', 'UnderTheBall', 'Dance', 'chili6f', 'Ambrose', 'Coil', 'Subglacious', 'Rislyeu', 'okthen', 'Mary_Poppins', 'JGibbs', '@(-_-)@', '@(-_-)@', 'Butthurt?', 'banzai', '@(^_^)@', 'The Biggen', 'Dino', 'BilboTaggins', 'Rislyeu', 'StufedBurger', 'mhawk10', 'Sun_Tzu', 'G1nseng', 'oSo Squiggly', 'Zua', 'Felix', '@(-_-)@', '@(^_^)@', 'Denna', 'uihiu', 'Butter Churn', 'PopSecret', 'boat shoes', 'Ill Fayze', 'Oh No!', 'NimbusBP1729', 'BlissMC', 'Jayu', 'OG Mudbone.', 'Xenocide.', 'Biggy Balls', 'VanillaBear', 'Im A Goat', 'BrunoCaboclo', 'PoroPinger', 'ONECUPOFSUGA', 'Cap|n Kush', 'Jake from SF', 'LegionOBoom', 'Newtruckfund', 'JukeStick', 'PATTT', 'KCIN', 'Juke Master', 'Jesse', 'Wee D', 'Rohit', 'cheese place', 'SwagCannon', 'sambea', 'TheStrangerJr', 'Tea', 'YEEZUS*', 'Wee D', 'wawaweewa', 'Dad', 'SchoolBall Q', 'Baby Bunny', 'Bob Dole', 'Bob Dole', 'TheRealYOLO', 'ChillOut', 'real shade', 'hellyea', 'GoochTickler', 'GoochTickler', 'capturebro', 'Bluntz', 'Blu Balls', 'Pink Floyd', 'skeletor', 'SpiKing', 'nub', 'Trane', 'GoochTickler', 'The Dentist (AKA "Bo")', 'supaspike', 'Wee D', 'Wee D', 'Bric', 'Jet2', ' LOdragon34', 'FUCKING LAG', 'VorTeXx', 'BallMeMaybe', 'Jimmy Ballon', 'teddybear', 'Da Burrs'];
-
         var substringMatcher = function(strs) {
           return function findMatches(q, cb) {
             var matches, substrRegex;
@@ -168,30 +125,6 @@
             cb(matches);
           };
         };
-
-        var dirty = 1;
-        setInterval( function() {
-            if($("#playerSearch .typeahead").length == 1 && dirty) {
-                console.log("Fixing it up");
-                dirty = 0;
-                $('#playerSearch .typeahead').typeahead({
-                  hint: true,
-                  minLength: 1
-                },
-                {
-                  name: 'players',
-                  displayKey: 'value',
-                  source: substringMatcher(players)
-                });
-                $(".tt-dropdown-menu").css("width", $(".typeahead").css("width"));
-                $(".tt-dropdown-menu").css(
-                    {"max-height": "150px", "overflow-y":"auto", "background-color":"white", "padding-left":"5px"});
-                $("#initialBid").css("width", "none");
-            }
-            else {
-                dirty=1;
-            }
-        }, 1000);
 
         var dirtyButtons = 0;
         setInterval(function() {
@@ -349,7 +282,7 @@
     <div class="row">
         <div class="col-sm-10 col-sm-offset-1">
             <div class="panel panel-default">
-                <div class="panel-heading text-center">
+                <div class="panel-heading">
                     {{#if isNominationTime}}
                         {{#if isTurnToNominate}}
                             <form class="form-group nominate-player" role="form">
@@ -360,6 +293,28 @@
 
                                     <button type="submit" class="btn btn-success">Nominate</button>
                             </form>
+                            <script>
+
+                                function initTypeAhead(players) {
+                                    a = players.collection.find({}).fetch();
+                                    names = a.map(function(b) { return b.tagpro })
+                                    $('#playerSearch .typeahead').typeahead({
+                                      hint: true,
+                                      minLength: 1
+                                    },
+                                    {
+                                      name: 'players',
+                                      displayKey: 'value',
+                                      source: substringMatcher(names)
+                                    });
+                                    $(".tt-dropdown-menu").css("width", $(".typeahead").css("width"));
+                                    $(".tt-dropdown-menu").css(
+                                        {"max-height": "150px", "overflow-y":"auto", "background-color":"white", "padding-left":"5px"});
+                                    $("#initialBid").css("width", "none");
+                                }
+
+                                initTypeAhead(players);
+                            </script>
                         {{else}}
                             <form class="bid-on-player" role="form">
                                 <div class="input-group">
@@ -416,20 +371,49 @@
     {{/if}}
 </template>
 
+<template name="renderplayermodal">
+    <div class="modal fade" id="playerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header alert-primary">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="myModalLabel">{{tagpro}}</h4>
+          </div>
+          <div class="modal-body">
+              <ul class="list-group list-striped" style="text-align:left">
+                    <li class="list-group-item"><b>reddit: </b>{{reddit}}</li>
+                    <li class="list-group-item"><b>position: </b>{{position}}</li>
+                    <li class="list-group-item"><b>days: </b>{{days}}</li>
+                    <li class="list-group-item"><b>server: </b>{{server}}</li>
+                    <li class="list-group-item"><b>mic: </b>{{mic}}</li>
+                    <li class="list-group-item"><b>league: </b>{{league}}</li>
+                    <li class="list-group-item"><b>note: </b>{{note}}</li>
+                    <li class="list-group-item"><b>time_played: </b>{{time_played}}</li>
+                    <li class="list-group-item"><b>location: </b>{{location}}</li>
+              </ul>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+</template>
+
 <template name="display_time">
-    <div class="row">
-        <div class="col-sm-10 col-sm-offset-1">
-        <div class="panel panel-default" style="height:90px;">
-        <div id="player-info" class="panel-heading" style="text-align:center">
+<div class="row">
+<div class="col-sm-10 col-sm-offset-1">
+<div class="panel panel-default">
+<div id="player-info" class="panel-heading" style="text-align:center">
             {{#if isNominationTime}}
                 <h2 class="panel-title">Awaiting nomination from {{currentNominatingPlayer}}</h2>
                 <script>hidePlayerInfo();</script>
             {{else}}
                 <h2 class="panel-title">
                     {{personBeingBidOn}} - <b id="timeRemaining">{{time}}</b><br />
-                    <small>Click to show/hide info</small>
+                    <small onclick="showPlayerInfo()">Click to show/hide info</small>
                 </h2>
-                <script>showPlayerInfo(currentPlayerInfo);</script>
+                {{> renderplayermodal currentPlayerInfo}}
             {{/if}}
         </div>
         {{#if isNominationTime}}

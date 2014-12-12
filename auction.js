@@ -27,6 +27,7 @@ Meteor.setServerTime = function() {
     var serverOffset = serverMS - localMS;
     console.log('Meteor.setServerTime()', {serverMS: serverMS, localMS:localMS, serverOffset: serverOffset});
     Session.set('serverTimeOffset', serverOffset);
+
   });
 };
 
@@ -38,6 +39,7 @@ if (Meteor.isClient) {
     Session.setDefault("nominationTime", false);
     Session.setDefault("bidAccepted", false);
     Session.setDefault("myTurnToNominate", false);
+    Session.setDefault('players', []);
     Meteor.setServerTime();
     Meteor.clearInterval(Meteor.intervalUpdateTimeDisplayed);
     Meteor.intervalUpdateTimeDisplayed = Meteor.setInterval(function() { Session.set('time', new Date().getTime()); }, 50);
@@ -173,6 +175,9 @@ if (Meteor.isClient) {
           return name;
         }
       },
+      currentPlayerInfo: function() {
+        return PlayerResponse.findOne({"tagpro":AuctionData.findOne({}).currentPlayer});
+      },
       bidAmount :function()
       {
         if(AuctionData.findOne({}) !== undefined)
@@ -225,6 +230,10 @@ if (Meteor.isClient) {
 
   // Bidding options
   Template.display_bidding_options.helpers({
+    getPlayers : function() {
+        console.log(PlayerResponse.find({}, {fields:{tagpro:1}}));
+        return PlayerResponse.find({}, {fields:{tagpro:1}});
+    },
     isCaptain: function() {
       if(!Meteor.userId())
         return false;
@@ -236,9 +245,11 @@ if (Meteor.isClient) {
         return AuctionData.findOne({}).State == "Nominating";
     },
     isTurnToNominate: function()
-      {
+      { 
         if(!Meteor.userId())
           return false;
+        players = PlayerResponse.find({}, {fields:{tagpro:1}});
+        Session.set("players", players);
         return (AuctionData.findOne({}).Nominator == Meteor.user().username);
       },
       canBid: function() {
@@ -779,6 +790,8 @@ if (Meteor.isServer) {
         PlayerResponse.insert(obj);
       }
 
+      PlayerResponse.update({}, {$set:{"drafted":false}});
+
       // Load Nominators
       var initialRosterData = {};
       initialRosterData = JSON.parse(Assets.getText('nominations.json'));
@@ -786,6 +799,7 @@ if (Meteor.isServer) {
         var obj = initialRosterData[i];
         Nominators.insert(obj);
       }
+
 
       // Fischer-Yates shuffle
       var shuffle = function(array) {
