@@ -98,6 +98,9 @@
                 {{> rosters}}
             </div>
         </div>
+        <div class="row">
+            {{> captainsnoms}}
+        </div>
         <div class="button" id="vibrate" style="display:hidden"></div>
     </div>
 <script>
@@ -139,6 +142,10 @@
 
 </script>
 </body>
+
+<template name="captainsnoms">
+
+</template>
 
 <template name="admin">
     {{#if admin}}
@@ -269,7 +276,13 @@
 <template name="rosters">
     <div class="row">
         {{#each divisions}}
-            <div class="col-md-2"></div>
+            <div class="col-md-2">
+            <div class="divisionpanel panel panel-default">
+                <div class="panel-heading" style="text-align:right; background-color:{{inRedDivision division}}">
+                {{division}} Division
+                </div>
+            </div>
+            </div>
                 {{> renderteam division=division}}
             <div class="clearfix visible-sm visible-md visible-lg"></div>
         {{/each}}
