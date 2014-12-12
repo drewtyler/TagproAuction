@@ -611,6 +611,8 @@ Meteor.methods({
             // Put him in the roster
             TeamData.update({"teamname": team.teamname, "order" : playerOrder}, {$set: {"name": playerWon, "cost": state.currentBid}});
             TeamNames.update({"teamname": team.teamname}, {$set: {"count":playerOrder, "money":money, "keepermoney":keepermoney}});
+            // Prevent players from searching him
+            PlayerResponse.update({"tagpro":playerWon}, {$set:{"drafted":true}});
             // Check if he's the last one for his team
             if(playerOrder == team.numrosterspots) {
               Nominators.update({"name": state.lastBidder}, {$set: {"rosterfull": true}});
@@ -790,9 +792,6 @@ if (Meteor.isServer) {
         var obj = playerResponseData[i];
         PlayerResponse.insert(obj);
       }
-
-      PlayerResponse.update({}, {$set:{"drafted":false}});
-
       // Load Nominators
       var initialRosterData = {};
       initialRosterData = JSON.parse(Assets.getText('nominations.json'));
@@ -847,6 +846,15 @@ if (Meteor.isServer) {
         var obj = initialRosterData[i];
         TeamData.insert(obj);
       }
+
+
+      PlayerResponse.update({}, {$set:{"drafted":false}}, {multi:true});
+      drafted = TeamData.find({"name":{$ne:""}}).fetch();
+      console.log(drafted);
+      for(var x=0; x<drafted.length; x++) {
+        PlayerResponse.update({tagpro:drafted[x].name}, {$set:{drafted:true}});
+      }
+
     }
 
     Meteor.publish("divisions", function() {return Divisions.find();});

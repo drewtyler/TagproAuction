@@ -308,7 +308,7 @@
                             <script>
 
                                 function initTypeAhead(players) {
-                                    a = players.collection.find({}).fetch();
+                                    a = players.collection.find({drafted:false}).fetch();
                                     names = a.map(function(b) { return b.tagpro })
                                     $('#playerSearch .typeahead').typeahead({
                                       hint: true,
