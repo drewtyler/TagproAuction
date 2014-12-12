@@ -97,3 +97,7 @@ header .hide-completed {
   max-height: 150px;
   overflow-y: auto;
 }
+
+.tooltipster-base {
+  pointer-events: all !important;
+}
