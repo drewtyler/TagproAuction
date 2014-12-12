@@ -63,12 +63,15 @@
         }
         setInterval(checkForAnimation, 1000);
 
+        var currentTarget = null;
         function showPlayerInfo(info) {
             hidePlayerInfo();
             var html = "<ul class=\"list-group\" style=\"width: 500px\">";
             if(typeof info === undefined || info == undefined || info == null){
+                showPlayerInfo(currentTarget);
                 html += "<li class=\"list-group-item\" style=\"color:black\"><strong>Error</strong>: Something has gone wrong.  Does this player exist?  Did this player sign up?</li>";
             } else {
+                currentTarget = info;
                 for(var k in info) {
                     if(k == "_id") {
                         continue;
@@ -80,7 +83,14 @@
                 }
             }
             html += "</ul>";
-            $("#player-info").tooltipster({content:html, autoClose:false, contentAsHTML:true, position:"left"});
+            $("#player-info").tooltipster({content:html, autoClose:true, trigger:"click", contentAsHTML:true, position:"left", functionReady: function() {
+                var offset = parseInt($(".tooltipster-base").css("top"));
+                if(offset < 0) {
+                    $(".tooltipster-base").css("top", "0px");
+                    offset = parseInt($(".tooltipster-arrow-left").css("top")) + offset;
+                    $(".tooltipster-arrow-left").css("top", offset + "px");
+                }
+            }});
             $("#player-info").tooltipster("show");
             if(parseInt($(".tooltipster-base").css("top")) < 0) {
                 $(".tooltipster-base").css("top", "0px");
@@ -415,7 +425,10 @@
                 <h2 class="panel-title">Awaiting nomination from {{currentNominatingPlayer}}</h2>
                 <script>hidePlayerInfo();</script>
             {{else}}
-                <h2 class="panel-title">{{personBeingBidOn}} - <b id="timeRemaining">{{time}}</b></h2>
+                <h2 class="panel-title">
+                    {{personBeingBidOn}} - <b id="timeRemaining">{{time}}</b><br />
+                    <small>Click to show/hide info</small>
+                </h2>
                 <script>showPlayerInfo(currentPlayerInfo);</script>
             {{/if}}
         </div>
