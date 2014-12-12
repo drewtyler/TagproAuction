@@ -50,7 +50,6 @@
             else {
                 if($(".winningTeam").length == 1) {
                     teamname = $(".winningTeam").html().split("] ")[1];
-                    console.log(teamname);
                     animateTeam(teamname);
                     $(".winningTeam").remove();
                 }
@@ -300,6 +299,7 @@
                                     names = a.map(function(b) { return b.tagpro })
                                     $('#playerSearch .typeahead').typeahead({
                                       hint: true,
+                                      highlight:true,
                                       minLength: 1
                                     },
                                     {
@@ -339,6 +339,7 @@
                               </span>
                             </div>
                         </form>
+                            <div class="text-center">
                             <div class="btn-group" style="padding-top:5px;">
                             {{#if canBid}}
                                 {{#each bids}}
@@ -350,6 +351,7 @@
                                 {{/each}}
                             {{/if}}
                               </div>
+                              </div>
                         {{else}}
                             <form class="bid-on-player" role="form">
                             <div class="input-group">
@@ -359,9 +361,11 @@
                                 </span>
                             </div>
                             </form>
+                            <div class="text-center">
                             {{#each bids}}
                                 <button type="btn" class="btn btn-danger bid-button" disabled amount="{{bid}}">{{bid}}</button>
                             {{/each}}
+                            </div>
                         {{/if}}
                     {{/if}}
                 </div>
@@ -409,9 +413,9 @@
                 <h2 class="panel-title">Awaiting nomination from {{currentNominatingPlayer}}</h2>
                 <script>hidePlayerInfo();</script>
             {{else}}
-                <h2 class="panel-title">
+                <h2 class="panel-title" onclick="showPlayerInfo()">
                     {{personBeingBidOn}} - <b id="timeRemaining">{{time}}</b><br />
-                    <small onclick="showPlayerInfo()">Click to show/hide info</small>
+                    <small>Click to show/hide info</small>
                 </h2>
                 {{> renderplayermodal currentPlayerInfo}}
             {{/if}}

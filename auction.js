@@ -342,7 +342,7 @@ if (Meteor.isClient) {
         return false;
       },
       'submit .nominate-player' : function(event)
-      {
+      { 
         var player = event.target.player.value;
         var bid = event.target.amount.value;
         if(!bid) {
@@ -439,6 +439,7 @@ if (Meteor.isClient) {
         return "list-group-item-info"
       }
       else if(messageType == "animate") {
+        new Audio("/sounds/playerWon.mp3")
         return "hidden winningTeam"
       }
       else {
