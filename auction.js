@@ -40,6 +40,9 @@ if (Meteor.isClient) {
     Session.setDefault("bidAccepted", false);
     Session.setDefault("myTurnToNominate", false);
     Session.setDefault('players', []);
+    Session.setDefault("playSound", "");
+    Session.setDefault("teamJustBid", "");
+    
     Meteor.setServerTime();
     Meteor.clearInterval(Meteor.intervalUpdateTimeDisplayed);
     Meteor.intervalUpdateTimeDisplayed = Meteor.setInterval(function() { Session.set('time', new Date().getTime()); }, 50);
@@ -88,7 +91,6 @@ if (Meteor.isClient) {
         return "rgb(134, 198, 230)";
       }
     }
-
   })
 
   Template.renderplayers.helpers({
@@ -147,22 +149,22 @@ if (Meteor.isClient) {
     {
       time : function() {
         if(AuctionData.findOne({}) !== undefined) {
-        var curtime = Session.get('time') + Session.get('serverTimeOffset');
-        var remainingTime = AuctionData.findOne({}).nextExpiryDate;
-        var secsLeft = Math.ceil((remainingTime - curtime)/100)/10;
-        if(secsLeft < 0)
-          Meteor.call("checkForToggle");
-        else {
-          formattedSeconds = String(secsLeft)
-          if(parseInt(secsLeft) == secsLeft) {
-            formattedSeconds += ".0";
+            var curtime = Session.get('time') + Session.get('serverTimeOffset');
+            var remainingTime = AuctionData.findOne({}).nextExpiryDate;
+            var secsLeft = Math.ceil((remainingTime - curtime)/100)/10;
+            if(secsLeft < 0)
+              Meteor.call("checkForToggle");
+            else {
+              formattedSeconds = String(secsLeft)
+              if(parseInt(secsLeft) == secsLeft) {
+                formattedSeconds += ".0";
+              }
+              if(secsLeft < 10) {
+                formattedSeconds = "0"+formattedSeconds;
+              }
+              return formattedSeconds;
+            }
           }
-          if(secsLeft < 10) {
-            formattedSeconds = "0"+formattedSeconds;
-          }
-          return formattedSeconds;
-        }
-      }
       },
       currentNominatingPlayer : function() {
         if(AuctionData.findOne({}) !== undefined)
@@ -202,8 +204,12 @@ if (Meteor.isClient) {
           return false;
         if(AuctionData.findOne({}) !== undefined) {
           nominator = AuctionData.findOne({}).Nominator;
-          Session.set("myTurnToNominate", Meteor.user().username == nominator);
-          return (nominator == Meteor.user().username);
+          myNomination = Meteor.user().username == nominator;
+          if(myNomination) {
+            Session.set("playSound", "myNomination");
+          }
+
+          return myNomination;
         }
       },
       auctionPaused : function() {
@@ -219,14 +225,23 @@ if (Meteor.isClient) {
       }
   });
 
-  Template.display_bidding_options.rendered = function() {
-    if(Session.get("myTurnToNominate"))
-      document.getElementById('my-nomination').play();
-    else if(Session.get("nominationTime"))
-      document.getElementById('nomination').play();
-    else if(Session.set("canBid"))
-      document.getElementById('nomination').play();
-  }
+  Template.playSound.helpers({
+    shouldIPlaySound: function() {
+      if(Session.get("playSound") != "") {
+        console.log("Playing sound: ", Session.get("sound"));
+        return true;
+      }
+      return false;
+    },
+    soundToPlay: function() { 
+      sound = Session.get("playSound")
+      Session.set("playSound", "")
+      return sound;
+    }
+  });
+
+
+
 
   // Bidding options
   Template.display_bidding_options.helpers({
@@ -337,8 +352,8 @@ if (Meteor.isClient) {
       'submit .bid-on-player' : function(event)
       {
         var bid = parseInt(event.target.amount.value);
+        Session.set("playSound", "bid")
         Meteor.call("acceptBid", Meteor.user().username, bid, new Date().getTime());
-        new Audio('sound/bid.mp3').play();
         return false;
       },
       'submit .nominate-player' : function(event)
@@ -353,8 +368,8 @@ if (Meteor.isClient) {
       },
       'click .bid-button' : function(event) {
         var bid = parseInt(event.currentTarget.getAttribute('amount'));
+        Session.set("playSound", "bid")
         Meteor.call("acceptBid", Meteor.user().username, bid, new Date().getTime());
-        new Audio('sound/bid.mp3').play();
         return false;
       }
     }
@@ -364,7 +379,16 @@ if (Meteor.isClient) {
   Template.newmessage.helpers({
     newMessage: function(limit) {
       return Messages.find({}, {sort: {createdAt: -1}, limit:1});
-    }
+    },
+    admin : function() {
+      if(Meteor.user() !== undefined) {
+        admins = ["Dino", "Spiller", "eagles.", "Troball", "Bull"];
+        if(admins.indexOf(Meteor.user().username) >= 0) {
+          return true;
+        }
+      }
+      return false;
+    }    
   });
 
   Template.getmessages.helpers({
@@ -386,12 +410,14 @@ if (Meteor.isClient) {
         return "winningbid";
       }
       else if(messageType == "bid") {
+        Session.setDefault("teamJustBid", "");
         return "list-group-item-warning";
       }
       else if(messageType == "nomination") {
         return "list-group-item-info";
       }
       else if(messageType == "animate") {
+        Session.set("playSound", "playerWon");
         return "hidden winningTeam";
       }
       else if(messageType == "started") {
@@ -399,6 +425,9 @@ if (Meteor.isClient) {
       }
       else if(messageType == "paused") {
         return "list-group-item-danger";
+      }
+      else if(messageType == "sound") {
+        return ""
       }
       else {
         return "";
@@ -439,7 +468,7 @@ if (Meteor.isClient) {
         return "list-group-item-info"
       }
       else if(messageType == "animate") {
-        new Audio("/sounds/playerWon.mp3")
+        Session.set("playSound", "playerWon");
         return "hidden winningTeam"
       }
       else {
@@ -482,7 +511,7 @@ Meteor.methods({
     if(ad.Nominator !== undefined) {
       nominator = ad.Nominator;
       AuctionData.remove({});
-      AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+bidTime, Nominator: nominator});
+      AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+bidTime, Nominator: nominator, startTime:new Date().getTime()});
       var text = "Last nomination removed by " + person;
       Meteor.call("insertMessage", text, new Date());
     }
@@ -529,7 +558,7 @@ Meteor.methods({
     nominator = Meteor.call('pickNominator');
     console.log("nominator is: " + nominator.name);
     AuctionData.remove({});
-    AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+bidTime, Nominator: nominator.name});
+    AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+bidTime, Nominator: nominator.name,  startTime:new Date().getTime()});
     AuctionStatus.update({}, {"status":"Live"});
   },
   getAuctionStatus:function() {
@@ -627,7 +656,7 @@ Meteor.methods({
             CurrentPick.update({}, {$inc:{'pick':1}});
             var text = "Waiting for "+nominator +" to nominate the "+CurrentPick.findOne({}).pick+" pick of the draft.";
             Nominators.update({name:nominator.name}, {$set:{nominated:true}});
-            return AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+10000, Nominator: nominator.name});
+            return AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+10000, Nominator: nominator.name,  startTime:new Date().getTime()});
           }
           lock = 0;
           console.log("Auction unlocked");
@@ -850,7 +879,6 @@ if (Meteor.isServer) {
 
       PlayerResponse.update({}, {$set:{"drafted":false}}, {multi:true});
       drafted = TeamData.find({"name":{$ne:""}}).fetch();
-      console.log(drafted);
       for(var x=0; x<drafted.length; x++) {
         PlayerResponse.update({tagpro:drafted[x].name}, {$set:{drafted:true}});
       }

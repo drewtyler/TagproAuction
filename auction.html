@@ -49,7 +49,7 @@
             }
             else {
                 if($(".winningTeam").length == 1) {
-                    teamname = $(".winningTeam").html().split("] ")[1];
+                    teamname = $(".winningTeam").html().split("] ")[1].split("<span")[0].trim();
                     animateTeam(teamname);
                     $(".winningTeam").remove();
                 }
@@ -72,18 +72,21 @@
 
 <body>
     <div class="hidden">
-        <audio id="nomination">
-            <source src="/nomination.mp3" type="audio/mpeg" />
+        <audio id="sound_nomination">
+            <source src="/sound/nomination.mp3" type="audio/mpeg" />
         </audio>
-        <audio id="my-nomination">
-            <source src="/myNomination.mp3" type="audio/mpeg" />
+        <audio id="sound_myNomination">
+            <source src="/sound/myNomination.mp3" type="audio/mpeg" />
         </audio>
-        <audio id="my-bid">
-            <source src="/myBid.mp3" type="audio/mpeg" />
+        <audio id="sound_bid">
+            <source src="/sound/bid.mp3" type="audio/mpeg" />
         </audio>
-        <audio id="player-won">
-            <source src="/playerWon.mp3" type="audio/mpeg" />
+        <audio id="sound_playerWon">
+            <source src="/sound/playerWon.mp3" type="audio/mpeg" />
         </audio>
+        <audio id="sound_go">
+            <source src="/sound/go.mp3" type="audio/mpeg" />
+        </audio>        
     </div>
     <div class="container-fluid">
         <div class="row" style="padding-top:25px;">
@@ -101,6 +104,7 @@
         <div class="row">
             {{> captainsnoms}}
         </div>
+        {{> playSound}}
         <div class="button" id="vibrate" style="display:hidden"></div>
     </div>
 <script>
@@ -220,14 +224,22 @@
 
 <template name="newmessage">
     {{#each newmessage}}
-        <li class="list-group-item {{messageColor messageType}}" style="word-break: normal;">{{text}}</li>
+        <li class="list-group-item {{messageColor messageType}}" style="word-break: normal;">{{text}}
+        {{#if admin}}
+        <span class="delete pull-right">X</span>
+        {{/if}}
+        </li>
     {{/each}}
 </template>
 
 <template name="getmessages">
     {{> newmessage}}
     {{#each lastXmessages 25}}
-            <li class="list-group-item {{messageColor messageType}}" style="word-break: normal;">{{text}}</li>
+            <li class="list-group-item {{messageColor messageType}}" style="word-break: normal;">{{text}}
+            {{#if admin}}
+                <span class="delete pull-right">X</span>
+            {{/if}}
+            </li>
     {{/each}}
 </template>
 
@@ -289,6 +301,14 @@
     </div>
 </template>
 
+<template name="playSound">
+    {{#if shouldIPlaySound}}
+        <script>
+        $("#sound_{{soundToPlay}}")[0].play();
+        </script>
+    {{/if}}
+</template>
+
 <template name="display_bidding_options">
     {{#if isCaptain}}
     <div class="row">
@@ -306,7 +326,6 @@
                                     <button type="submit" class="btn btn-success">Nominate</button>
                             </form>
                             <script>
-
                                 function initTypeAhead(players) {
                                     a = players.collection.find({drafted:false}).fetch();
                                     names = a.map(function(b) { return b.tagpro })
@@ -423,8 +442,15 @@
 <div class="panel panel-default">
 <div id="player-info" class="panel-heading" style="text-align:center">
             {{#if isNominationTime}}
-                <h2 class="panel-title">Awaiting nomination from {{currentNominatingPlayer}}</h2>
-                <script>hidePlayerInfo();</script>
+                <h2 class="panel-title">Awaiting nomination from {{currentNominatingPlayer}} - <b id="elapsedTime">0</b></h2>
+                <script>
+                setInterval(function() {
+                    time = parseInt($("#elapsedTime").html())
+                    time += 1;
+                    $("#elapsedTime").html(time);
+                }, 1000);
+
+                hidePlayerInfo();</script>
             {{else}}
                 <h2 class="panel-title" onclick="showPlayerInfo()">
                     {{personBeingBidOn}} - <b id="timeRemaining">{{time}}</b><br />
