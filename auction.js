@@ -451,7 +451,6 @@ if (Meteor.isClient) {
         return "list-group-item-info"
       }
       else if(messageType == "animate") {
-        Session.set("playSound", "playerWon");
         return "hidden winningTeam"
       }
       else {
@@ -903,15 +902,16 @@ if (Meteor.isServer) {
       console.log("pickNominator: captain: " + captain.name + " rosterfull? " + captain.rosterfull);
       console.log("pickNominator: newnextorder: " + newnextorder);
       Nominators.update({"name":"nextInOrder"}, {$set: {"order": newnextorder}});
-
       // loop through nominators in order until we find one without a full roster
       if(captain.rosterfull) {
         return Meteor.call('pickNominator');
       }
 
+      nextNominator = Nominators.findOne({"order":newnextorder});
       var text = "Waiting for "+captain.name +" to nominate pick "+CurrentPick.findOne({}).pick+" of the draft.";
       Meteor.call("insertMessage", text, new Date());
-      console.log("is Message working?");
+      var text = nextNominator.name +" is nominating next.";
+      Meteor.call("insertMessage", text, new Date());
       return captain;
     }
   });

@@ -205,7 +205,7 @@
                     {{> loginButtons}}
                     <div class="checkbox" style="padding-left:15px">
                         <label>
-                          <input id="enableSounds" type="checkbox"> Play Sounds?
+                          <input id="enableSounds" type="checkbox" checked> Play Sounds?
                         </label>
                       </div>
                 </div>
@@ -461,6 +461,9 @@
                 }, 1000);
 
                 hidePlayerInfo();</script>
+                <script>
+                    $("#sound_go")[0].play();
+                    </script>
             {{else}}
                 <h2 class="panel-title" onclick="showPlayerInfo()">
                 {{#if personBeingBidOn}}
