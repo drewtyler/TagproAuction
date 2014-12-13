@@ -901,7 +901,7 @@ if (Meteor.isServer) {
       console.log("pickNominator: nextOrder: " + nextInOrder.nextorder);
       console.log("pickNominator: captain: " + captain.name + " rosterfull? " + captain.rosterfull);
       console.log("pickNominator: newnextorder: " + newnextorder);
-      Nominators.update({"name":"nextInOrder"}, {$set: {"order": newnextorder}});
+      Nominators.update({"name":"nextInOrder"}, {$set: {"nextorder": newnextorder}});
       // loop through nominators in order until we find one without a full roster
       if(captain.rosterfull) {
         return Meteor.call('pickNominator');
