@@ -178,7 +178,9 @@ if (Meteor.isClient) {
         }
       },
       currentPlayerInfo: function() {
+        if(AuctionData.findOne({}) !== undefined) {
         return PlayerResponse.findOne({"tagpro":AuctionData.findOne({}).currentPlayer});
+      }
       },
       bidAmount :function()
       {
@@ -213,15 +215,19 @@ if (Meteor.isClient) {
         }
       },
       auctionPaused : function() {
-        status = AuctionStatus.findOne({}).status;
-        return (status == "Paused" || status == "Not Started");
+        if(AuctionStatus.fineOne({}) !== undefined) {
+          status = AuctionStatus.findOne({}).status;
+          return (status == "Paused" || status == "Not Started");
+        }
     },
       auctionMessage: function() {
+      if(AuctionStatus.findOne({}) !== undefined) {
         status = AuctionStatus.findOne({}).status;
         if(status == "Paused")
           return "Auction is paused"
         else
           return "Auction has not started"
+      }
       }
   });
 
@@ -298,6 +304,7 @@ if (Meteor.isClient) {
       },
       bids: function()
       {
+        if(AuctionData.findOne({}) !== undefined) {
         var bids = [];
         var currentBid = parseInt(AuctionData.findOne({}).currentBid);
         bids.push({'bid':currentBid+1});
@@ -305,6 +312,7 @@ if (Meteor.isClient) {
         bids.push({'bid':currentBid+5});
         bids.push({'bid':currentBid+10});
         return bids;
+      }
       }
   });
 
@@ -894,10 +902,8 @@ if (Meteor.isServer) {
       var nextInOrder = Nominators.findOne({"name":"nextInOrder"});
       var nextOrder = nextInOrder.nextorder;
       var captain = Nominators.findOne({"order":nextOrder});
-      var newnextorder = nextOrder+1;
-      if(nextOrder == 20) {
-        newnextorder = 0;
-      }
+      var newnextorder = (nextOrder+1) % 20;
+      
       console.log("pickNominator: nextOrder: " + nextInOrder.nextorder);
       console.log("pickNominator: captain: " + captain.name + " rosterfull? " + captain.rosterfull);
       console.log("pickNominator: newnextorder: " + newnextorder);

@@ -456,14 +456,12 @@
                 <script>
                 setInterval(function() {
                     time = parseInt($("#elapsedTime").html())
-                    time += 1;
+                    time = time+1;
                     $("#elapsedTime").html(time);
                 }, 1000);
 
-                hidePlayerInfo();</script>
-                <script>
-                    $("#sound_go")[0].play();
-                    </script>
+                hidePlayerInfo();
+                </script>
             {{else}}
                 <h2 class="panel-title" onclick="showPlayerInfo()">
                 {{#if personBeingBidOn}}
@@ -472,6 +470,10 @@
                 {{/if}}
                 </h2>
                 {{> renderplayermodal currentPlayerInfo}}
+
+                <script>
+                    $("#sound_go")[0].play();
+                </script>
             {{/if}}
         </div>
         {{#if isNominationTime}}
