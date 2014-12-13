@@ -894,10 +894,7 @@ if (Meteor.isServer) {
       var nextInOrder = Nominators.findOne({"name":"nextInOrder"});
       var nextOrder = nextInOrder.nextorder;
       var captain = Nominators.findOne({"order":nextOrder});
-      var newnextorder = nextOrder+1;
-      if(nextOrder == 20) {
-        newnextorder = 0;
-      }
+      var newnextorder = (nextOrder+1) % 20;
       console.log("pickNominator: nextOrder: " + nextInOrder.nextorder);
       console.log("pickNominator: captain: " + captain.name + " rosterfull? " + captain.rosterfull);
       console.log("pickNominator: newnextorder: " + newnextorder);
