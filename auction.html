@@ -81,6 +81,18 @@
             checkForAnimation();
         }, 1000);
 
+
+        var oldA;
+        function startTimer() {
+            if(oldA) { clearInterval(oldA)}
+            a = setInterval(function() {
+                time = parseInt($("#elapsedTime").html())
+                time = time+1;
+                $("#elapsedTime").html(time);
+            }, 1000);
+            oldA = a;
+        }
+
     </script>
 </head>
 
@@ -454,12 +466,7 @@
             {{#if isNominationTime}}
                 <h2 class="panel-title">Awaiting nomination from {{currentNominatingPlayer}} - <b id="elapsedTime">0</b></h2>
                 <script>
-                setInterval(function() {
-                    time = parseInt($("#elapsedTime").html())
-                    time = time+1;
-                    $("#elapsedTime").html(time);
-                }, 1000);
-
+                startTimer();
                 hidePlayerInfo();
                 </script>
             {{else}}
