@@ -375,22 +375,6 @@ if (Meteor.isClient) {
     }
   );
 
-
-  Template.newmessage.helpers({
-    newMessage: function(limit) {
-      return Messages.find({}, {sort: {createdAt: -1}, limit:1});
-    },
-    admin : function() {
-      if(Meteor.user() !== undefined) {
-        admins = ["Dino", "Spiller", "eagles.", "Troball", "Bull"];
-        if(admins.indexOf(Meteor.user().username) >= 0) {
-          return true;
-        }
-      }
-      return false;
-    }    
-  });
-
   Template.getmessages.helpers({
     lastXmessages: function(limit) {
       return Messages.find({}, {sort: {createdAt: -1}, limit:parseInt(limit)});
@@ -410,7 +394,6 @@ if (Meteor.isClient) {
         return "winningbid";
       }
       else if(messageType == "bid") {
-        Session.setDefault("teamJustBid", "");
         return "list-group-item-warning";
       }
       else if(messageType == "nomination") {
@@ -426,8 +409,8 @@ if (Meteor.isClient) {
       else if(messageType == "paused") {
         return "list-group-item-danger";
       }
-      else if(messageType == "sound") {
-        return ""
+      else if(messageType == "bidIndication") {
+         return "hidden justBid"
       }
       else {
         return "";
@@ -437,7 +420,7 @@ if (Meteor.isClient) {
   // Messages
   Template.messages.helpers({
     messages: function() {
-      return Messages.find({}, {sort: {createdAt: -1}, limit:25});
+      return Messages.find({}, {sort: {createdAt: -1}, limit:50});
     },
     getMessageText: function() {
       return Messages.findOne({}, {sort: {createdAt: -1}}).text;
@@ -744,6 +727,7 @@ Meteor.methods({
                 Meteor.call("insertMessage",
                             bidder + " bids " + amount + " on " + AuctionData.findOne({}).currentPlayer,
                             new Date(), "bid");
+                Meteor.call("insertMessage", team.teamname, new Date(), "bidIndication");                
                 console.log("acceptBid: inserted bid");
                 // Do we need to give some time back?
                 if(parseInt(secondsLeft) < 15000) {

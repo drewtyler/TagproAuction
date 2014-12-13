@@ -25,22 +25,6 @@ body {
 	background-color: rgba(235, 126, 126, .50);
 }
 
-.divisionpanel>div:nth-child(0) {
-	background-color: rgb(235, 126, 126);
-}
-
-.divisionpanel>div:nth-child(1) {
-	background-color: rgb(235, 126, 126);
-}
-
-.divisionpanel>div:nth-child(2) {
-	background-color: rgb(134, 198, 230);
-}
-
-.divisionpanel>div:nth-child(3) {
-	background-color: rgb(134, 198, 230);
-}
-
 .winningbid {
 	font-weight:bold !important;
 	background-color:rgba(0, 100, 0, 0.8) !important;

@@ -43,22 +43,15 @@
         }
 
         function checkForAnimation() {
-            if(firstLiCheck == 0) {
+            if($(".winningTeam").length == 1) {
+                teamname = $(".winningTeam").html().split("] ")[1].split("<span")[0].trim();
+                animateTeam(teamname);
                 $(".winningTeam").remove();
-                firstLiCheck = 1;
             }
             else {
-                if($(".winningTeam").length == 1) {
-                    teamname = $(".winningTeam").html().split("] ")[1].split("<span")[0].trim();
-                    animateTeam(teamname);
-                    $(".winningTeam").remove();
-                }
-                else {
-                    $(".winningTeam").remove();
-                }
+                $(".winningTeam").remove();
             }
         }
-        setInterval(checkForAnimation, 1000);
 
         function showPlayerInfo() {
             $("#playerModal").modal("show");
@@ -66,6 +59,27 @@
         function hidePlayerInfo() {
             $("#playerModal").modal("hide");
         }
+
+
+        var highlightColor = "rgb(255, 245, 0)";
+        var blueColor = "rgb(134, 198, 230)";
+        var redColor = "rgb(235, 126, 126)";
+        function showLastBidder() {
+            if($(".justBid").length > 0) {
+                teamname = $(".justBid").first().html().split("] ")[1].split("<span")[0].trim();
+                var team = $("#team_"+teamname.split(" ").join("_"));
+                original_color = team.css("background-color");
+                team.css("background-color", highlightColor);
+                setTimeout(function() {team.css("background-color", original_color)}, 3000);
+                $(".justBid").remove();
+            }
+        }
+
+
+        setInterval(function() {
+            showLastBidder();
+            checkForAnimation();
+        }, 1000);
 
     </script>
 </head>
@@ -184,11 +198,16 @@
     <div class="row">
         <div class="col-sm-10 col-sm-offset-1 col-xs-12">
             <div class="panel panel-default">
-                <div class="panel-heading">
+                <div class="panel-heading form-inline">
                     {{#if isCaptain}}
                         <p class="pull-right">Balance: <b>{{getBalance}} ({{getKeepermoney}})</b></p>
                     {{/if}}
                     {{> loginButtons}}
+                    <div class="checkbox" style="padding-left:15px">
+                        <label>
+                          <input id="enableSounds" type="checkbox"> Play Sounds?
+                        </label>
+                      </div>
                 </div>
             </div>
         </div>
@@ -222,19 +241,9 @@
     </div>
 </template>
 
-<template name="newmessage">
-    {{#each newmessage}}
-        <li class="list-group-item {{messageColor messageType}}" style="word-break: normal;">{{text}}
-        {{#if admin}}
-        <span class="delete pull-right">X</span>
-        {{/if}}
-        </li>
-    {{/each}}
-</template>
 
 <template name="getmessages">
-    {{> newmessage}}
-    {{#each lastXmessages 25}}
+    {{#each lastXmessages 50}}
             <li class="list-group-item {{messageColor messageType}}" style="word-break: normal;">{{text}}
             {{#if admin}}
                 <span class="delete pull-right">X</span>
@@ -242,7 +251,6 @@
             </li>
     {{/each}}
 </template>
-
 
 <template name="renderplayers">
     {{#each players teamname ./teamname}}
@@ -304,7 +312,9 @@
 <template name="playSound">
     {{#if shouldIPlaySound}}
         <script>
-        $("#sound_{{soundToPlay}}")[0].play();
+        if($("#enableSounds").is(":checked")) {
+            $("#sound_{{soundToPlay}}")[0].play();
+        }
         </script>
     {{/if}}
 </template>
@@ -453,8 +463,10 @@
                 hidePlayerInfo();</script>
             {{else}}
                 <h2 class="panel-title" onclick="showPlayerInfo()">
+                {{#if personBeingBidOn}}
                     {{personBeingBidOn}} - <b id="timeRemaining">{{time}}</b><br />
                     <small>Click to show/hide info</small>
+                {{/if}}
                 </h2>
                 {{> renderplayermodal currentPlayerInfo}}
             {{/if}}
