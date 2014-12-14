@@ -167,7 +167,7 @@
 
         var dirtyButtons = 0;
         var oldButtonTimeout = 0;
-        setInterval(function() {
+        function checkForButtons() {
             if($(".buttontime").length > 0 && !dirtyButtons) {
                 dirtyButtons = 1;
                 if(oldButtonTimeout) { clearTimeout(oldButtonTimeout)}
@@ -177,8 +177,8 @@
                     dirtyButtons = 0;
                 }, 2000);
             }
-        }, 500);
-
+        }
+    
         $("#messageSubmit").submit(function() {
             if ($.trim($("#messagetext").val()) === "") {
                 return false;
@@ -429,6 +429,11 @@
                                 {{#each bids}}
                                  <button type="btn" class="btn btn-primary bid-button buttontime" disabled amount="{{bid}}">{{bid}}</button>
                                 {{/each}}
+
+                                <script>
+                                checkForButtons();
+                                </script>
+
                             {{else}}
                                 {{#each bids}}
                                     <button type="btn" class="btn btn-primary bid-button" disabled amount="{{bid}}">{{bid}}</button>
