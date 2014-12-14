@@ -351,7 +351,7 @@ if (Meteor.isClient) {
   Template.admin.helpers({
     admin : function() {
       if(Meteor.user() !== undefined) {
-        admins = ["Dino", "Spiller", "eagles.", "Troball", "Bull"];
+        admins = ["eagles.", "Bull"];
         if(admins.indexOf(Meteor.user().username) >= 0) {
           return true;
         }
@@ -398,7 +398,7 @@ if (Meteor.isClient) {
     },
     admin : function() {
       if(Meteor.user() !== undefined) {
-        admins = ["Dino", "Spiller", "eagles.", "Troball", "Bull"];
+        admins = ["eagles.", "Bull"];
         if(admins.indexOf(Meteor.user().username) >= 0) {
           return true;
         }
@@ -449,7 +449,7 @@ if (Meteor.isClient) {
     },
     admin : function() {
       if(Meteor.user() !== undefined) {
-        admins = ["Dino", "Spiller", "eagles.", "Troball", "Bull"];
+        admins = ["eagles.", "Bull"];
         if(admins.indexOf(Meteor.user().username) >= 0) {
           return true;
         }
@@ -503,7 +503,7 @@ Meteor.methods({
     Messages.remove(messageid);
   },
   isAdmin: function(player) {
-    admins = ["Dino", "Spiller", "eagles.", "Troball", "Bull"];
+    admins = ["eagles.", "Bull"];
     if(admins.indexOf(player) >= 0)
       return true;
     return false;
@@ -536,6 +536,10 @@ Meteor.methods({
     }
   },
   resumeAuction : function (person) {
+    // Make it so you can't resume from nominating state
+    if(AuctionData.findOne({State:"Nominating"}) !== undefined) {
+      return false;      
+    }
       pa = PausedAuction.findOne();
       pa.nextExpiryDate = new Date().getTime() + additionTime;
       delete pa._id;

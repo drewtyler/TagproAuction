@@ -65,20 +65,29 @@
         var blueColor = "rgb(134, 198, 230)";
         var redColor = "rgb(235, 126, 126)";
         function showLastBidder() {
-            if($(".justBid").length > 0) {
-                teamname = $(".justBid").first().html().split("] ")[1].split("<span")[0].trim();
+            if($(".justBid").length == 1) {
+                var teamname = $(".justBid").first().html().split("] ")[1].split("<span")[0].trim();
+                $(".justBid").remove();
                 var team = $("#team_"+teamname.split(" ").join("_"));
-                var original_color = team.css("background-color");
                 team.css("background-color", highlightColor);
-                setTimeout(function() {team.css("background-color", original_color)}, 3000);
+                function resetColor() {
+                    var original_color = $("#team_Capitalists").closest(".row").find("div .division-header").css("background-color")
+                    team.css("background-color", original_color);
+                    $(".justBid").remove();
+                }
+                setTimeout(resetColor, 3000);
+            }
+            else {
                 $(".justBid").remove();
             }
         }
 
 
         setInterval(function() {
-            showLastBidder();
-            checkForAnimation();
+            setTimeout(function() {
+                showLastBidder();
+                checkForAnimation();
+            }, 250);
         }, 1000);
 
         var oldA;
@@ -159,12 +168,14 @@
 
 
         var dirtyButtons = 0;
+        var oldButtonTimeout = 0;
         setInterval(function() {
             if($(".buttontime").length > 0 && !dirtyButtons) {
                 dirtyButtons = 1;
-                setTimeout(function() {
+                if(oldButtonTimeout) { clearTimeout(oldButtonTimeout)}
+                oldButtonTimeout = setTimeout(function() {
                     $(".buttontime").prop("disabled", false);
-                    $(".buttontime").removeClass("buttontime")
+                    $(".buttontime").removeClass("buttontime");
                     dirtyButtons = 0;
                 }, 2000);
             }
@@ -320,19 +331,19 @@
 </template>
 
 <template name="rosters">
-    <div class="row">
         {{#each divisions}}
+    <div class="row">
             <div class="col-md-2">
             <div class="divisionpanel panel panel-default">
-                <div class="panel-heading" style="text-align:right; background-color:{{inRedDivision division}}">
+                <div class="panel-heading division-header" style="text-align:right; background-color:{{inRedDivision division}}">
                 {{division}} Division
                 </div>
             </div>
             </div>
                 {{> renderteam division=division}}
             <div class="clearfix visible-sm visible-md visible-lg"></div>
-        {{/each}}
     </div>
+        {{/each}}
 </template>
 
 <template name="playSound">
