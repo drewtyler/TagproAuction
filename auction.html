@@ -186,6 +186,16 @@
         });
 
 
+        function playSounds(soundToPlay) {
+            console.log(soundToPlay);
+            if(soundToPlay !== 'undefined') { 
+                if($("#enableSounds").is(":checked")) {
+                    $("#sound_"+soundToPlay)[0].play();
+                }
+            }
+        }
+
+
 </script>
 </body>
 
@@ -209,7 +219,7 @@
                         <br>
                         <form class="form-group add-nomination" role="form">
                             <div class="input-group" style="padding-top:10px;">
-                                <input type="text" name="player" class="form-control" placeholder="Nominate Player" style="" />
+                                <input type="text" name="player" class="form-control" placeholder="Nominate Player" autocomplete="off" style="" />
                                 <span class="input-group-btn">
                                     <button type="submit" class="btn btn-success">Nominate</button>
                                 </span>
@@ -288,7 +298,7 @@
 
 <template name="renderplayers">
     {{#each players teamname ./teamname}}
-        <li class="list-group-item" style="padding: 2px 2px; height:25px">
+        <li class="list-group-item" style="padding: 2px 2px; height:25px; white-space:nowrap; overflow:hidden;">
             <span style="width:20px; display:inline-block;">
             {{#if captain}}
                 <img src="/captain.png">
@@ -346,9 +356,7 @@
 <template name="playSound">
     {{#if shouldIPlaySound}}
         <script>
-        if($("#enableSounds").is(":checked")) {
-            $("#sound_{{soundToPlay}}")[0].play();
-        }
+        playSounds('{{soundToPlay}}');
         </script>
     {{/if}}
 </template>
@@ -363,7 +371,7 @@
                         {{#if isTurnToNominate}}
                             <form class="form-group nominate-player" role="form">
                                 <div id="playerSearch" class="" style="display:inline">
-                                    <input type="text" name="player" class="typeahead form-control" placeholder="Input a player name" />
+                                    <input type="text" name="player" class="typeahead form-control"  autocomplete="off" placeholder="Input a player name" />
                                     </div>
                                     <input type="text" name="amount" id="initialBid" class="form-control" placeholder="Initial bid (blank = 0)" style="width:auto; display:inline;" />
 
@@ -486,7 +494,7 @@
 <div class="panel panel-default">
 <div id="player-info" class="panel-heading" style="text-align:center">
             {{#if isNominationTime}}
-                <h2 class="panel-title">Awaiting nomination from {{currentNominatingPlayer}} - <b id="elapsedTime">0</b></h2>
+                <h2 class="panel-title">Awaiting nomination from {{currentNominatingPlayer}} - <b id="elapsedTime">0</b><br /></h2>
                 <script>
                 startTimer();
                 hidePlayerInfo();
@@ -501,11 +509,14 @@
                 {{> renderplayermodal currentPlayerInfo}}
 
                 <script>
-                    $("#sound_go")[0].play();
+                    playSounds("go");
                 </script>
             {{/if}}
         </div>
         {{#if isNominationTime}}
+            <div class="panel-body" style="text-align:center">
+                <h4 class="panel-title">{{getsnarkymessage}} {{currentNominatingPlayer}}</h4>
+                </div>
         {{else}}
             <div class="panel-body" style="text-align:center">
             {{#if auctionPaused}}

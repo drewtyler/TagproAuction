@@ -221,21 +221,28 @@ if (Meteor.isClient) {
           status = AuctionStatus.findOne({}).status;
           return (status == "Paused" || status == "Not Started");
         }
-    },
-      auctionMessage: function() {
-      if(AuctionStatus.findOne({}) !== undefined) {
-        status = AuctionStatus.findOne({}).status;
-        if(status == "Paused")
-          return "Auction is paused"
-        else
-          return "Auction has not started"
-      }
+      },
+      auctionMessage: function() 
+      {
+        if(AuctionStatus.findOne({}) !== undefined) {
+          status = AuctionStatus.findOne({}).status;
+          if(status == "Paused")
+            return "Auction is paused"
+          else
+            return "Auction has not started"
+        }
+      },
+      getsnarkymessage: function() 
+      {
+        options = ["Hurry it up ", "We don't have all day, ", "Getting old here, ", "Take your time ", "No rush ", "C'mon "]
+        idx = Math.floor(Math.random() * options.length)
+        return options[idx];
       }
   });
 
   Template.playSound.helpers({
     shouldIPlaySound: function() {
-      if(Session.get("playSound") != "") {
+      if(Session.get("playSound") != "" && Session.get("playSound") !== undefined) {
         console.log("Playing sound: ", Session.get("sound"));
         return true;
       }
@@ -377,10 +384,10 @@ if (Meteor.isClient) {
       'submit .bid-on-player' : function(event)
       {
         var bid = parseInt(event.target.amount.value);
-        Session.set("playSound", "bid")
         if(bid >= 0) {
           Meteor.call("acceptBid", Meteor.user().username, bid, new Date().getTime());
         }
+        Session.set("playSound", "bid")
         return false;
       },
       'submit .nominate-player' : function(event)
@@ -395,10 +402,10 @@ if (Meteor.isClient) {
       },
       'click .bid-button' : function(event) {
         var bid = parseInt(event.currentTarget.getAttribute('amount'));
-        Session.set("playSound", "bid")
         if(bid >= 0) {
           Meteor.call("acceptBid", Meteor.user().username, bid, new Date().getTime());
         }
+        Session.set("playSound", "bid")
         return false;
       }
     }
