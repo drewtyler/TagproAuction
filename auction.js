@@ -17,9 +17,10 @@ PreviousAuctionData = new Mongo.Collection("previousauctiondata")
 
 PlayerResponse = new Mongo.Collection("playerResponse");
 
-var bidTime = 30000;
-var additionTime = 20000;
+var bidTime = 25000;
+var additionTime = 15000;
 var lock = 0;
+var bidTimeout = 0;
 
 Meteor.setServerTime = function() {
   Meteor.call("getServerTime", function(error, serverMS) {
@@ -152,8 +153,9 @@ if (Meteor.isClient) {
             var curtime = Session.get('time') + Session.get('serverTimeOffset');
             var remainingTime = AuctionData.findOne({}).nextExpiryDate;
             var secsLeft = Math.ceil((remainingTime - curtime)/100)/10;
-            if(secsLeft < 0)
-              Meteor.call("checkForToggle");
+            if(secsLeft < 0) {
+              //Meteor.call("checkForToggle");
+            }
             else {
               formattedSeconds = String(secsLeft)
               if(parseInt(secsLeft) == secsLeft) {
@@ -589,15 +591,6 @@ Meteor.methods({
       console.log("Checking toggle state");
 
       if(Meteor.isServer) {
-        // Get current state
-        // Meteor doesn't implement collection.findAndModify, which would likely be better to use.
-        if(!lock) {
-          lock = 1;
-        }
-        console.log("Lock: ", lock);
-
-        if(lock == 1) {
-          console.log("Auction locked");
           var state = AuctionData.findOne();
 
           if(state !== undefined && state.State == "Nominating") {
@@ -614,12 +607,21 @@ Meteor.methods({
 
             // Log message
             Meteor.call("insertMessage", state.Nominator + " nominates " + playerNominated + " with an initial bid of " + bid, new Date(), "nomination");
+            Meteor.call("insertMessage", team.teamname, "bidIndication");
 
             BidHistory.insert({bidder: state.Nominator, amount: bid, player: playerNominated, createdAt: new Date().getTime(), secondsLeft:bidTime});
             // Start bidding baby
             //PreviousAuctionData.remove({});
             //PreviousAuctionData.insert(AuctionData.find({}));
             AuctionData.remove({});
+
+            if(bidTimeout) {
+              Meteor.clearTimeout(bidTimeout);
+            }
+            bidTimeout = Meteor.setTimeout(function() {
+              Meteor.call("checkForToggle");
+            }, bidTime);
+
             return AuctionData.insert({State: "Bidding", nextExpiryDate: new Date().getTime()+bidTime, currentBid: bid, currentPlayer: playerNominated, lastBidder: state.Nominator, Nominator:state.Nominator});
           }
           else if (state !== undefined)
@@ -674,9 +676,7 @@ Meteor.methods({
             Nominators.update({name:nominator.name}, {$set:{nominated:true}});
             return AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+10000, Nominator: nominator.name,  startTime:new Date().getTime()});
           }
-          lock = 0;
-          console.log("Auction unlocked");
-        }
+        
     }
   },
   checkForToggle: function() {
@@ -763,9 +763,19 @@ Meteor.methods({
                 Meteor.call("insertMessage", team.teamname, new Date(), "bidIndication");                
                 console.log("acceptBid: inserted bid");
                 // Do we need to give some time back?
+                timeoutTime = secondsLeft;
                 if(parseInt(secondsLeft) < 15000) {
                   AuctionData.update({State: "Bidding"}, {$set: {nextExpiryDate: new Date().getTime()+additionTime}});
+                  timeoutTime = additionTime;
                 }
+
+
+                if(bidTimeout) {
+                  Meteor.clearTimeout(bidTimeout);
+                }
+                bidTimeout = Meteor.setTimeout(function() {
+                  Meteor.call("checkForToggle");
+                }, timeoutTime);
 
                 return true;
 
@@ -942,7 +952,7 @@ if (Meteor.isServer) {
       nextNominator = Nominators.findOne({"order":newnextorder});
       var text = "Waiting for "+captain.name +" to nominate pick "+CurrentPick.findOne({}).pick+" of the draft.";
       Meteor.call("insertMessage", text, new Date());
-      var text = nextNominator.name +" is nominating next.";
+      var text = nextNominator.name +" is nominating after "+ captain.name;
       Meteor.call("insertMessage", text, new Date());
       return captain;
     }
