@@ -234,7 +234,7 @@ if (Meteor.isClient) {
       },
       getsnarkymessage: function() 
       {
-        options = ["Hurry it up ", "We don't have all day, ", "Getting old here, ", "Take your time ", "No rush ", "C'mon "]
+        options = ["Hurry it up ", "We don't have all day, ", "Waiting on you ", "Getting old here, ", "Take your time ", "No rush ", "C'mon ", "Need some help "]
         idx = Math.floor(Math.random() * options.length)
         return options[idx];
       }
@@ -293,13 +293,18 @@ if (Meteor.isClient) {
       },
       sufficientFunds: function()
       {
-        if(Meteor.userId() !== undefined && Meteor.user() !== undefined && AuctionData.findOne({}) !== undefined) {
+        if(Meteor.user() !== undefined) {
           var team = TeamNames.findOne({"captain":Meteor.user().username});
           var balance = parseInt(team.money);
           //console.log(team, keepers, balance);
-          if(Meteor.call("isKeeper", team.captain, AuctionData.findOne({}).currentPlayer)) {
-              balance += parseInt(team.keepermoney);
+          //console.log(Meteor.user().username);
+          //console.log("Current balance w/o keeper: ", balance);
+          //console.log(AuctionData.findOne({}), AuctionData.findOne({}).currentPlayer);
+          keepers = Keepers.findOne({'captain':Meteor.user().username}).keepers;
+          if(keepers.indexOf(AuctionData.findOne({}).currentPlayer) >= 0 || Meteor.call("isKeeper", team.captain, AuctionData.findOne({}).currentPlayer)) {
+              balance += parseInt(team.keepermoney);            
           }
+          console.log("Current balance w/ keeper: ", balance);
           var minBid = parseInt(AuctionData.findOne({}).currentBid)+1;
 
           if(balance < minBid) {
@@ -318,16 +323,20 @@ if (Meteor.isClient) {
         var currentBid = parseInt(AuctionData.findOne({}).currentBid);
         var team = TeamNames.findOne({"captain":Meteor.user().username});
         money = parseInt(team.money) + parseInt(team.keepermoney);
-        if(currentBid+1 < money) {
+        console.log(Meteor.user().username, " has ", money);
+        if(currentBid+1 <= money) {
           bids.push({'bid':currentBid+1});
         }
-        if(currentBid+2 < money) {
+        if(currentBid+2 <= money) {
           bids.push({'bid':currentBid+2});
         }
-        if(currentBid+5 < money) {
+        if(currentBid+3 <= money) {
+          bids.push({'bid':currentBid+3});
+        }
+        if(currentBid+5 <= money) {
           bids.push({'bid':currentBid+5});
         }
-        if(currentBid+10 < money) {
+        if(currentBid+10 <= money) {
           bids.push({'bid':currentBid+10});
         }
         return bids;
@@ -946,7 +955,6 @@ if (Meteor.isServer) {
       var nextOrder = nextInOrder.nextorder;
       var captain = Nominators.findOne({"order":nextOrder});
       var newnextorder = (nextOrder+1) % 20;
-
       console.log("pickNominator: nextOrder: " + nextInOrder.nextorder);
       console.log("pickNominator: captain: " + captain.name + " rosterfull? " + captain.rosterfull);
       console.log("pickNominator: newnextorder: " + newnextorder);
