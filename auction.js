@@ -607,7 +607,7 @@ Meteor.methods({
 
             // Log message
             Meteor.call("insertMessage", state.Nominator + " nominates " + playerNominated + " with an initial bid of " + bid, new Date(), "nomination");
-            Meteor.call("insertMessage", team.teamname, "bidIndication");
+            Meteor.call("insertMessage", team.teamname, new Date().getTime(), "bidIndication");
 
             BidHistory.insert({bidder: state.Nominator, amount: bid, player: playerNominated, createdAt: new Date().getTime(), secondsLeft:bidTime});
             // Start bidding baby
