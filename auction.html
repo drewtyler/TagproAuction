@@ -68,7 +68,7 @@
             if($(".justBid").length > 0) {
                 teamname = $(".justBid").first().html().split("] ")[1].split("<span")[0].trim();
                 var team = $("#team_"+teamname.split(" ").join("_"));
-                original_color = team.css("background-color");
+                var original_color = team.css("background-color");
                 team.css("background-color", highlightColor);
                 setTimeout(function() {team.css("background-color", original_color)}, 3000);
                 $(".justBid").remove();
@@ -80,7 +80,6 @@
             showLastBidder();
             checkForAnimation();
         }, 1000);
-
 
         var oldA;
         function startTimer() {
@@ -158,6 +157,7 @@
           };
         };
 
+
         var dirtyButtons = 0;
         setInterval(function() {
             if($(".buttontime").length > 0 && !dirtyButtons) {
@@ -169,6 +169,13 @@
                 }, 2000);
             }
         }, 500);
+
+        $("#messageSubmit").submit(function() {
+            if ($.trim($("#messagetext").val()) === "") {
+                return false;
+            }
+        });
+
 
 </script>
 </body>
@@ -199,6 +206,14 @@
                                 </span>
                             </div>
                         </form>
+                        <form class="form-group set-bidtime" role="form">
+                            <div class="input-group">
+                                <input type="text" name="bidtime" class="form-control" placeholder="Set initial bid time" style="" />
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-success">Set</button>
+                                </span>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -226,16 +241,15 @@
     </div>
 </template>
 
-
 <template name="messages">
     <div class="row">
         <div class="col-sm-10 col-sm-offset-1 col-xs-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     {{#if canSendMessage}}
-                        <form class="new-post">
+                        <form class="new-post" id="messageSubmit">
                             <div class="input-group">
-                                <input type="text" class="form-control" name="text" placeholder="Type a message">
+                                <input type="text" class="form-control" id="messagetext" name="text" placeholder="Type a message">
                                 <span class="input-group-btn">
                                     <button class="btn btn-primary" type="submit">Send</button>
                                 </span>

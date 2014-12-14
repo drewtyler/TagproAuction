@@ -11,12 +11,12 @@
   {"teamname":"Cyber Ballies", "division" : "Pacific", "money" : 57, "keepermoney":0, "captain" : "Bull", "numrosterspots":6, "count" : 2, "order":4},
   {"teamname":"Tears for Spheres", "division" : "Central", "money" : 44, "keepermoney":0, "captain" : "Troball", "numrosterspots":6, "count" : 2, "order":0},
   {"teamname":"Capitalists", "division" : "Central", "money" : 100, "keepermoney":10, "captain" : "eagles.", "numrosterspots":6, "count" : 1, "order":1},
-  {"teamname":"MBM", "division" : "Central", "money" : 9, "keepermoney":10, "captain" : "KPow", "numrosterspots":4, "count" : 3, "order":2},
+  {"teamname":"MBM", "division" : "Central", "money" : 9, "keepermoney":10, "captain" : "KPow", "numrosterspots":4, "count" : 2, "order":2},
   {"teamname":"Lagprone", "division" : "Central", "money" : 54, "keepermoney":0, "captain" : "Ballymandias", "numrosterspots":6, "count" : 2, "order":3},
   {"teamname":"4Os", "division" : "Central", "money" : 29, "keepermoney":10, "captain" : "Jagdpanther", "numrosterspots":4, "count" : 3, "order":4},
   {"teamname":"ALL CAPS", "division" : "Northeast", "money" : 82, "keepermoney":0, "captain" : "YOSSARIAN", "numrosterspots":6, "count" : 2, "order":0},
   {"teamname":"Ghostboosters", "division" : "Northeast", "money" : 37, "keepermoney":10, "captain" : "Mikero", "numrosterspots":6, "count" : 2, "order":1},
   {"teamname":"Knights of Cap-A-Lot", "division" : "Northeast", "money" : 0, "keepermoney":5, "captain" : "SirDan", "numrosterspots":6, "count" : 3, "order":2},
-  {"teamname":"30 SMB", "division" : "Northeast", "money" : 43, "keepermoney":0, "captain" : "Legman", "numrosterspots":6, "count" : 2, "order":3},
+  {"teamname":"30 SMB", "division" : "Northeast", "money" : 43, "keepermoney":10, "captain" : "Legman", "numrosterspots":6, "count" : 2, "order":3},
   {"teamname":"wsp", "division" : "Northeast", "money" : 23, "keepermoney":10, "captain" : "WowSuchPro", "numrosterspots":6, "count" : 3, "order":4}
 ]

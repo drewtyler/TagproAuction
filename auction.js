@@ -18,7 +18,7 @@ PreviousAuctionData = new Mongo.Collection("previousauctiondata")
 PlayerResponse = new Mongo.Collection("playerResponse");
 
 var bidTime = 30000;
-var additionTime = 10000;
+var additionTime = 20000;
 var lock = 0;
 
 Meteor.setServerTime = function() {
@@ -340,7 +340,12 @@ if (Meteor.isClient) {
       var name = event.target.player.value;
       Meteor.call("toggleState", name, 0);
       return false;
-    }
+    },
+    'submit .set-bidtime' : function(event) {
+      bidTime = parseInt(event.target.bidtime.value)*1000;
+      Meteor.call('setBidTime', bidTime);
+      return false;
+    },
   })
 
   Template.admin.helpers({
@@ -361,14 +366,16 @@ if (Meteor.isClient) {
       {
         var bid = parseInt(event.target.amount.value);
         Session.set("playSound", "bid")
-        Meteor.call("acceptBid", Meteor.user().username, bid, new Date().getTime());
+        if(bid >= 0) {
+          Meteor.call("acceptBid", Meteor.user().username, bid, new Date().getTime());
+        }
         return false;
       },
       'submit .nominate-player' : function(event)
       { 
         var player = event.target.player.value;
-        var bid = event.target.amount.value;
-        if(!bid) {
+        var bid = parseInt(event.target.amount.value);
+        if(!bid || bid < 0) {
           bid = 0;
         }
         Meteor.call("toggleState", player, bid);
@@ -377,7 +384,9 @@ if (Meteor.isClient) {
       'click .bid-button' : function(event) {
         var bid = parseInt(event.currentTarget.getAttribute('amount'));
         Session.set("playSound", "bid")
-        Meteor.call("acceptBid", Meteor.user().username, bid, new Date().getTime());
+        if(bid >= 0) {
+          Meteor.call("acceptBid", Meteor.user().username, bid, new Date().getTime());
+        }
         return false;
       }
     }
@@ -487,6 +496,9 @@ if (Meteor.isClient) {
 }
 
 Meteor.methods({
+  setBidTime: function(bidtime) {
+    bidTime = bidtime;
+  },
   removeMessage : function(messageid) {
     Messages.remove(messageid);
   },
@@ -525,7 +537,7 @@ Meteor.methods({
   },
   resumeAuction : function (person) {
       pa = PausedAuction.findOne();
-      pa.nextExpiryDate = new Date().getTime() + 20000;
+      pa.nextExpiryDate = new Date().getTime() + additionTime;
       delete pa._id;
       AuctionStatus.update({}, {"status":"Live"});
       AuctionData.remove({});
@@ -738,7 +750,7 @@ Meteor.methods({
                 console.log("acceptBid: inserted bid");
                 // Do we need to give some time back?
                 if(parseInt(secondsLeft) < 15000) {
-                  AuctionData.update({State: "Bidding"}, {$set: {nextExpiryDate: new Date().getTime()+20000}});
+                  AuctionData.update({State: "Bidding"}, {$set: {nextExpiryDate: new Date().getTime()+additionTime}});
                 }
 
                 return true;
@@ -903,7 +915,7 @@ if (Meteor.isServer) {
       var nextOrder = nextInOrder.nextorder;
       var captain = Nominators.findOne({"order":nextOrder});
       var newnextorder = (nextOrder+1) % 20;
-      
+
       console.log("pickNominator: nextOrder: " + nextInOrder.nextorder);
       console.log("pickNominator: captain: " + captain.name + " rosterfull? " + captain.rosterfull);
       console.log("pickNominator: newnextorder: " + newnextorder);
