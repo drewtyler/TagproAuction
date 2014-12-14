@@ -167,22 +167,20 @@
 
         var dirtyButtons = 0;
         var oldButtonTimeout = 0;
-        var previousLow = ''
         function checkForButtons() {
-            if(previousLow != $(".buttontime").first()) {
-                if(oldButtonTimeout) {
-                    dirtyButtons = 0; 
-                    clearTimeout(oldButtonTimeout);
-                }
-                previousLow = $(".buttontime").first();
-                if($(".buttontime").length > 0 && !dirtyButtons && previousLow != $(".buttontime").first()) {
-                    dirtyButtons = 1;
-                    oldButtonTimeout = setTimeout(function() {
-                        $(".buttontime").prop("disabled", false);
-                        $(".buttontime").removeClass("buttontime");
-                        dirtyButtons = 0;
-                    }, 2000);
-                }
+            
+            if(oldButtonTimeout) {
+                dirtyButtons = 0; 
+                clearTimeout(oldButtonTimeout);
+            }
+
+            if($(".buttontime").length > 0 && !dirtyButtons) {
+                dirtyButtons = 1;
+                oldButtonTimeout = setTimeout(function() {
+                    $(".buttontime").prop("disabled", false);
+                    $(".buttontime").removeClass("buttontime");
+                    dirtyButtons = 0;
+                }, 2000);
             }
         }
     
