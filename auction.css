@@ -108,4 +108,9 @@ header .hide-completed {
   pointer-events: all !important;
 }
 
-
+li .delete {
+	display:none;
+}
+li:hover .delete{
+	display:inline;
+}

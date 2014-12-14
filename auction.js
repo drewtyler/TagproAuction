@@ -572,7 +572,7 @@ Meteor.methods({
   },
   insertMessage:function(text, createdAt, messageType) {
     if(Meteor.isServer)
-      var texttowrite = "[" + createdAt.toLocaleTimeString() + "] " + text;
+      var texttowrite = text;
       Messages.insert({text:texttowrite,createdAt:new Date(),messageType:messageType});
   },
   toggleState: function(playerNominated, bid) {

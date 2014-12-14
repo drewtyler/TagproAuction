@@ -44,7 +44,7 @@
 
         function checkForAnimation() {
             if($(".winningTeam").length == 1) {
-                teamname = $(".winningTeam").html().split("] ")[1].split("<span")[0].trim();
+                teamname = $(".winningTeam").html().split("|")[1].split("<span")[0].trim();
                 animateTeam(teamname);
                 $(".winningTeam").remove();
             }
@@ -60,13 +60,12 @@
             $("#playerModal").modal("hide");
         }
 
-
         var highlightColor = "rgb(255, 245, 0)";
         var blueColor = "rgb(134, 198, 230)";
         var redColor = "rgb(235, 126, 126)";
         function showLastBidder() {
             if($(".justBid").length == 1) {
-                var teamname = $(".justBid").first().html().split("] ")[1].split("<span")[0].trim();
+                var teamname = $(".justBid").first().html().split("|")[1].split("<span")[0].trim();
                 $(".justBid").remove();
                 var team = $("#team_"+teamname.split(" ").join("_"));
                 team.css("background-color", highlightColor);
@@ -281,7 +280,7 @@
 
 <template name="getmessages">
     {{#each lastXmessages 50}}
-            <li class="list-group-item {{messageColor messageType}}" style="word-break: normal;">{{text}}
+            <li class="list-group-item {{messageColor messageType}}" style="word-break: normal;">{{livestamp createdAt}} | {{text}}
             {{#if admin}}
                 <span class="delete pull-right">X</span>
             {{/if}}
