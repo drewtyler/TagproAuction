@@ -307,10 +307,20 @@ if (Meteor.isClient) {
         if(AuctionData.findOne({}) !== undefined) {
         var bids = [];
         var currentBid = parseInt(AuctionData.findOne({}).currentBid);
-        bids.push({'bid':currentBid+1});
-        bids.push({'bid':currentBid+2});
-        bids.push({'bid':currentBid+5});
-        bids.push({'bid':currentBid+10});
+        var team = TeamNames.findOne({"captain":Meteor.user().username});
+        money = parseInt(team.money) + parseInt(team.keepermoney);
+        if(currentBid+1 < money) {
+          bids.push({'bid':currentBid+1});
+        }
+        if(currentBid+2 < money) {
+          bids.push({'bid':currentBid+2});
+        }
+        if(currentBid+5 < money) {
+          bids.push({'bid':currentBid+5});
+        }
+        if(currentBid+10 < money) {
+          bids.push({'bid':currentBid+10});
+        }
         return bids;
       }
       }

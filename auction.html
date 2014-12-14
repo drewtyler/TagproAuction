@@ -70,7 +70,7 @@
                 var team = $("#team_"+teamname.split(" ").join("_"));
                 team.css("background-color", highlightColor);
                 function resetColor() {
-                    var original_color = $("#team_Capitalists").closest(".row").find("div .division-header").css("background-color")
+                    var original_color = team.closest(".row").find("div .division-header").css("background-color")
                     team.css("background-color", original_color);
                     $(".justBid").remove();
                 }
@@ -80,7 +80,6 @@
                 $(".justBid").remove();
             }
         }
-
 
         setInterval(function() {
             setTimeout(function() {
@@ -276,7 +275,6 @@
         </div>
     </div>
 </template>
-
 
 <template name="getmessages">
     {{#each lastXmessages 50}}
