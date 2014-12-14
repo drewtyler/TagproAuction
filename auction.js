@@ -237,7 +237,14 @@ if (Meteor.isClient) {
         options = ["Hurry it up ", "We don't have all day, ", "Waiting on you ", "Getting old here, ", "Take your time ", "No rush ", "C'mon ", "Need some help "]
         idx = Math.floor(Math.random() * options.length)
         return options[idx];
-      }
+      },
+      nextNominator: function() 
+      {
+        nextorder = Nominators.findOne({"name":"nextInOrder"}).nextorder;
+        var nextNominator = Nominators.findOne({"order":nextorder}).name;
+        //console.log
+        return nextNominator;
+      }      
   });
 
   Template.playSound.helpers({
