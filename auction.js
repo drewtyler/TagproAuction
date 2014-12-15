@@ -829,7 +829,7 @@ if (Meteor.isServer) {
     console.log("Loading it up");
     // Clear state
 
-    var renewData = true;
+    var renewData = false;
 
     AuctionData.remove({});
     AuctionStatus.remove({})
@@ -925,7 +925,6 @@ if (Meteor.isServer) {
         var obj = initialRosterData[i];
         TeamData.insert(obj);
       }
-
 
       PlayerResponse.update({}, {$set:{"drafted":false}}, {multi:true});
       drafted = TeamData.find({"name":{$ne:""}}).fetch();
