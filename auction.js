@@ -1,3 +1,8 @@
+admins = ["eagles.", "Bull"];
+
+
+
+
 AuctionData = new Mongo.Collection("auctiondata");
 PausedAuction = new Mongo.Collection("pauseddata");
 TeamData = new Mongo.Collection('teams');
@@ -10,7 +15,6 @@ Nominators = new Mongo.Collection('nominators');
 Keepers = new Mongo.Collection('keepers');
 NextNominator = new Mongo.Collection('nextnominator');
 CurrentPick = new Mongo.Collection('currentpick');
-Admins = new Mongo.Collection("admin");
 AuctionStatus = new Mongo.Collection("auctionstatus");
 AuctionLock = new Mongo.Collection("auctionlock");
 PreviousAuctionData = new Mongo.Collection("previousauctiondata")
@@ -21,6 +25,8 @@ var bidTime = 25000;
 var additionTime = 15000;
 var lock = 0;
 var bidTimeout = 0;
+
+
 
 Meteor.setServerTime = function() {
   Meteor.call("getServerTime", function(error, serverMS) {
@@ -386,7 +392,7 @@ if (Meteor.isClient) {
   Template.admin.helpers({
     admin : function() {
       if(Meteor.user() !== undefined) {
-        admins = ["eagles.", "Bull"];
+
         if(admins.indexOf(Meteor.user().username) >= 0) {
           return true;
         }
@@ -433,7 +439,6 @@ if (Meteor.isClient) {
     },
     admin : function() {
       if(Meteor.user() !== undefined) {
-        admins = ["eagles.", "Bull"];
         if(admins.indexOf(Meteor.user().username) >= 0) {
           return true;
         }
@@ -484,7 +489,6 @@ if (Meteor.isClient) {
     },
     admin : function() {
       if(Meteor.user() !== undefined) {
-        admins = ["eagles.", "Bull"];
         if(admins.indexOf(Meteor.user().username) >= 0) {
           return true;
         }
@@ -538,7 +542,6 @@ Meteor.methods({
     Messages.remove(messageid);
   },
   isAdmin: function(player) {
-    admins = ["eagles.", "Bull"];
     if(admins.indexOf(player) >= 0)
       return true;
     return false;
@@ -829,7 +832,7 @@ if (Meteor.isServer) {
     console.log("Loading it up");
     // Clear state
 
-    var renewData = false;
+    var renewData = true;
 
     AuctionData.remove({});
     AuctionStatus.remove({})
@@ -907,12 +910,6 @@ if (Meteor.isServer) {
         Nominators.update({"name":captains[i].name}, {$set: {"order": i}});
       }
 
-      var admins = {};
-      admins = JSON.parse(Assets.getText('admins.json'));
-      for(i = 0; i < admins.length; i++) {
-        var obj = admins[i];
-        Admins.insert(obj);
-      }
 
       keepers = JSON.parse(Assets.getText('keepers.json'));
       for(i = 0; i < keepers.length; i++) {
