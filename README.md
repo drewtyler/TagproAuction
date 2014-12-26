@@ -28,3 +28,5 @@ The heroku config variables used are as follows:
 	BUILDPACK_URL: https://github.com/AdmitHub/meteor-buildpack-horse.git
 	MONGO_URL:     mongodb://<username>:<password>@<mongolabhost>.mongolab.com:<mongolab-port>/<mongolab-database>
 	ROOT_URL:      http://<app-name>.herokuapp.com
+
+To use Mongolab, you need to verify your payment information on Heroku. You just need to enter a credit card (they won't charge you).
