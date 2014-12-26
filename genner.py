@@ -12,7 +12,7 @@ starting_money = 100
 team_size = 4
 
 keepers = False
-nominations = []
+nominations = [{"name" : "nextInOrder", "nextorder" : 0}]
 team_names = []
 keepers = []
 teams = []
