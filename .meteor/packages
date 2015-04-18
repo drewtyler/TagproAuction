@@ -8,4 +8,5 @@ accounts-ui
 accounts-password
 json
 copleykj:livestamp
+percolate:synced-cron
 

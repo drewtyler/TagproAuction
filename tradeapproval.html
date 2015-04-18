@@ -1,0 +1,52 @@
+<template name="tradeapproval">
+    <table>
+        {{> pendingtrades}}
+    </table>
+</template>
+
+<template name="pendingtrades">
+  {{#each pendingTrades}}
+    <tr>
+      <!-- nomenclature: say Captain A is proposing to trade players C and D to player B for player E and 10 tagcoins
+           playersToTrade = C,D
+           pointsToTrade = 0
+           playersToReturn = E
+           pointsToReturn = 10
+           proposingCaptain = A
+           acceptingCaptain = B -->
+        <td>
+          {{playersToTrade}}
+        </td>
+        <td>
+          {{pointsToTrade}}
+        </td>
+        <td>
+          {{playersToReturn}}
+        </td>
+        <td>
+          {{pointsToReturn}}
+        </td>
+        <td>
+          {{proposingCaptain}}
+        </td>
+        <td>
+          {{acceptingCaptain}}
+        </td>
+        <td>
+          {{numberApproved}}
+        </td>
+        <td>
+          <form class="form-group approveTrade" role="form">
+            <span class="input-group-btn">
+              <button type="submit" class="btn btn-success">Approve</button>
+            </span>
+          </form>
+          <form class="form-group rejectTrade" role="form">
+            <span class="input-group-btn">
+              <button type="submit" class="btn btn-success">Reject</button>
+            </span>
+          </form>
+        </td>
+      </tr>
+    {{/each}}
+</template>
