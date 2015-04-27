@@ -1,50 +1,51 @@
 <template name="signup">
-    {{#if canSendMessage}}
+    {{#if canSignup}}
     <form class="new-post" id="messageSubmit">
         <div class="input-group">
             <input type="text" class="form-control" id="playername" name="playername" placeholder="Your Tagpro Name">
             <input type="text" class="form-control" id="oldplayername" name="oldplayername" placeholder="If you're playing under a new Tagpro name, put it here">
-            <input type="text" class="form-control" id="redditname" name="redditname" placeholder="Your Reddit UserName">
-            <input type="text" class="form-control" id="proflink" name="proflink" placeholder="Your Tagpro Profile Link">
-            Do you have mumble?
-            If not, get it here: <a href="http://www.reddit.com/r/tagpro/wiki/mumble">http://www.reddit.com/r/tagpro/wiki/mumble</a>
-            It is a requirement for competitive Tagpro
-            <input type="radio" name="mumble" value="Yes">
-            <input type="radio" name="mumble" value="No">
+            <input type="text" class="form-control" id="redditname" name="redditname" placeholder="Your Reddit Username">
+            <input type="text" class="form-control" id="proflink" name="proflink" placeholder="Your Tagpro Profile Link"><br>
+            <hr>
+            Do you have mumble?<br>
+            If not, get it here: <a href="http://www.reddit.com/r/tagpro/wiki/mumble">http://www.reddit.com/r/tagpro/wiki/mumble</a><br>
+            It is a requirement for competitive Tagpro<br>
+            <input type="radio" name="mumble" value="Yes">&nbsp;Yes<br>
+            <input type="radio" name="mumble" value="No">&nbsp;No<br>
 
-            Are you able to communicate on a microphone during competitive play?
-            <input type="radio" name="mic" value="Yes">
-            <input type="radio" name="mic" value="No">
-            <input type="radio" name="mic" value="Sometimes">
+            Are you able to communicate on a microphone during competitive play?<br>
+            <input type="radio" name="mic" value="Yes">&nbsp;Yes<br>
+            <input type="radio" name="mic" value="No">&nbsp;No<br>
+            <input type="radio" name="mic" value="Sometimes">&nbsp;Sometimes<br>
 
-            What days of the week are you normally available to play?
-            <input type="checkbox" name="day" value="Sunday">
-            <input type="checkbox" name="day" value="Monday">
-            <input type="checkbox" name="day" value="Tuesday">
-            <input type="checkbox" name="day" value="Wednesday">
-            <input type="checkbox" name="day" value="Thursday">
-            <input type="checkbox" name="day" value="Friday">
-            <input type="checkbox" name="day" value="Saturday">
+            What days of the week are you normally available to play?<br>
+            <input type="checkbox" name="day" value="Sunday">&nbsp;Sunday<br>
+            <input type="checkbox" name="day" value="Monday">&nbsp;Monday<br>
+            <input type="checkbox" name="day" value="Tuesday">&nbsp;Tuesday<br>
+            <input type="checkbox" name="day" value="Wednesday">&nbsp;Wednesday<br>
+            <input type="checkbox" name="day" value="Thursday">&nbsp;Thursday<br>
+            <input type="checkbox" name="day" value="Friday">&nbsp;Friday<br>
+            <input type="checkbox" name="day" value="Saturday">&nbsp;Saturday<br>
 
-            What servers are you comfortable playing on?
-            <input type="checkbox" name="server" value="Arc">
-            <input type="checkbox" name="server" value="Centra">
-            <input type="checkbox" name="server" value="Sphere">
-            <input type="checkbox" name="server" value="Origin">
-            <input type="checkbox" name="server" value="Pi">
-            <input type="checkbox" name="server" value="Radius">
-            <input type="checkbox" name="server" value="Segment">
+            What servers are you comfortable playing on?<br>
+            <input type="checkbox" name="server" value="Arc">&nbsp;Arc<br>
+            <input type="checkbox" name="server" value="Centra">&nbsp;Centra<br>
+            <input type="checkbox" name="server" value="Sphere">&nbsp;Sphere<br>
+            <input type="checkbox" name="server" value="Origin">&nbsp;Origin<br>
+            <input type="checkbox" name="server" value="Pi">&nbsp;Pi<br>
+            <input type="checkbox" name="server" value="Radius">&nbsp;Radius<br>
+            <input type="checkbox" name="server" value="Segment">&nbsp;Segment<br>
 
-            What is the normal ping you get on each server?
-            <input type="text" name="arcping" id="arcping" placeholder="Arc">
-            <input type="text" name="centraping" id="centraping" placeholder="Centra">
-            <input type="text" name="sphereping" id="sphereping" placeholder="Sphere">
-            <input type="text" name="originping" id="originping" placeholder="Origin">
-            <input type="text" name="piping" id="piping" placeholder="Pi">
-            <input type="text" name="radiusping" id="radiusping" placeholder="Radius">
-            <input type="text" name="segmentping" id="segmentping" placeholder="Segment">
+            What is the normal ping you get on each server?<br>
+            <input type="text" name="arcping" id="arcping" placeholder="Arc"><br>
+            <input type="text" name="centraping" id="centraping" placeholder="Centra"><br>
+            <input type="text" name="sphereping" id="sphereping" placeholder="Sphere"><br>
+            <input type="text" name="originping" id="originping" placeholder="Origin"><br>
+            <input type="text" name="piping" id="piping" placeholder="Pi"><br>
+            <input type="text" name="radiusping" id="radiusping" placeholder="Radius"><br>
+            <input type="text" name="segmentping" id="segmentping" placeholder="Segment"><br>
 
-            Where do you live?
+            Where do you live?<br>
             <select name="location">
                 <option value="US - Alabama">US - Alabama</option>
                 <option value="US - Alaska">US - Alaska</option>
@@ -106,34 +107,32 @@
                 <option value="CA - Prince Edward Island">CA - Prince Edward Island</option>
                 <option value="CA - Quebec">CA - Quebec</option>
                 <option value="Other">Other</option>
-            </select>
-            <!-- Dropdown w/ US - {State} and CA - {Province} and "Other" -->
+            </select><br>
 
-            If "Other", which country do you live in?
-            <input type="text" name="country" id="country">
+            If "Other", which country do you live in?<br>
+            <input type="text" name="country" id="country"><br>
 
-            What position do you prefer playing?
-            <!-- dropdown -->
-            <select name="Position">
+            What position do you prefer playing?<br>
+            <select name="Position"><br>
                 <option value="Primarily Offense">Primarily Offense</option>
                 <option value="Primarily Offense, but can play Defense">Primarily Offense, but can play Defense</option>
                 <option value="Both Equally">Both Equally</option>
                 <option value="Primarily Defense, but can play Offense">Primarily Defense, but can play Offense</option>
                 <option value="Primarily Defense">Primarily Defense</option>
-            </select>
+            </select><br>
 
-            What competitive experience do you have?
-            <input type="checkbox" name="experience" value="MLTP">
-            <input type="checkbox" name="experience" value="mLTP">
-            <input type="checkbox" name="experience" value="NLTP-A">
-            <input type="checkbox" name="experience" value="NLTP-B">
-            <input type="checkbox" name="experience" value="ELTP">
-            <input type="checkbox" name="experience" value="USC">
-            <input type="checkbox" name="experience" value="RLTP">
-            <input type="checkbox" name="experience" value="SOCL">
-            <input type="checkbox" name="experience" value="CLTP">
+            What competitive experience do you have?<br>
+            <input type="checkbox" name="experience" value="MLTP">&nbsp;MLTP<br>
+            <input type="checkbox" name="experience" value="mLTP">&nbsp;mLTP<br>
+            <input type="checkbox" name="experience" value="NLTP-A">&nbsp;NLTP-A<br>
+            <input type="checkbox" name="experience" value="NLTP-B">&nbsp;NLTP-B<br>
+            <input type="checkbox" name="experience" value="ELTP">&nbsp;ELTP<br>
+            <input type="checkbox" name="experience" value="USC">&nbsp;USC<br>
+            <input type="checkbox" name="experience" value="RLTP">&nbsp;RLTP<br>
+            <input type="checkbox" name="experience" value="SOCL">&nbsp;SOCL<br>
+            <input type="checkbox" name="experience" value="CLTP">&nbsp;CLTP<br>
 
-            How long have you been playing Tagpro?
+            How long have you been playing Tagpro?<br>
             <select name="timeplaying">
                 <option value="0-3 Months">0-3 Months</option>
                 <option value="3-6 Months">3-6 Months</option>
@@ -141,14 +140,15 @@
                 <option value="9-12 Months">9-12 Months</option>
                 <option value="12-18 Months">12-18 Months</option>
                 <option value="18+ Months">18+ Months</option>
-            </select>
+            </select><br>
 
-            Is there anything else you want to tell the captains?
-            <input type="textarea" name="personalmessage" id="personalmessage">
+            Is there anything else you want to tell the captains?<br>
+            <input type="textarea" name="personalmessage" id="personalmessage"><br>
 
-            Are you aware of the <a href="http://www.reddit.com/r/TagPro/wiki/mltp/season_8/rules">Season 8 MLTP Rules</a> and willing to abide by them throughout the season?
-            <input type="checkbox" name="agreement" value="Yes">
+            Are you aware of the <a href="http://www.reddit.com/r/TagPro/wiki/mltp/season_8/rules">Season 8 MLTP Rules</a> and willing to abide by them throughout the season?<br>
+            <input type="checkbox" name="agreement" value="Yes">&nbsp;Yes<br>
 
+            <br>
             <span class="input-group-btn">
                 <button class="btn btn-primary" type="submit">Send</button>
             </span>

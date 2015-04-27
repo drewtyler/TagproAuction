@@ -263,9 +263,6 @@ if (Meteor.isClient) {
     }
   });
 
-
-
-
   // Bidding options
   Template.display_bidding_options.helpers({
     getPlayers : function() {
@@ -529,7 +526,7 @@ if (Meteor.isClient) {
   });
 
   Template.signup.helpers({
-    canSendMessage: function() {
+    canSignup: function() {
       if(!Meteor.userId())
         return false;
       return true;
