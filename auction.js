@@ -1,8 +1,5 @@
 admins = ["eagles.", "Bull"];
 
-
-
-
 AuctionData = new Mongo.Collection("auctiondata");
 PausedAuction = new Mongo.Collection("pauseddata");
 TeamData = new Mongo.Collection('teams');
@@ -17,16 +14,13 @@ NextNominator = new Mongo.Collection('nextnominator');
 CurrentPick = new Mongo.Collection('currentpick');
 AuctionStatus = new Mongo.Collection("auctionstatus");
 AuctionLock = new Mongo.Collection("auctionlock");
-PreviousAuctionData = new Mongo.Collection("previousauctiondata")
-
+PreviousAuctionData = new Mongo.Collection("previousauctiondata");
 PlayerResponse = new Mongo.Collection("playerResponse");
 
 var bidTime = 25000;
 var additionTime = 15000;
 var lock = 0;
 var bidTimeout = 0;
-
-
 
 Meteor.setServerTime = function() {
   Meteor.call("getServerTime", function(error, serverMS) {
@@ -40,6 +34,7 @@ Meteor.setServerTime = function() {
 
 if (Meteor.isClient) {
   Meteor.startup(function() {
+    // don't need to set all auction stuff until we're in the auction page
     Session.setDefault("serverTimeOffset", 0);
     Session.setDefault("time", new Date().getTime());
     Session.setDefault("auctionStatus", "Waiting to start");
@@ -49,7 +44,7 @@ if (Meteor.isClient) {
     Session.setDefault('players', []);
     Session.setDefault("playSound", "");
     Session.setDefault("teamJustBid", "");
-    
+
     Meteor.setServerTime();
     Meteor.clearInterval(Meteor.intervalUpdateTimeDisplayed);
     Meteor.intervalUpdateTimeDisplayed = Meteor.setInterval(function() { Session.set('time', new Date().getTime()); }, 50);
@@ -71,10 +66,10 @@ if (Meteor.isClient) {
     Meteor.subscribe("keepers");
 
     Meteor.subscribe("playerResponse");
-    //console.log(Messages.find({}).fetch());
   });
 
   // Need usernames
+  // WANT: email notifications.
   Accounts.ui.config({
     passwordSignupFields: "USERNAME_ONLY"
   });
@@ -228,7 +223,7 @@ if (Meteor.isClient) {
           return (status == "Paused" || status == "Not Started");
         }
       },
-      auctionMessage: function() 
+      auctionMessage: function()
       {
         if(AuctionStatus.findOne({}) !== undefined) {
           status = AuctionStatus.findOne({}).status;
@@ -238,19 +233,19 @@ if (Meteor.isClient) {
             return "Auction has not started"
         }
       },
-      getsnarkymessage: function() 
+      getsnarkymessage: function()
       {
         options = ["Hurry it up ", "We don't have all day, ", "Waiting on you ", "Getting old here, ", "Take your time ", "No rush ", "C'mon ", "Need some help "]
         idx = Math.floor(Math.random() * options.length)
         return options[idx];
       },
-      nextNominator: function() 
+      nextNominator: function()
       {
         nextorder = Nominators.findOne({"name":"nextInOrder"}).nextorder;
         var nextNominator = Nominators.findOne({"order":nextorder}).name;
         //console.log
         return nextNominator;
-      }      
+      }
   });
 
   Template.playSound.helpers({
@@ -261,7 +256,7 @@ if (Meteor.isClient) {
       }
       return false;
     },
-    soundToPlay: function() { 
+    soundToPlay: function() {
       sound = Session.get("playSound")
       Session.set("playSound", "")
       return sound;
@@ -288,7 +283,7 @@ if (Meteor.isClient) {
         return AuctionData.findOne({}).State == "Nominating";
     },
     isTurnToNominate: function()
-      { 
+      {
         if(!Meteor.userId())
           return false;
         players = PlayerResponse.find({}, {fields:{tagpro:1}});
@@ -315,7 +310,7 @@ if (Meteor.isClient) {
           //console.log(AuctionData.findOne({}), AuctionData.findOne({}).currentPlayer);
           keepers = Keepers.findOne({'captain':Meteor.user().username}).keepers;
           if(keepers.indexOf(AuctionData.findOne({}).currentPlayer) >= 0 || Meteor.call("isKeeper", team.captain, AuctionData.findOne({}).currentPlayer)) {
-              balance += parseInt(team.keepermoney);            
+              balance += parseInt(team.keepermoney);
           }
           console.log("Current balance w/ keeper: ", balance);
           var minBid = parseInt(AuctionData.findOne({}).currentBid)+1;
@@ -413,7 +408,7 @@ if (Meteor.isClient) {
         return false;
       },
       'submit .nominate-player' : function(event)
-      { 
+      {
         var player = event.target.player.value;
         var bid = parseInt(event.target.amount.value);
         if(!bid || bid < 0) {
@@ -530,8 +525,23 @@ if (Meteor.isClient) {
       },
     'click .delete' : function() {
       Meteor.call("removeMessage", this._id);
-    },
+    }
   });
+
+  Template.signup.helpers({
+    canSendMessage: function() {
+      if(!Meteor.userId())
+        return false;
+      return true;
+    }
+  });
+  Template.signup.events(
+    {
+      'submit' : function(event) {
+        // need to create a row for the player w/ answers to their question.
+
+      }
+    });
 }
 
 Meteor.methods({
@@ -576,7 +586,7 @@ Meteor.methods({
   resumeAuction : function (person) {
     // Make it so you can't resume from nominating state
     if(AuctionData.findOne({State:"Nominating"}) !== undefined) {
-      return false;      
+      return false;
     }
       pa = PausedAuction.findOne();
       pa.nextExpiryDate = new Date().getTime() + additionTime;
@@ -702,7 +712,7 @@ Meteor.methods({
             Nominators.update({name:nominator.name}, {$set:{nominated:true}});
             return AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+10000, Nominator: nominator.name,  startTime:new Date().getTime()});
           }
-        
+
     }
   },
   checkForToggle: function() {
@@ -786,7 +796,7 @@ Meteor.methods({
                 Meteor.call("insertMessage",
                             bidder + " bids " + amount + " on " + AuctionData.findOne({}).currentPlayer,
                             new Date(), "bid");
-                Meteor.call("insertMessage", team.teamname, new Date(), "bidIndication");                
+                Meteor.call("insertMessage", team.teamname, new Date(), "bidIndication");
                 console.log("acceptBid: inserted bid");
                 // Do we need to give some time back?
                 timeoutTime = secondsLeft;

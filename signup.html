@@ -1,3 +1,98 @@
 <template name="signup">
+    {{#if canSendMessage}}
+    <form class="new-post" id="messageSubmit">
+        <div class="input-group">
+            <input type="text" class="form-control" id="playername" name="playername" placeholder="Your Tagpro Name">
+            <input type="text" class="form-control" id="oldplayername" name="oldplayername" placeholder="If you're playing under a new Tagpro name, put it here">
+            <input type="text" class="form-control" id="redditname" name="redditname" placeholder="Your Reddit UserName">
+            <input type="text" class="form-control" id="proflink" name="proflink" placeholder="Your Tagpro Profile Link">
+            Do you have mumble?
+            If not, get it here: <a href="http://www.reddit.com/r/tagpro/wiki/mumble">http://www.reddit.com/r/tagpro/wiki/mumble</a>
+            It is a requirement for competitive Tagpro
+            <input type="radio" name="mumble" value="Yes">
+            <input type="radio" name="mumble" value="No">
 
+            Are you able to communicate on a microphone during competitive play?
+            <input type="radio" name="mic" value="Yes">
+            <input type="radio" name="mic" value="No">
+            <input type="radio" name="mic" value="Sometimes">
+
+            What days of the week are you normally available to play?
+            <input type="checkbox" name="day" value="Sunday">
+            <input type="checkbox" name="day" value="Monday">
+            <input type="checkbox" name="day" value="Tuesday">
+            <input type="checkbox" name="day" value="Wednesday">
+            <input type="checkbox" name="day" value="Thursday">
+            <input type="checkbox" name="day" value="Friday">
+            <input type="checkbox" name="day" value="Saturday">
+
+            What servers are you comfortable playing on?
+            <input type="checkbox" name="server" value="Arc">
+            <input type="checkbox" name="server" value="Centra">
+            <input type="checkbox" name="server" value="Sphere">
+            <input type="checkbox" name="server" value="Origin">
+            <input type="checkbox" name="server" value="Pi">
+            <input type="checkbox" name="server" value="Radius">
+            <input type="checkbox" name="server" value="Segment">
+
+            What is the normal ping you get on each server?
+            <input type="text" name="arcping" id="arcping" placeholder="Arc">
+            <input type="text" name="centraping" id="centraping" placeholder="Centra">
+            <input type="text" name="sphereping" id="sphereping" placeholder="Sphere">
+            <input type="text" name="originping" id="originping" placeholder="Origin">
+            <input type="text" name="piping" id="piping" placeholder="Pi">
+            <input type="text" name="radiusping" id="radiusping" placeholder="Radius">
+            <input type="text" name="segmentping" id="segmentping" placeholder="Segment">
+
+            Where do you live?
+            <!-- Dropdown w/ US - {State} and CA - {Province} and "Other" -->
+
+            If "Other", which country do you live in?
+            <input type="text" name="country" id="country">
+
+            What position do you prefer playing?
+            <!-- dropdown -->
+            <select name="Position">
+                <option value="Primarily Offense">Primarily Offense</option>
+                <option value="Primarily Offense, but can play Defense">Primarily Offense, but can play Defense</option>
+                <option value="Both Equally">Both Equally</option>
+                <option value="Primarily Defense, but can play Offense">Primarily Defense, but can play Offense</option>
+                <option value="Primarily Defense">Primarily Defense</option>
+            </select>
+
+            What competitive experience do you have?
+            <input type="checkbox" name="experience" value="MLTP">
+            <input type="checkbox" name="experience" value="mLTP">
+            <input type="checkbox" name="experience" value="NLTP-A">
+            <input type="checkbox" name="experience" value="NLTP-B">
+            <input type="checkbox" name="experience" value="ELTP">
+            <input type="checkbox" name="experience" value="USC">
+            <input type="checkbox" name="experience" value="RLTP">
+            <input type="checkbox" name="experience" value="SOCL">
+            <input type="checkbox" name="experience" value="CLTP">
+
+            How long have you been playing Tagpro?
+            <select name="timeplaying">
+                <option value="0-3 Months">0-3 Months</option>
+                <option value="3-6 Months">3-6 Months</option>
+                <option value="6-9 Months">6-9 Months</option>
+                <option value="9-12 Months">9-12 Months</option>
+                <option value="12-18 Months">12-18 Months</option>
+                <option value="18+ Months">18+ Months</option>
+            </select>
+
+            Is there anything else you want to tell the captains?
+            <input type="textarea" name="personalmessage" id="personalmessage">
+
+            Are you aware of the <a href="http://www.reddit.com/r/TagPro/wiki/mltp/season_8/rules">Season 8 MLTP Rules</a> and willing to abide by them throughout the season?
+            <input type="checkbox" name="agreement" value="Yes">
+
+            <span class="input-group-btn">
+                <button class="btn btn-primary" type="submit">Send</button>
+            </span>
+        </div>
+    </form>
+    {{else}}
+        Log in to Sign up for MLTP!
+    {{/if}}
 </template>
