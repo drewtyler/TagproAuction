@@ -1,0 +1,105 @@
+body {
+  background-color: #1E2E34;
+  font: normal 13px arial;
+  padding: 12px;
+  color: #3C3C3C;
+}
+
+.form-container {
+  border-radius: 2px;
+  margin: 12px;
+  max-width: 700px;
+  min-width: 280px;
+  width: 100%
+  border: 1px solid #000000;
+  background-color: white;
+  margin: 0 auto;
+}
+
+.header-container {
+  height: auto;
+}
+
+.header-image {
+  background-image: url("http://i.imgur.com/uElLsep.png");
+  background-size: 100% auto;
+  width: 100%;
+  padding-top: 100px;
+  background-repeat: no-repeat;
+}
+
+.form {
+  padding: 0px 36px 36px 36px;
+}
+
+.title-container {
+  padding: 10px 0px 0 0px;
+}
+
+.title {
+  font-family: Tahoma, Geneva, sans-serif;
+  font-weight: lighter;
+  margin: 20px 0px 20px 36px;
+  color: #e06666;
+  font-size: 30px;
+}
+
+.question-title {
+  font-weight: bold;
+  color: #4A85AA;
+  font-size: 13px;
+  margin: 8px 0 4px 0;
+}
+
+.question-title p {
+  line-height: 130%;
+  margin: 0;
+}
+
+.form-entry {
+  margin-bottom: 12px;
+}
+
+
+input[type='text'] {
+  font-size: 12px;
+  margin: 1px 0 0 5px;
+  padding: 3px;
+}
+
+.server-question {
+  width: 20%;
+  margin: 1px 0 0 5px;
+}
+
+.written-question {
+  width: 30%;
+  margin: 5px 0;
+}
+
+input[type='radio'] {
+  color: #3C3C3C;
+  margin: 2px 0 0 5px;
+}
+
+input[type='checkbox'] {
+  color: #3C3C3C;
+  cursor: wait;
+  margin: 6px 0 0 5px;
+}
+
+select {
+  color: #3C3C3C;
+  margin: 1px 0 0 5px;
+  padding: 1px;
+  
+}
+
+textarea {
+  margin: 1px 0 0 5px;
+  padding: 5px;
+}
+
+hr {
+  margin: 16px 0;
+}
