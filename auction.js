@@ -44,6 +44,13 @@ if (Meteor.isClient) {
     Session.setDefault("playSound", "");
     Session.setDefault("teamJustBid", "");
     Session.setDefault("displaySignup", true);
+    Session.setDefault("displayfrontpage", false);
+    Session.setDefault("displayteammanagement", false);
+    Session.setDefault("displayviewsignups", false);
+    Session.setDefault("displaytrade", false);
+    Session.setDefault("displaytradeapproval", false);
+    Session.setDefault("displayauction", false);
+    Session.setDefault("displayeditprofile", false);
 
     Meteor.setServerTime();
     Meteor.clearInterval(Meteor.intervalUpdateTimeDisplayed);
@@ -146,6 +153,13 @@ if (Meteor.isClient) {
     },
   });
 
+  Template.viewsignups.events(
+    {
+      'click .deleteSignup': function(event){
+        idToSend = event.target.id;
+       Meteor.call("deleteSignupFromSignups", idToSend);
+      }
+    });
   // display_time (aka bid status)
   Template.display_time.helpers(
     {
@@ -545,7 +559,7 @@ if (Meteor.isClient) {
         tgt = event.target;
 
         //validate
-        if(tgt.playername.value == '') {
+        if($(tgt).find('[name=playername]').val() == '') {
          isOK = false;
          reasonsToFail.push("<li>You must put in your Tagpro name!</li>");
         }
@@ -603,7 +617,7 @@ if (Meteor.isClient) {
         }
         dataToSend.location = tgt.location.value;
         //validate if location = other
-        if(tgt.location.value == "Other" && tgt.country.value == '') {
+        if(tgt.location.value == "other" && tgt.country.value == '') {
          isOK = false;
          reasonsToFail.push("<li>You must state which country you live in!</li>");
         }
@@ -653,6 +667,9 @@ if (Meteor.isClient) {
 }
 
 Meteor.methods({
+  deleteSignupFromSignups : function(id) {
+    PlayreResponse.remove({"_id" : id});
+  },
   insertSignup : function(dataToSend) {
     PlayerResponse.insert(dataToSend);
   },

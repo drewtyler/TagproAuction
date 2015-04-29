@@ -1,163 +1,234 @@
 <template name="signup">
   {{#if displaySignup}}
     {{#if canSignup}}
-    <div id="somethingWentWrong"></div>
-    <form class="new-post" id="messageSubmit">
-        <div class="input-group">
-            <input type="text" class="form-control" id="playername" name="playername" placeholder="Your Tagpro Name">*<br>
-            <input type="text" class="form-control" id="oldplayername" name="oldplayername" placeholder="If you're playing under a new Tagpro name, put your old name here">
-            <input type="text" class="form-control" id="redditname" name="redditname" placeholder="Your Reddit Username">*<br>
-            <input type="text" class="form-control" id="proflink" name="proflink" placeholder="Your Tagpro Profile Link">*<br>
-            <hr>
-            Do you have mumble?*<br>
-            If not, get it here: <a href="http://www.reddit.com/r/tagpro/wiki/mumble">http://www.reddit.com/r/tagpro/wiki/mumble</a><br>
-            It is a requirement for competitive Tagpro<br>
-            <input type="checkbox" name="mumble" value="Yes">&nbsp;Yes<br>
 
-            Are you able to communicate on a microphone during competitive play?*<br>
-            <input type="radio" name="mic" value="Yes">&nbsp;Yes<br>
-            <input type="radio" name="mic" value="No">&nbsp;No<br>
-            <input type="radio" name="mic" value="Sometimes">&nbsp;Sometimes<br>
-
-            What days of the week are you normally available to play?*<br>
-            <input type="checkbox" name="sunday" value="Sunday">&nbsp;Sunday<br>
-            <input type="checkbox" name="monday" value="Monday">&nbsp;Monday<br>
-            <input type="checkbox" name="tuesday" value="Tuesday">&nbsp;Tuesday<br>
-            <input type="checkbox" name="wednesday" value="Wednesday">&nbsp;Wednesday<br>
-            <input type="checkbox" name="thursday" value="Thursday">&nbsp;Thursday<br>
-            <input type="checkbox" name="friday" value="Friday">&nbsp;Friday<br>
-            <input type="checkbox" name="saturday" value="Saturday">&nbsp;Saturday<br>
-
-            What servers are you comfortable playing on?*<br>
-            <input type="checkbox" name="arc" value="Arc">&nbsp;Arc<br>
-            <input type="checkbox" name="centra" value="Centra">&nbsp;Centra<br>
-            <input type="checkbox" name="sphere" value="Sphere">&nbsp;Sphere<br>
-            <input type="checkbox" name="origin" value="Origin">&nbsp;Origin<br>
-            <input type="checkbox" name="pi" value="Pi">&nbsp;Pi<br>
-            <input type="checkbox" name="radius" value="Radius">&nbsp;Radius<br>
-            <input type="checkbox" name="segment" value="Segment">&nbsp;Segment<br>
-
-            What is the normal ping you get on each server?*<br>
-            <input type="text" name="arcping" id="arcping" placeholder="Arc"><br>
-            <input type="text" name="centraping" id="centraping" placeholder="Centra"><br>
-            <input type="text" name="sphereping" id="sphereping" placeholder="Sphere"><br>
-            <input type="text" name="originping" id="originping" placeholder="Origin"><br>
-            <input type="text" name="piping" id="piping" placeholder="Pi"><br>
-            <input type="text" name="radiusping" id="radiusping" placeholder="Radius"><br>
-            <input type="text" name="segmentping" id="segmentping" placeholder="Segment"><br>
-
-            Where do you live?*<br>
-            <select name="location">
-                <option value="selectone">Select</option>
-                <option value="Other">Not US or CA</option>
-                <option value="US - Alabama">US - Alabama</option>
-                <option value="US - Alaska">US - Alaska</option>
-                <option value="US - Arizona">US - Arizona</option>
-                <option value="US - Arkansas">US - Arkansas</option>
-                <option value="US - California">US - California</option>
-                <option value="US - Colorado">US - Colorado</option>
-                <option value="US - Connecticut">US - Connecticut</option>
-                <option value="US - Delaware">US - Delaware</option>
-                <option value="US - Florida">US - Florida</option>
-                <option value="US - Georgia">US - Georgia</option>
-                <option value="US - Hawaii">US - Hawaii</option>
-                <option value="US - Idaho">US - Idaho</option>
-                <option value="US - Illinois">US - Illinois</option>
-                <option value="US - Indiana">US - Indiana</option>
-                <option value="US - Iowa">US - Iowa</option>
-                <option value="US - Kansas">US - Kansas</option>
-                <option value="US - Kentucky">US - Kentucky</option>
-                <option value="US - Louisiana">US - Louisiana</option>
-                <option value="US - Maine">US - Maine</option>
-                <option value="US - Maryland">US - Maryland</option>
-                <option value="US - Massachusetts">US - Massachusetts</option>
-                <option value="US - Michigan">US - Michigan</option>
-                <option value="US - Minnesota">US - Minnesota</option>
-                <option value="US - Mississippi">US - Mississippi</option>
-                <option value="US - Missouri">US - Missouri</option>
-                <option value="US - Montana">US - Montana</option>
-                <option value="US - Nebraska">US - Nebraska</option>
-                <option value="US - Nevada">US - Nevada</option>
-                <option value="US - New Hampshire">US - New Hampshire</option>
-                <option value="US - New Jersey">US - New Jersey</option>
-                <option value="US - New Mexico">US - New Mexico</option>
-                <option value="US - New York">US - New York</option>
-                <option value="US - North Carolina">US - North Carolina</option>
-                <option value="US - North Dakota">US - North Dakota</option>
-                <option value="US - Ohio">US - CalifOhioornia</option>
-                <option value="US - Oklahoma">US - Oklahoma</option>
-                <option value="US - Oregon">US - Oregon</option>
-                <option value="US - Pennsylvania">US - Pennsylvania</option>
-                <option value="US - Rhode Island">US - Rhode Island</option>
-                <option value="US - South Carolina">US - South Carolina</option>
-                <option value="US - South Dakota">US - South Dakota</option>
-                <option value="US - Tennessee">US - Tennessee</option>
-                <option value="US - Texas">US - Texas</option>
-                <option value="US - Utah">US - Utah</option>
-                <option value="US - Vermont">US - Vermont</option>
-                <option value="US - Virginia">US - Virginia</option>
-                <option value="US - Washington">US - Washington</option>
-                <option value="US - West Virginia">US - West Virginia</option>
-                <option value="US - Wisconsin">US - Wisconsin</option>
-                <option value="US - Wyoming">US - Wyoming</option>
-                <option value="CA - Alberta">CA - Alberta</option>
-                <option value="CA - BC">CA - BC</option>
-                <option value="CA - Manitoba">CA - Manitoba</option>
-                <option value="CA - New Brunswick">CA - New Brunswick</option>
-                <option value="CA - Newfoundland and Labrador">CA - Newfoundland and Labrador</option>
-                <option value="CA - Nova Scotia">CA - Nova Scotia</option>
-                <option value="CA - Ontario">CA - Ontario</option>
-                <option value="CA - Prince Edward Island">CA - Prince Edward Island</option>
-                <option value="CA - Quebec">CA - Quebec</option>
-            </select><br>
-
-            If "Other", which country do you live in?<br>
-            <input type="text" name="country" id="country"><br>
-
-            What position do you prefer playing?*<br>
-            <select name="position">
-                <option value="selectone">Select</option>
-                <option value="Primarily Offense">Primarily Offense</option>
-                <option value="Primarily Offense, but can play Defense">Primarily Offense, but can play Defense</option>
-                <option value="Both Equally">Both Equally</option>
-                <option value="Primarily Defense, but can play Offense">Primarily Defense, but can play Offense</option>
-                <option value="Primarily Defense">Primarily Defense</option>
-            </select><br>
-
-            What competitive experience do you have?<br>
-            <input type="checkbox" name="mltp" value="MLTP">&nbsp;MLTP<br>
-            <input type="checkbox" name="minorltp" value="mLTP">&nbsp;mLTP<br>
-            <input type="checkbox" name="nltpa" value="NLTP-A">&nbsp;NLTP-A<br>
-            <input type="checkbox" name="nltpb" value="NLTP-B">&nbsp;NLTP-B<br>
-            <input type="checkbox" name="eltp" value="ELTP">&nbsp;ELTP<br>
-            <input type="checkbox" name="usc" value="USC">&nbsp;USC<br>
-            <input type="checkbox" name="rltp" value="RLTP">&nbsp;RLTP<br>
-            <input type="checkbox" name="socl" value="SOCL">&nbsp;SOCL<br>
-            <input type="checkbox" name="cltp" value="CLTP">&nbsp;CLTP<br>
-
-            How long have you been playing Tagpro?*<br>
-            <select name="experience">
-                <option value="selectone">Select</option>
-                <option value="0-3 Months">0-3 Months</option>
-                <option value="3-6 Months">3-6 Months</option>
-                <option value="6-9 Months">6-9 Months</option>
-                <option value="9-12 Months">9-12 Months</option>
-                <option value="12-18 Months">12-18 Months</option>
-                <option value="18+ Months">18+ Months</option>
-            </select><br>
-
-            Is there anything else you want to tell the captains?<br>
-            <textarea name="personalmessage" id="personalmessage"></textarea><br>
-
-            Are you aware of the <a href="http://www.reddit.com/r/TagPro/wiki/mltp/season_8/rules">Season 8 MLTP Rules</a> and agree to abide by them throughout the season?*<br>
-            <input type="checkbox" name="agreement" value="Yes">&nbsp;Yes<br>
-
-            <br>
-            <span class="input-group-btn">
-                <button class="btn btn-primary" type="submit">Send</button>
-            </span>
+    <link rel="stylesheet" type="text/css" href="signup.css">
+    <div class="form-container">
+        <div class="header-container">
+            <div class="header-image">
+            </div>
         </div>
-    </form>
+        <div class="title-container">
+            <h1 class="title">
+                MLTP Season 8 Signups
+            </h1>
+        </div>
+        <div id="somethingWentWrong"></div>
+        <div class="form">
+            <form class="new-post" id="messageSubmit">
+                <div class="input-group">
+                    <div class="form-entry">
+                        <div class="question-title">
+                            What's your TagPro username?*
+                        </div>
+                            <input type="text" class="written-question" id="playername" name="playername" placeholder="TagPro Username">
+                    </div>
+                    <div class="form-entry">
+                        <div class="question-title">
+                            If you'd like to change your username from last season, please enter it here.
+                        </div>
+                            <input type="text" class="written-question" id="oldplayername" name="oldplayername" placeholder="Old TagPro Username">
+                    </div>
+                    <div class="form-entry">
+                        <div class="question-title">
+                            What's your reddit username?*
+                        </div>
+                          <input type="text" class="written-question" id="redditname" name="redditname" placeholder="Reddit Username">
+                    </div>
+                    <div class="form-entry">
+                        <div class="question-title">
+                            Please provide a link to your TagPro Profile.*
+                        </div>
+                            <input type="text" class="written-question" id="proflink" name="proflink" placeholder="Tagpro Profile Link">
+                    </div>
+                    <hr>
+                    <div class="form-entry">
+                        <div class="question-title">
+                            <p>Do you have mumble?*<br>
+                            If not, get it here: <a href="http://www.reddit.com/r/tagpro/wiki/mumble">http://www.reddit.com/r/tagpro/wiki/mumble</a><br>
+                            It is a requirement for competitive Tagpro.<br>
+                          </p>
+                        </div>
+                        <input type="radio" name="mumble" value="Yes">&nbsp;Yes<br>
+                    </div>
+                    <div class="form-entry">
+                        <div class="question-title">
+                            Are you able to communicate on a microphone during competitive play?*<br>
+                        </div>
+                        <input type="radio" name="mic" value="Yes">&nbsp;Yes<br>
+                        <input type="radio" name="mic" value="No">&nbsp;No<br>
+                        <input type="radio" name="mic" value="Sometimes">&nbsp;Sometimes<br>
+                    </div>
+                    <div class="form-entry">
+                        <div class="question-title">
+                            What days of the week are you normally available to play?*<br>
+                        </div>
+                        <input type="checkbox" name="Sunday" value="Sunday">&nbsp;Sunday<br>
+                        <input type="checkbox" name="Monday" value="Monday">&nbsp;Monday<br>
+                        <input type="checkbox" name="Tuesday" value="Tuesday">&nbsp;Tuesday<br>
+                        <input type="checkbox" name="Wednesday" value="Wednesday">&nbsp;Wednesday<br>
+                        <input type="checkbox" name="Thursday" value="Thursday">&nbsp;Thursday<br>
+                        <input type="checkbox" name="Friday" value="Friday">&nbsp;Friday<br>
+                        <input type="checkbox" name="Saturday" value="Saturday">&nbsp;Saturday<br>
+                    </div>
+                    <div class="form-entry">
+                        <div class="question-title">
+                            What servers are you comfortable playing on?*<br>
+                        </div>
+                        <input type="checkbox" name="Arc" value="Arc">&nbsp;Arc<br>
+                        <input type="checkbox" name="Centra" value="Centra">&nbsp;Centra<br>
+                        <input type="checkbox" name="Sphere" value="Sphere">&nbsp;Sphere<br>
+                        <input type="checkbox" name="Origin" value="Origin">&nbsp;Origin<br>
+                        <input type="checkbox" name="Pi" value="Pi">&nbsp;Pi<br>
+                        <input type="checkbox" name="Radius" value="Radius">&nbsp;Radius<br>
+                        <input type="checkbox" name="Segment" value="Segment">&nbsp;Segment<br>
+                    </div>
+                    <div class="form-entry">
+                        <div class="question-title">
+                            What is the normal ping you get on each server?*
+                        </div>
+                        <input type="text" class="server-question" name="arcping" id="arcping" placeholder="Arc"><br>
+                        <input type="text" class="server-question" name="centraping" id="centraping" placeholder="Centra"><br>
+                        <input type="text" class="server-question" name="sphereping" id="sphereping" placeholder="Sphere"><br>
+                        <input type="text" class="server-question" name="originping" id="originping" placeholder="Origin"><br>
+                        <input type="text" class="server-question" name="piping" id="piping" placeholder="Pi"><br>
+                        <input type="text" class="server-question" name="radiusping" id="radiusping" placeholder="Radius"><br>
+                        <input type="text" class="server-question" name="segmentping" id="segmentping" placeholder="Segment"><br>
+                    </div>
+                    <div class="form-entry">
+                        <div class="question-title">
+                            Where do you live?*
+                        </div>
+                        <select name="location">
+                            <option value="selectone">Select</option>
+                            <option value="other">Not US or CA</option>
+                            <option value="US - Alabama">US - Alabama</option>
+                            <option value="US - Alaska">US - Alaska</option>
+                            <option value="US - Arizona">US - Arizona</option>
+                            <option value="US - Arkansas">US - Arkansas</option>
+                            <option value="US - California">US - California</option>
+                            <option value="US - Colorado">US - Colorado</option>
+                            <option value="US - Connecticut">US - Connecticut</option>
+                            <option value="US - Delaware">US - Delaware</option>
+                            <option value="US - Florida">US - Florida</option>
+                            <option value="US - Georgia">US - Georgia</option>
+                            <option value="US - Hawaii">US - Hawaii</option>
+                            <option value="US - Idaho">US - Idaho</option>
+                            <option value="US - Illinois">US - Illinois</option>
+                            <option value="US - Indiana">US - Indiana</option>
+                            <option value="US - Iowa">US - Iowa</option>
+                            <option value="US - Kansas">US - Kansas</option>
+                            <option value="US - Kentucky">US - Kentucky</option>
+                            <option value="US - Louisiana">US - Louisiana</option>
+                            <option value="US - Maine">US - Maine</option>
+                            <option value="US - Maryland">US - Maryland</option>
+                            <option value="US - Massachusetts">US - Massachusetts</option>
+                            <option value="US - Michigan">US - Michigan</option>
+                            <option value="US - Minnesota">US - Minnesota</option>
+                            <option value="US - Mississippi">US - Mississippi</option>
+                            <option value="US - Missouri">US - Missouri</option>
+                            <option value="US - Montana">US - Montana</option>
+                            <option value="US - Nebraska">US - Nebraska</option>
+                            <option value="US - Nevada">US - Nevada</option>
+                            <option value="US - New Hampshire">US - New Hampshire</option>
+                            <option value="US - New Jersey">US - New Jersey</option>
+                            <option value="US - New Mexico">US - New Mexico</option>
+                            <option value="US - New York">US - New York</option>
+                            <option value="US - North Carolina">US - North Carolina</option>
+                            <option value="US - North Dakota">US - North Dakota</option>
+                            <option value="US - Ohio">US - CalifOhioornia</option>
+                            <option value="US - Oklahoma">US - Oklahoma</option>
+                            <option value="US - Oregon">US - Oregon</option>
+                            <option value="US - Pennsylvania">US - Pennsylvania</option>
+                            <option value="US - Rhode Island">US - Rhode Island</option>
+                            <option value="US - South Carolina">US - South Carolina</option>
+                            <option value="US - South Dakota">US - South Dakota</option>
+                            <option value="US - Tennessee">US - Tennessee</option>
+                            <option value="US - Texas">US - Texas</option>
+                            <option value="US - Utah">US - Utah</option>
+                            <option value="US - Vermont">US - Vermont</option>
+                            <option value="US - Virginia">US - Virginia</option>
+                            <option value="US - Washington">US - Washington</option>
+                            <option value="US - West Virginia">US - West Virginia</option>
+                            <option value="US - Wisconsin">US - Wisconsin</option>
+                            <option value="US - Wyoming">US - Wyoming</option>
+                            <option value="CA - Alberta">CA - Alberta</option>
+                            <option value="CA - BC">CA - BC</option>
+                            <option value="CA - Manitoba">CA - Manitoba</option>
+                            <option value="CA - New Brunswick">CA - New Brunswick</option>
+                            <option value="CA - Newfoundland and Labrador">CA - Newfoundland and Labrador</option>
+                            <option value="CA - Nova Scotia">CA - Nova Scotia</option>
+                            <option value="CA - Ontario">CA - Ontario</option>
+                            <option value="CA - Prince Edward Island">CA - Prince Edward Island</option>
+                            <option value="CA - Quebec">CA - Quebec</option>
+                        </select>
+                    </div>
+                    <div class="form-entry">
+                        <div class="question-title">
+                            If you're outside of the US or CA, which country do you live in?
+                        </div>
+                        <input type="text" name="country" id="country" placeholder="Country">
+                    </div>
+                    <div class="form-entry">
+                        <div class="question-title">
+                            What position do you prefer playing?*
+                        </div>
+                        <select name="position"><br>
+                            <option value="selectone">Select</option>
+                            <option value="Primarily Offense">Primarily Offense</option>
+                            <option value="Primarily Offense, but can play Defense">Primarily Offense, but can play Defense</option>
+                            <option value="Both Equally">Both Equally</option>
+                            <option value="Primarily Defense, but can play Offense">Primarily Defense, but can play Offense</option>
+                            <option value="Primarily Defense">Primarily Defense</option>
+                        </select>
+                    </div>
+                    <div class="form-entry">
+                        <div class="question-title">
+                            What competitive experience do you have?
+                        </div>
+                        <input type="checkbox" name="mltp" value="MLTP">&nbsp;MLTP<br>
+                        <input type="checkbox" name="minorltp" value="mLTP">&nbsp;mLTP<br>
+                        <input type="checkbox" name="nltpa" value="NLTP-A">&nbsp;NLTP-A<br>
+                        <input type="checkbox" name="nltpb" value="NLTP-B">&nbsp;NLTP-B<br>
+                        <input type="checkbox" name="eltp" value="ELTP">&nbsp;ELTP<br>
+                        <input type="checkbox" name="usc" value="USC">&nbsp;USC<br>
+                        <input type="checkbox" name="rltp" value="RLTP">&nbsp;RLTP<br>
+                        <input type="checkbox" name="socl" value="SOCL">&nbsp;SOCL<br>
+                        <input type="checkbox" name="cltp" value="CLTP">&nbsp;CLTP<br>
+                    </div>
+                    <div class="form-entry">
+                        <div class="question-title">
+                            How long have you been playing Tagpro?*
+                        </div>
+                        <select name="experience">
+                            <option value="selectone">Select</option>
+                            <option value="0-3 Months">0-3 Months</option>
+                            <option value="3-6 Months">3-6 Months</option>
+                            <option value="6-9 Months">6-9 Months</option>
+                            <option value="9-12 Months">9-12 Months</option>
+                            <option value="12-18 Months">12-18 Months</option>
+                            <option value="18+ Months">18+ Months</option>
+                        </select>
+                    </div>
+                    <div class="form-entry">
+                        <div class="question-title">
+                            Is there anything else you want to tell the captains?
+                        </div>
+                        <textarea rows="6" cols="50" name="personalmessage" id="personalmessage" placeholder="Serious responses only"></textarea>
+                    </div>
+                    <div class="form-entry">
+                        <div class="question-title">
+                            Are you aware of the <a href="http://www.reddit.com/r/TagPro/wiki/mltp/season_8/rules">Season 8 MLTP Rules</a> and willing to abide by them throughout the season?*
+                        </div>
+                        <input type="checkbox" name="agreement" value="Yes">&nbsp;Yes<br>
+                    </div>
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
     {{else}}
         Log in to Sign up for MLTP!
     {{/if}}
