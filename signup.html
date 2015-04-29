@@ -1,4 +1,5 @@
 <template name="signup">
+  {{#if displaySignup}}
     {{#if canSignup}}
     <div id="somethingWentWrong"></div>
     <form class="new-post" id="messageSubmit">
@@ -160,4 +161,5 @@
     {{else}}
         Log in to Sign up for MLTP!
     {{/if}}
+  {{/if}}
 </template>

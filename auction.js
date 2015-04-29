@@ -43,6 +43,7 @@ if (Meteor.isClient) {
     Session.setDefault('players', []);
     Session.setDefault("playSound", "");
     Session.setDefault("teamJustBid", "");
+    Session.setDefault("displaySignup", true);
 
     Meteor.setServerTime();
     Meteor.clearInterval(Meteor.intervalUpdateTimeDisplayed);
@@ -529,6 +530,9 @@ if (Meteor.isClient) {
       if(!Meteor.userId())
         return false;
       return true;
+    },
+    displaySignup: function() {
+     return Session.get('displaySignup');
     }
   });
   Template.signup.events(
