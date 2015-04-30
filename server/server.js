@@ -15,7 +15,12 @@ AuctionLock = new Mongo.Collection("auctionlock");
 PreviousAuctionData = new Mongo.Collection("previousauctiondata");
 PlayerResponse = new Mongo.Collection("playerResponse");
 
-Meteor.methods({insertSignup : function(dataToSend) {
+Meteor.methods({
+  insertSignup : function(dataToSend) {
     PlayerResponse.insert(dataToSend);
     console.log("Got signup from: " + dataToSend.meteorUserId);
-}});
+  },
+  getSignedUp : function(playername) {
+    return PlayerResponse.find({meteorUserId:playername}).count();
+  }
+});
