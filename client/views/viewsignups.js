@@ -3,19 +3,19 @@ Template.viewsignups.helpers({
     return PlayerResponse.find({},{sort: {playername: 1}});
   },
   getPlayerPosition:function(position){
-    if(position = "Primarily Offense") {
+    if(position == "Primarily Offense") {
      return "O";
     }
-    if(position = "Primarily Offense, but can play Defense") {
+    if(position == "Primarily Offense, but can play Defense") {
      return "O/D";
     }
-    if(position = "Both Equally") {
+    if(position == "Both Equally") {
      return "Both";
     }
-    if(position = "Primarily Defense, but can play Offense") {
+    if(position == "Primarily Defense, but can play Offense") {
      return "D/O";
     }
-    if(position = "Primarily Defense") {
+    if(position == "Primarily Defense") {
      return "D";
     }
   }
