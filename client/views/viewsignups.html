@@ -1,4 +1,31 @@
 <template name="viewsignups">
     <!-- query for players with specific responses -->
     <!-- table of all players -->
+    <table style="striped">
+        <thead>
+            <tr>
+                <th data-field="position">Position</th>
+                <th data-field="name">Player</th>
+                <th data-field="location">Location</th>
+                <th data-field="note">Personal Note</th>
+            </tr>
+        </thead>
+        {{#each allsignups}}
+        <tr>
+            <td>
+                {{getPlayerPosition position}}
+            </td>
+            <td>
+                {{playername}}
+            </td>
+            <td>
+                {{location}}
+            </td>
+            <td>
+                {{personalmessage}}
+            </td>
+        </tr>
+        {{/each}}
+    </table>
+    <center><div id="home"><a>Back to home.</a></div></center>
 </template>

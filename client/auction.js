@@ -1,22 +1,3 @@
-admins = ["eagles.", "Bull"];
-
-AuctionData = new Mongo.Collection("auctiondata");
-PausedAuction = new Mongo.Collection("pauseddata");
-TeamData = new Mongo.Collection('teams');
-TeamNames = new Mongo.Collection('teamnames');
-Divisions = new Mongo.Collection('divisions');
-DraftablePlayers = new Mongo.Collection('players');
-Messages = new Mongo.Collection('messages');
-BidHistory = new Mongo.Collection('bids');
-Nominators = new Mongo.Collection('nominators');
-Keepers = new Mongo.Collection('keepers');
-NextNominator = new Mongo.Collection('nextnominator');
-CurrentPick = new Mongo.Collection('currentpick');
-AuctionStatus = new Mongo.Collection("auctionstatus");
-AuctionLock = new Mongo.Collection("auctionlock");
-PreviousAuctionData = new Mongo.Collection("previousauctiondata");
-PlayerResponse = new Mongo.Collection("playerResponse");
-
 var bidTime = 25000;
 var additionTime = 15000;
 var lock = 0;
@@ -30,49 +11,6 @@ Meteor.setServerTime = function() {
     Session.set('serverTimeOffset', serverOffset);
   });
 };
-
-if (Meteor.isClient) {
-  Meteor.startup(function() {
-    // don't need to set all auction stuff until we're in the auction page
-    Session.setDefault("serverTimeOffset", 0);
-    Session.setDefault("time", new Date().getTime());
-    Session.setDefault("auctionStatus", "Waiting to start");
-    Session.setDefault("nominationTime", false);
-    Session.setDefault("bidAccepted", false);
-    Session.setDefault("myTurnToNominate", false);
-    Session.setDefault('players', []);
-    Session.setDefault("playSound", "");
-    Session.setDefault("teamJustBid", "");
-    Session.setDefault("pageToDisplay", "homePage");
-
-    Meteor.setServerTime();
-    Meteor.clearInterval(Meteor.intervalUpdateTimeDisplayed);
-    Meteor.intervalUpdateTimeDisplayed = Meteor.setInterval(function() { Session.set('time', new Date().getTime()); }, 50);
-    Meteor.clearInterval(Meteor.intervalUpdateServerTime);
-    Meteor.intervalUpdateServerTime = Meteor.setInterval(function() { Meteor.setServerTime(); }, 300000);
-
-    Meteor.subscribe("divisions");
-    Meteor.subscribe("teamnames");
-    Meteor.subscribe("teams");
-
-    Meteor.subscribe("auctiondata");
-    Meteor.subscribe("auctionstatus");
-    Meteor.subscribe("nominators");
-    Meteor.subscribe("currentpick");
-
-    Meteor.subscribe("messages");
-    Meteor.subscribe("bids");
-    Meteor.subscribe("previousauctiondata");
-    Meteor.subscribe("keepers");
-
-    Meteor.subscribe("playerResponse");
-  });
-
-  // Need usernames
-  // WANT: email notifications.
-  Accounts.ui.config({
-    passwordSignupFields: "USERNAME_ONLY"
-  });
 
   // Rosters
   Template.renderteam.helpers({
@@ -432,114 +370,10 @@ if (Meteor.isClient) {
     }
   );
 
-  Template.getmessages.helpers({
-    lastXmessages: function(limit) {
-      return Messages.find({}, {sort: {createdAt: -1}, limit:parseInt(limit)});
-    },
-    admin : function() {
-      if(Meteor.user() !== undefined) {
-        if(admins.indexOf(Meteor.user().username) >= 0) {
-          return true;
-        }
-      }
-      return false;
-    },
-    messageColor: function(messageType) {
-      // Class to add to the message (for coloring or sending information to the client)
-      if(messageType == "winningBid") {
-        return "winningbid";
-      }
-      else if(messageType == "bid") {
-        return "list-group-item-warning";
-      }
-      else if(messageType == "nomination") {
-        return "list-group-item-info";
-      }
-      else if(messageType == "animate") {
-        Session.set("playSound", "playerWon");
-        return "hidden winningTeam";
-      }
-      else if(messageType == "started") {
-        return "list-group-item-info";
-      }
-      else if(messageType == "paused") {
-        return "list-group-item-danger";
-      }
-      else if(messageType == "bidIndication") {
-         return "hidden justBid"
-      }
-      else {
-        return "";
-      }
-    }
-  });
-  // Messages
-  Template.messages.helpers({
-    messages: function() {
-      return Messages.find({}, {sort: {createdAt: -1}, limit:50});
-    },
-    getMessageText: function() {
-      return Messages.findOne({}, {sort: {createdAt: -1}}).text;
-    },
-    canSendMessage: function() {
-      if(!Meteor.userId())
-        return false;
-      return true;
-    },
-    admin : function() {
-      if(Meteor.user() !== undefined) {
-        if(admins.indexOf(Meteor.user().username) >= 0) {
-          return true;
-        }
-      }
-      return false;
-    },
-    messageColor: function(messageType) {
-      // Class to add to the message (for coloring or sending information to the client)
-      if(messageType == "winningBid") {
-        return "list-group-item-success";
-      }
-      else if(messageType == "bid") {
-        return "list-group-item-warning";
-      }
-      else if(messageType == "nomination") {
-        return "list-group-item-info"
-      }
-      else if(messageType == "animate") {
-        return "hidden winningTeam"
-      }
-      else {
-        return "";
-      }
-    }
-  });
-  Template.messages.events(
-    {
-      'submit' : function(event)
-      {
-        //console.log("Got a new message from ", Meteor.user().username);
-        //console.log("Message text:", event.target.text.value);
-        if(!Meteor.userId()) {
-         return false;
-        }
-        var text = Meteor.user().username + ": " + event.target.text.value;
-        Meteor.call("insertMessage", text, new Date(), "textMessage");
-        event.target.text.value = "";
-        return false;
-      },
-    'click .delete' : function() {
-      Meteor.call("removeMessage", this._id);
-    }
-  });
-}
-
 Meteor.methods({
   hasSignedUp : function(name) {
     console.log("test");
     return PlayerResponse.find({"meteorUserId":name});
-  },
-  deleteSignupFromSignups : function(id) {
-    PlayerResponse.remove({"_id" : id});
   },
   setBidTime: function(bidtime) {
     bidTime = bidtime;
@@ -614,11 +448,7 @@ Meteor.methods({
   getAuctionStatus:function() {
     return AuctionData.findOne();
   },
-  insertMessage:function(text, createdAt, messageType) {
-    if(Meteor.isServer)
-      var texttowrite = text;
-      Messages.insert({text:texttowrite,createdAt:new Date(),messageType:messageType});
-  },
+
   toggleState: function(playerNominated, bid) {
       console.log("Checking toggle state");
 
@@ -834,143 +664,5 @@ Meteor.methods({
 });
 
 if (Meteor.isServer) {
-  Meteor.startup(function () {
-    console.log("Loading it up");
-    // Clear state
 
-    var renewData = true;
-
-    AuctionData.remove({});
-    AuctionStatus.remove({})
-    AuctionStatus.insert({"status":"Not Started"});
-    AuctionLock.remove({});
-    AuctionLock.insert({"locked":0});
-
-    if(renewData) {
-
-      TeamNames.remove({});
-      var teamnames = {};
-      teamnames = JSON.parse(Assets.getText('teamnames.json'));
-      for(i = 0; i < teamnames.length; i++) {
-        var obj = teamnames[i];
-        TeamNames.insert(obj);
-      }
-
-      Divisions.remove({});
-      var divisions = {};
-      divisions = JSON.parse(Assets.getText('divisions.json'));
-      for(i = 0; i < divisions.length; i++) {
-        var obj = divisions[i];
-        Divisions.insert(obj);
-      }
-
-      TeamData.remove({});
-      //Messages.remove({});
-      Nominators.remove({});
-      Keepers.remove({});
-      CurrentPick.remove({});
-      PausedAuction.remove({});
-      CurrentPick.insert({"pick":1});
-
-      // Load Nominators
-      var initialRosterData = {};
-      initialRosterData = JSON.parse(Assets.getText('nominations.json'));
-      for(i = 0; i < initialRosterData.length; i++) {
-        var obj = initialRosterData[i];
-        Nominators.insert(obj);
-      }
-
-
-      // Fischer-Yates shuffle
-      var shuffle = function(array) {
-        var currentIndex = array.length, temporaryValue, randomIndex ;
-
-        // While there remain elements to shuffle...
-        while (0 !== currentIndex) {
-
-          // Pick a remaining element...
-          randomIndex = Math.floor(Math.random() * currentIndex);
-          currentIndex -= 1;
-
-          // And swap it with the current element.
-          temporaryValue = array[currentIndex];
-          array[currentIndex] = array[randomIndex];
-          array[randomIndex] = temporaryValue;
-        }
-
-        return array;
-      }
-
-      // Set nomination order
-      var captains = Nominators.find({"order":-1}).fetch();
-      captains = shuffle(captains);
-      for(var i = 0; i < captains.length; i++) {
-        Nominators.update({"name":captains[i].name}, {$set: {"order": i}});
-      }
-
-
-      keepers = JSON.parse(Assets.getText('keepers.json'));
-      for(i = 0; i < keepers.length; i++) {
-        var obj = keepers[i];
-        Keepers.insert(obj);
-      }
-
-      initialRosterData = JSON.parse(Assets.getText('teams.json'));
-      for(i = 0; i < initialRosterData.length; i++) {
-        var obj = initialRosterData[i];
-        TeamData.insert(obj);
-      }
-
-      PlayerResponse.update({}, {$set:{"drafted":false}}, {multi:true});
-      drafted = TeamData.find({"name":{$ne:""}}).fetch();
-      for(var x=0; x<drafted.length; x++) {
-        PlayerResponse.update({tagpro:drafted[x].name}, {$set:{drafted:true}});
-      }
-
-    }
-
-    Meteor.publish("divisions", function() {return Divisions.find();});
-    Meteor.publish("teams", function() {return TeamData.find();});
-    Meteor.publish("teamnames", function() {return TeamNames.find()});
-    Meteor.publish("messages", function() {return Messages.find({}, {sort: {createdAt: -1}, limit:25});});
-    Meteor.publish("auctiondata", function() {return AuctionData.find()});
-    Meteor.publish("auctionstatus", function() {return AuctionStatus.find()});
-    Meteor.publish("nominators", function() {return Nominators.find()});
-    Meteor.publish("currentpick", function() {return CurrentPick.find()});
-    Meteor.publish("bids", function() { return BidHistory.find()});
-    Meteor.publish("previousauctiondata", function() {return PreviousAuctionData.find()});
-    Meteor.publish("keepers", function() {return Keepers.find()});
-    Meteor.publish("playerResponse", function() {return PlayerResponse.find()});
-    //Keepers = new Mongo.Collection('keepers');
-
-    return true;
-  });
-  Meteor.methods({
-    getServerTime: function () {
-      var _time = (new Date).getTime();
-      return _time;
-    },
-    pickNominator : function() {
-      console.log("pickNominator: started");
-      var nextInOrder = Nominators.findOne({"name":"nextInOrder"});
-      var nextOrder = nextInOrder.nextorder;
-      var captain = Nominators.findOne({"order":nextOrder});
-      var newnextorder = (nextOrder+1) % (Nominators.find({}).count()-1);
-      console.log("pickNominator: nextOrder: " + nextInOrder.nextorder);
-      console.log("pickNominator: captain: " + captain.name + " rosterfull? " + captain.rosterfull);
-      console.log("pickNominator: newnextorder: " + newnextorder);
-      Nominators.update({"name":"nextInOrder"}, {$set: {"nextorder": newnextorder}});
-      // loop through nominators in order until we find one without a full roster
-      if(captain.rosterfull) {
-        return Meteor.call('pickNominator');
-      }
-
-      nextNominator = Nominators.findOne({"order":newnextorder});
-      var text = "Waiting for "+captain.name +" to nominate pick "+CurrentPick.findOne({}).pick+" of the draft.";
-      Meteor.call("insertMessage", text, new Date());
-      var text = nextNominator.name +" is nominating after "+ captain.name;
-      Meteor.call("insertMessage", text, new Date());
-      return captain;
-    }
-  });
 }

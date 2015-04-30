@@ -15,6 +15,8 @@ AuctionLock = new Mongo.Collection("auctionlock");
 PreviousAuctionData = new Mongo.Collection("previousauctiondata");
 PlayerResponse = new Mongo.Collection("playerResponse");
 
+admins = ["eagles.", "Bull"];
+
 Meteor.methods({
   insertSignup : function(dataToSend) {
     PlayerResponse.insert(dataToSend);
@@ -24,5 +26,144 @@ Meteor.methods({
     var num = PlayerResponse.find({meteorUserId:playername}).count();
     console.log(num);
     return num;
+  },
+  getServerTime: function () {
+    var _time = (new Date).getTime();
+    return _time;
+  },
+  pickNominator : function() {
+    console.log("pickNominator: started");
+    var nextInOrder = Nominators.findOne({"name":"nextInOrder"});
+    var nextOrder = nextInOrder.nextorder;
+    var captain = Nominators.findOne({"order":nextOrder});
+    var newnextorder = (nextOrder+1) % (Nominators.find({}).count()-1);
+    console.log("pickNominator: nextOrder: " + nextInOrder.nextorder);
+    console.log("pickNominator: captain: " + captain.name + " rosterfull? " + captain.rosterfull);
+    console.log("pickNominator: newnextorder: " + newnextorder);
+    Nominators.update({"name":"nextInOrder"}, {$set: {"nextorder": newnextorder}});
+    // loop through nominators in order until we find one without a full roster
+    if(captain.rosterfull) {
+      return Meteor.call('pickNominator');
+    }
+
+    nextNominator = Nominators.findOne({"order":newnextorder});
+    var text = "Waiting for "+captain.name +" to nominate pick "+CurrentPick.findOne({}).pick+" of the draft.";
+    Meteor.call("insertMessage", text, new Date());
+    var text = nextNominator.name +" is nominating after "+ captain.name;
+    Meteor.call("insertMessage", text, new Date());
+    return captain;
+  },
+  insertMessage:function(text, createdAt, messageType) {
+    var texttowrite = text;
+    Messages.insert({text:texttowrite,createdAt:new Date(),messageType:messageType});
   }
+});
+Meteor.startup(function () {
+  console.log("Loading it up");
+  // Clear state
+
+  var renewData = true;
+
+  AuctionData.remove({});
+  AuctionStatus.remove({})
+  AuctionStatus.insert({"status":"Not Started"});
+  AuctionLock.remove({});
+  AuctionLock.insert({"locked":0});
+
+  if(renewData) {
+
+    TeamNames.remove({});
+    var teamnames = {};
+    teamnames = JSON.parse(Assets.getText('teamnames.json'));
+    for(i = 0; i < teamnames.length; i++) {
+      var obj = teamnames[i];
+      TeamNames.insert(obj);
+    }
+
+    Divisions.remove({});
+    var divisions = {};
+    divisions = JSON.parse(Assets.getText('divisions.json'));
+    for(i = 0; i < divisions.length; i++) {
+      var obj = divisions[i];
+      Divisions.insert(obj);
+    }
+
+    TeamData.remove({});
+    //Messages.remove({});
+    Nominators.remove({});
+    Keepers.remove({});
+    CurrentPick.remove({});
+    PausedAuction.remove({});
+    CurrentPick.insert({"pick":1});
+
+    // Load Nominators
+    var initialRosterData = {};
+    initialRosterData = JSON.parse(Assets.getText('nominations.json'));
+    for(i = 0; i < initialRosterData.length; i++) {
+      var obj = initialRosterData[i];
+      Nominators.insert(obj);
+    }
+
+
+    // Fischer-Yates shuffle
+    var shuffle = function(array) {
+      var currentIndex = array.length, temporaryValue, randomIndex ;
+
+      // While there remain elements to shuffle...
+      while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+      }
+
+      return array;
+    }
+
+    // Set nomination order
+    var captains = Nominators.find({"order":-1}).fetch();
+    captains = shuffle(captains);
+    for(var i = 0; i < captains.length; i++) {
+      Nominators.update({"name":captains[i].name}, {$set: {"order": i}});
+    }
+
+
+    keepers = JSON.parse(Assets.getText('keepers.json'));
+    for(i = 0; i < keepers.length; i++) {
+      var obj = keepers[i];
+      Keepers.insert(obj);
+    }
+
+    initialRosterData = JSON.parse(Assets.getText('teams.json'));
+    for(i = 0; i < initialRosterData.length; i++) {
+      var obj = initialRosterData[i];
+      TeamData.insert(obj);
+    }
+
+    PlayerResponse.update({}, {$set:{"drafted":false}}, {multi:true});
+    drafted = TeamData.find({"name":{$ne:""}}).fetch();
+    for(var x=0; x<drafted.length; x++) {
+      PlayerResponse.update({tagpro:drafted[x].name}, {$set:{drafted:true}});
+    }
+
+  }
+
+  Meteor.publish("divisions", function() {return Divisions.find();});
+  Meteor.publish("teams", function() {return TeamData.find();});
+  Meteor.publish("teamnames", function() {return TeamNames.find()});
+  Meteor.publish("messages", function() {return Messages.find({}, {sort: {createdAt: -1}, limit:25});});
+  Meteor.publish("auctiondata", function() {return AuctionData.find()});
+  Meteor.publish("auctionstatus", function() {return AuctionStatus.find()});
+  Meteor.publish("nominators", function() {return Nominators.find()});
+  Meteor.publish("currentpick", function() {return CurrentPick.find()});
+  Meteor.publish("bids", function() { return BidHistory.find()});
+  Meteor.publish("previousauctiondata", function() {return PreviousAuctionData.find()});
+  Meteor.publish("keepers", function() {return Keepers.find()});
+  Meteor.publish("playerResponse", function() {return PlayerResponse.find()});
+  return true;
 });

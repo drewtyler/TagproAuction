@@ -8,6 +8,7 @@ Template.signup.helpers({
     return (Session.get('pageToDisplay') == "signUpPage");
   }
 });
+
 Template.signup.events({
   'submit' : function(event) {
     $("#somethingWentWrong").empty();

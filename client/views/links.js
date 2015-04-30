@@ -17,5 +17,8 @@ Template.links.helpers({
 Template.links.events({
   'click #signupforleague' : function(event) {
      Session.set("pageToDisplay","signUpPage");
+  },
+  'click #viewSignups' : function(event) {
+     Session.set("pageToDisplay","packetPage");
   }// put in a listener for a click in each div for each button
 });
