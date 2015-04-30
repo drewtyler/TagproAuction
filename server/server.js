@@ -21,6 +21,8 @@ Meteor.methods({
     console.log("Got signup from: " + dataToSend.meteorUserId);
   },
   getSignedUp : function(playername) {
-    return PlayerResponse.find({meteorUserId:playername}).count();
+    var num = PlayerResponse.find({meteorUserId:playername}).count();
+    console.log(num);
+    return num;
   }
 });

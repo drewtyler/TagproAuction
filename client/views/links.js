@@ -3,8 +3,8 @@ Template.links.helpers({
      return !(Meteor.user());
   },
   notSignedUp: function() {
-   var response = Meteor.call("getSignedUp",Meteor.user().username);
-   return (response == 0);
+    Meteor.call("getSignedUp",Meteor.user().username, function(error, result) {Session.set("notSignedUp", result==0); });
+    return Session.get("notSignedUp");
   },
   isCaptain:function() {
    return (TeamData.findOne({"name":Meteor.user().username, "captain" : true}))
