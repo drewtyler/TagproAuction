@@ -109,6 +109,7 @@ Template.signup.events({
       reasonsToFail.push("<li>You must agree to the Season 8 rules!</li>");
     }
     dataToSend.meteorUserId = Meteor.user().username;
+    dataToSend.signupTime = new Date();
     if(isOK) {
       Meteor.call("insertSignup", dataToSend);
       Session.set("pageToDisplay","homePage");

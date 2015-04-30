@@ -3,8 +3,11 @@ Template.links.helpers({
      return !(Meteor.user());
   },
   notSignedUp: function() {
+   console.log("test");
    var response = PlayerResponse.find({meteorUserId: Meteor.user().username}).count();
-   return (response == 0);
+   console.log("test2");
+    console.log(response);
+    return (response == 0);
   },
   isCaptain:function() {
    return (TeamData.findOne({"name":Meteor.user().username, "captain" : true}))
