@@ -1,0 +1,73 @@
+.container {
+  margin: 0 auto;
+  width: 1300px;
+}
+
+.draft-table {
+  margin: 0 30px;
+  border: 1px solid #999999;
+}
+
+.table-title {
+  height: 50px;
+  background-color: #1e518c;
+  padding: 0 15px;
+  line-height: 50px;
+  color: #ffffff;
+  font-size: 24px;
+  text-align: center;
+  border-bottom: 1px solid #9a9a9a;
+  font-weight: bold;
+}
+
+.draft-table table thead tr th {
+  background-color: #434343;
+  border-bottom: none;
+  padding: 6px;
+  color: white;
+  text-align: center;
+  border-bottom: none;
+  line-height: 18px;
+  font-weight: normal;
+}
+
+.draft-table table tbody tr td {
+  padding: 8px
+}
+
+table {
+  border-spacing: 0;
+  width: 100%;
+}
+
+.stat-head {
+  min-width: 60px;
+}
+
+.cell {
+  background-color: #f2f2f2;
+  text-align: center;
+}
+
+.offense {
+  background-color: #ea9999;
+  font-weight: bold;
+}
+
+.defense {
+  background-color: #9fc5e8;
+  font-weight: bold;
+}
+
+.total {
+  background-color: #ffe599;
+  font-weight: bold;
+}
+
+.comment {
+  max-width: 100px;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
