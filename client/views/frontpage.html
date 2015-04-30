@@ -1,0 +1,82 @@
+<head>
+    <title>MLTP Season 8</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="/bootstrap.min.css">
+    <link rel="stylesheet" href="/csshake.min.css">
+    <link rel="stylesheet" href="/tooltipster.css">
+    <link rel="stylesheet" href="/auction.css">
+
+    <!-- Optional theme -->
+    <!-- Latest compiled and minified JavaScript -->
+    <script type="text/javascript" src="/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/jquery.vibrate.min.js"></script>
+    <script type="text/javascript" src="/typeahead.jquery.min.js"></script>
+    <script type="text/javascript" src="/jquery.foggy.min.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    {{> frontpage}}
+</body>
+
+<template name="frontpage">
+    <!-- I think we need a landing page template that has a sign in button & a sign up button a
+
+         Once signed in, it'll have a grid of links.
+
+         If normal player, "View Teams", "Draft", "Edit Profile".
+         If captain, all above and "Manage Team", "Trade", "Waivers".
+         If Admin, normal player + "Approve Trades".
+
+         Ideally, the auction page will be the only one with per-role smaller templates.
+         Everything else "restricted" will have a top-level check to see if you're a captain or admin and let it go.
+    -->
+    <div class="hidden">
+        <audio id="sound_nomination">
+            <source src="/sound/nomination.mp3" type="audio/mpeg" />
+        </audio>
+        <audio id="sound_myNomination">
+            <source src="/sound/myNomination.mp3" type="audio/mpeg" />
+        </audio>
+        <audio id="sound_bid">
+            <source src="/sound/bid.mp3" type="audio/mpeg" />
+        </audio>
+        <audio id="sound_playerWon">
+            <source src="/sound/playerWon.mp3" type="audio/mpeg" />
+        </audio>
+        <audio id="sound_go">
+            <source src="/sound/go.mp3" type="audio/mpeg" />
+        </audio>
+    </div>
+    {{#if homePage}}
+        {{> links}}
+    {{/if}}
+    {{#if signUpPage}}
+        {{> signup}}
+    {{/if}}
+    {{#if editSignUpPage}}
+        {{> editsignup}}
+    {{/if}}
+    {{#if draftPage}}
+        {{> auction}}
+    {{/if}}
+    {{#if packetPage}}
+        {{> packet}}
+    {{/if}}
+    {{#if adminPage}}
+        {{> adminPage}}
+    {{/if}}
+    {{#if tradePage}}
+        {{> trade}}
+    {{/if}}
+    {{#if rosterPage}}
+        {{> rosters}}
+    {{/if}}
+    {{#if waiversPage}}
+        {{> waivers}}
+    {{/if}}
+    <br><center>{{> loginButtons}}</center>
+</template>

@@ -60,6 +60,9 @@ body {
   margin-bottom: 12px;
 }
 
+.input-group-btn2 {
+ position:absolute;
+}
 
 input[type='text'] {
   font-size: 12px;
