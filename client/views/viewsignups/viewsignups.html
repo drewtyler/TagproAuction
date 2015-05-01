@@ -4,10 +4,12 @@
     <table class=".table-striped">
         <thead>
             <tr>
-                <th data-field="position">Position</th>
-                <th data-field="name">Player</th>
-                <th data-field="location">Location</th>
-                <th data-field="note">Personal Note</th>
+                <th>Position</th>
+                <th>Player</th>
+                <th>Location</th>
+                <th>Highest Experience</th>
+                <th colspan="7">Availability</th>
+                <th>Personal Note</th>
             </tr>
         </thead>
         {{#each allsignups}}
@@ -20,6 +22,30 @@
             </td>
             <td>
                 {{location}}
+            </td>
+            <td>
+                {{getHighestExperience mltp minorltp nltpa nltpb eltp usc rltp socl cltp}}
+            </td>
+            <td>
+                {{getDay "Su" sunday}}
+            </td>
+            <td>
+                {{getDay "M" monday}}
+            </td>
+            <td>
+                {{getDay "Tu" tuesday}}
+            </td>
+            <td>
+                {{getDay "W" wednesday}}
+            </td>
+            <td>
+                {{getDay "Th" thursday}}
+            </td>
+            <td>
+                {{getDay "F" friday}}
+            </td>
+            <td>
+                {{getDay "Sa" saturday}}
             </td>
             <td>
                 {{personalmessage}}

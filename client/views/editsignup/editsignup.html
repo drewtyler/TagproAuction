@@ -1,6 +1,6 @@
-<template name="signup">
-  {{#if displaySignup}}
-    {{#if canSignup}}
+<template name="editsignup">
+    {{#if signedUp}}
+    {{#each responseFromMe}}
     <div class="form-container">
         <div class="header-container">
             <div class="header-image">
@@ -8,7 +8,7 @@
         </div>
         <div class="title-container">
             <h1 class="title">
-                MLTP Season 8 Signups
+                Edit your Season 8 Signup
             </h1>
         </div>
         <div class="form">
@@ -18,110 +18,101 @@
                         <div class="question-title">
                             What's your TagPro username?*
                         </div>
-                            <input type="text" class="written-question" id="playername" name="playername" placeholder="TagPro Username">
+                        <input type="text" class="written-question" id="playername" name="playername" value="{{playername}}" placeholder="TagPro Username">
                     </div>
                     <div class="form-entry">
                         <div class="question-title">
                             If you'd like to change your username from last season, please enter it here.
                         </div>
-                            <input type="text" class="written-question" id="oldplayername" name="oldplayername" placeholder="Old TagPro Username">
+                        <input type="text" class="written-question" id="oldplayername" name="oldplayername" value="{{playername}}" placeholder="Old TagPro Username">
                     </div>
                     <div class="form-entry">
                         <div class="question-title">
                             What's your reddit username?*
                         </div>
-                          <input type="text" class="written-question" id="redditname" name="redditname" placeholder="Reddit Username">
+                        <input type="text" class="written-question" id="redditname" name="redditname" value="{{redditname}}" placeholder="Reddit Username">
                     </div>
                     <div class="form-entry">
                         <div class="question-title">
                             Please provide a link to your TagPro Profile.*
                         </div>
-                            <input type="text" class="written-question" id="proflink" name="proflink" placeholder="Tagpro Profile Link">
+                        <input type="text" class="written-question" id="proflink" name="proflink" value="{{proflink}}" placeholder="Tagpro Profile Link">
                     </div>
                     <hr>
                     <div class="form-entry">
                         <div class="question-title">
-                            <p>Do you have mumble?*<br>
-                            If not, get it here: <a href="http://www.reddit.com/r/tagpro/wiki/mumble">http://www.reddit.com/r/tagpro/wiki/mumble</a><br>
-                            It is a requirement for competitive Tagpro.<br>
-                          </p>
-                        </div>
-                        <input type="radio" name="mumble" value="Yes">&nbsp;Yes<br>
-                    </div>
-                    <div class="form-entry">
-                        <div class="question-title">
                             Are you able to communicate on a microphone during competitive play?*<br>
                         </div>
-                        <input type="radio" name="mic" value="Yes">&nbsp;Yes<br>
-                        <input type="radio" name="mic" value="No">&nbsp;No<br>
-                        <input type="radio" name="mic" value="Sometimes">&nbsp;Sometimes<br>
+                        <input type="radio" checked="{{getMic "Yes" mic}}" name="mic" value="Yes">&nbsp;Yes<br>
+                        <input type="radio" checked="{{getMic "No" mic}}" name="mic" value="No">&nbsp;No<br>
+                        <input type="radio" checked="{{getMic "Sometimes" mic}}" name="mic" value="Sometimes">&nbsp;Sometimes<br>
                     </div>
                     <div class="form-entry">
                         <div class="question-title">
                             What days of the week are you normally available to play?*<br>
                         </div>
-                        <input type="checkbox" name="sunday" value="Sunday">&nbsp;Sunday<br>
-                        <input type="checkbox" name="monday" value="Monday">&nbsp;Monday<br>
-                        <input type="checkbox" name="tuesday" value="Tuesday">&nbsp;Tuesday<br>
-                        <input type="checkbox" name="wednesday" value="Wednesday">&nbsp;Wednesday<br>
-                        <input type="checkbox" name="thursday" value="Thursday">&nbsp;Thursday<br>
-                        <input type="checkbox" name="friday" value="Friday">&nbsp;Friday<br>
-                        <input type="checkbox" name="saturday" value="Saturday">&nbsp;Saturday<br>
+                        <input type="checkbox" checked="{{sunday}}" name="sunday" value="Sunday">&nbsp;Sunday<br>
+                        <input type="checkbox" checked="{{monday}}" name="monday" value="Monday">&nbsp;Monday<br>
+                        <input type="checkbox" checked="{{tuesday}}" name="tuesday" value="Tuesday">&nbsp;Tuesday<br>
+                        <input type="checkbox" checked="{{wednesday}}" name="wednesday" value="Wednesday">&nbsp;Wednesday<br>
+                        <input type="checkbox" checked="{{thursday}}" name="thursday" value="Thursday">&nbsp;Thursday<br>
+                        <input type="checkbox" checked="{{friday}}" name="friday" value="Friday">&nbsp;Friday<br>
+                        <input type="checkbox" checked="{{saturday}}" name="saturday" value="Saturday">&nbsp;Saturday<br>
                     </div>
                     <div class="form-entry">
                         <div class="question-title">
                             What time(s) of day are you available to play on Sundays for MLTP matches?*<br>
                         </div>
-                        <input type="checkbox" name="sixmajor" value="SixMajor">&nbsp;6:00–7:00 EDT<br>
-                        <input type="checkbox" name="sevenmajor" value="SevenMajor">&nbsp;7:00–8:00 EDT<br>
-                        <input type="checkbox" name="eightmajor" value="EightMajor">&nbsp;8:00–9:00 EDT<br>
-                        <input type="checkbox" name="ninemajor" value="NineMajor">&nbsp;9:00–10:00 EDT<br>
-                        <input type="checkbox" name="tenmajor" value="TenMajor">&nbsp;10:00–11:00 EDT<br>
-                        <input type="checkbox" name="elevenmajor" value="ElevenMajor">&nbsp;11:00–12:00 EDT<br>
-                        <input type="checkbox" name="twelvemajor" value="TwelveMajor">&nbsp;12:00–1:00 EDT<br>
+                        <input type="checkbox" checked="{{sixmajor}}" name="sixmajor" value="SixMajor">&nbsp;6:00–7:00 EDT<br>
+                        <input type="checkbox" checked="{{sevenmajor}}" name="sevenmajor" value="SevenMajor">&nbsp;7:00–8:00 EDT<br>
+                        <input type="checkbox" checked="{{eightmajor}}" name="eightmajor" value="EightMajor">&nbsp;8:00–9:00 EDT<br>
+                        <input type="checkbox" checked="{{ninemajor}}" name="ninemajor" value="NineMajor">&nbsp;9:00–10:00 EDT<br>
+                        <input type="checkbox" checked="{{tenmajor}}" name="tenmajor" value="TenMajor">&nbsp;10:00–11:00 EDT<br>
+                        <input type="checkbox" checked="{{elevenmajor}}" name="elevenmajor" value="ElevenMajor">&nbsp;11:00–12:00 EDT<br>
+                        <input type="checkbox" checked="{{twelvemajor}}" name="twelvemajor" value="TwelveMajor">&nbsp;12:00–1:00 EDT<br>
                     </div>
                     <div class="form-entry">
                         <div class="question-title">
                             What time(s) of day are you available to play on Mondays for mLTP matches?*<br>
                         </div>
-                        <input type="checkbox" name="sixminor" value="SixMinor">&nbsp;6:00–7:00 EDT<br>
-                        <input type="checkbox" name="sevenminor" value="SevenMinor">&nbsp;7:00–8:00 EDT<br>
-                        <input type="checkbox" name="eightminor" value="EightMinor">&nbsp;8:00–9:00 EDT<br>
-                        <input type="checkbox" name="nineminor" value="NineMinor">&nbsp;9:00–10:00 EDT<br>
-                        <input type="checkbox" name="tenminor" value="TenMinor">&nbsp;10:00–11:00 EDT<br>
-                        <input type="checkbox" name="elevenminor" value="ElevenMinor">&nbsp;11:00–12:00 EDT<br>
-                        <input type="checkbox" name="twelveminor" value="TwelveMinor">&nbsp;12:00–1:00 EDT<br>
+                        <input type="checkbox" checked="{{sixminor}}" name="sixminor" value="SixMinor">&nbsp;6:00–7:00 EDT<br>
+                        <input type="checkbox" checked="{{sevenminor}}" name="sevenminor" value="SevenMinor">&nbsp;7:00–8:00 EDT<br>
+                        <input type="checkbox" checked="{{eightminor}}" name="eightminor" value="EightMinor">&nbsp;8:00–9:00 EDT<br>
+                        <input type="checkbox" checked="{{nineminor}}" name="nineminor" value="NineMinor">&nbsp;9:00–10:00 EDT<br>
+                        <input type="checkbox" checked="{{tenminor}}" name="tenminor" value="TenMinor">&nbsp;10:00–11:00 EDT<br>
+                        <input type="checkbox" checked="{{elevenminor}}" name="elevenminor" value="ElevenMinor">&nbsp;11:00–12:00 EDT<br>
+                        <input type="checkbox" checked="{{twelveminor}}" name="twelveminor" value="TwelveMinor">&nbsp;12:00–1:00 EDT<br>
                     </div>
                     <div class="form-entry">
                         <div class="question-title">
                             What servers are you comfortable playing on?*<br>
                         </div>
-                        <input type="checkbox" name="arc" value="Arc">&nbsp;Arc<br>
-                        <input type="checkbox" name="centra" value="Centra">&nbsp;Centra<br>
-                        <input type="checkbox" name="sphere" value="Sphere">&nbsp;Sphere<br>
-                        <input type="checkbox" name="origin" value="Origin">&nbsp;Origin<br>
-                        <input type="checkbox" name="pi" value="Pi">&nbsp;Pi<br>
-                        <input type="checkbox" name="radius" value="Radius">&nbsp;Radius<br>
-                        <input type="checkbox" name="segment" value="Segment">&nbsp;Segment<br>
+                        <input type="checkbox" checked="{{arc}}" name="arc" value="Arc">&nbsp;Arc<br>
+                        <input type="checkbox" checked="{{centra}}" name="centra" value="Centra">&nbsp;Centra<br>
+                        <input type="checkbox" checked="{{sphere}}" name="sphere" value="Sphere">&nbsp;Sphere<br>
+                        <input type="checkbox" checked="{{origin}}" name="origin" value="Origin">&nbsp;Origin<br>
+                        <input type="checkbox" checked="{{pi}}" name="pi" value="Pi">&nbsp;Pi<br>
+                        <input type="checkbox" checked="{{radius}}" name="radius" value="Radius">&nbsp;Radius<br>
+                        <input type="checkbox" checked="{{segment}}" name="segment" value="Segment">&nbsp;Segment<br>
                     </div>
                     <div class="form-entry">
                         <div class="question-title">
                             What is the normal ping you get on each server?*
                         </div>
-                        <input type="text" class="server-question" name="arcping" id="arcping" placeholder="Arc"><br>
-                        <input type="text" class="server-question" name="centraping" id="centraping" placeholder="Centra"><br>
-                        <input type="text" class="server-question" name="sphereping" id="sphereping" placeholder="Sphere"><br>
-                        <input type="text" class="server-question" name="originping" id="originping" placeholder="Origin"><br>
-                        <input type="text" class="server-question" name="piping" id="piping" placeholder="Pi"><br>
-                        <input type="text" class="server-question" name="radiusping" id="radiusping" placeholder="Radius"><br>
-                        <input type="text" class="server-question" name="segmentping" id="segmentping" placeholder="Segment"><br>
+                        <input type="text" class="server-question" value="{{arcping}}" name="arcping" id="arcping" placeholder="Arc"><br>
+                        <input type="text" class="server-question" value="{{centraping}}" name="centraping" id="centraping" placeholder="Centra"><br>
+                        <input type="text" class="server-question" value="{{sphereping}}" name="sphereping" id="sphereping" placeholder="Sphere"><br>
+                        <input type="text" class="server-question" value="{{originping}}" name="originping" id="originping" placeholder="Origin"><br>
+                        <input type="text" class="server-question" value="{{piping}}" name="piping" id="piping" placeholder="Pi"><br>
+                        <input type="text" class="server-question" value="{{radiusping}}" name="radiusping" id="radiusping" placeholder="Radius"><br>
+                        <input type="text" class="server-question" value="{{segmentping}}" name="segmentping" id="segmentping" placeholder="Segment"><br>
                     </div>
                     <div class="form-entry">
                         <div class="question-title">
                             Where do you live?*
                         </div>
                         <select name="location">
-                            <option value="selectone">Select</option>
+                            <option value="{{location}}">{{location}}</option>
                             <option value="other">Not US or CA</option>
                             <option value="US - Alabama">US - Alabama</option>
                             <option value="US - Alaska">US - Alaska</option>
@@ -181,6 +172,7 @@
                             <option value="CA - Nova Scotia">CA - Nova Scotia</option>
                             <option value="CA - Ontario">CA - Ontario</option>
                             <option value="CA - Prince Edward Island">CA - Prince Edward Island</option>
+                            <option value="CA - Saskatchewan">CA - Saskatchewan</option>
                             <option value="CA - Quebec">CA - Quebec</option>
                         </select>
                     </div>
@@ -188,14 +180,14 @@
                         <div class="question-title">
                             If you're outside of the US or CA, which country do you live in?
                         </div>
-                        <input type="text" name="country" id="country" placeholder="Country">
+                        <input type="text" name="country" id="country" value="{{country}}" placeholder="Country">
                     </div>
                     <div class="form-entry">
                         <div class="question-title">
                             What position do you prefer playing?*
                         </div>
                         <select name="position"><br>
-                            <option value="selectone">Select</option>
+                            <option value="{{position}}">{{position}}</option>
                             <option value="Primarily Offense">Primarily Offense</option>
                             <option value="Primarily Offense, but can play Defense">Primarily Offense, but can play Defense</option>
                             <option value="Both Equally">Both Equally</option>
@@ -207,22 +199,22 @@
                         <div class="question-title">
                             What competitive experience do you have?
                         </div>
-                        <input type="checkbox" name="mltp" value="MLTP">&nbsp;MLTP<br>
-                        <input type="checkbox" name="minorltp" value="mLTP">&nbsp;mLTP<br>
-                        <input type="checkbox" name="nltpa" value="NLTP-A">&nbsp;NLTP-A<br>
-                        <input type="checkbox" name="nltpb" value="NLTP-B">&nbsp;NLTP-B<br>
-                        <input type="checkbox" name="eltp" value="ELTP">&nbsp;ELTP<br>
-                        <input type="checkbox" name="usc" value="USC">&nbsp;USC<br>
-                        <input type="checkbox" name="rltp" value="RLTP">&nbsp;RLTP<br>
-                        <input type="checkbox" name="socl" value="SOCL">&nbsp;SOCL<br>
-                        <input type="checkbox" name="cltp" value="CLTP">&nbsp;CLTP<br>
+                        <input type="checkbox" name="mltp" checked="{{mltp}}" value="MLTP">&nbsp;MLTP<br>
+                        <input type="checkbox" name="minorltp" checked="{{minorltp}}" value="mLTP">&nbsp;mLTP<br>
+                        <input type="checkbox" name="nltpa" checked="{{nltpa}}" value="NLTP-A">&nbsp;NLTP-A<br>
+                        <input type="checkbox" name="nltpb" checked="{{nltpb}}" value="NLTP-B">&nbsp;NLTP-B<br>
+                        <input type="checkbox" name="eltp" checked="{{eltp}}" value="ELTP">&nbsp;ELTP<br>
+                        <input type="checkbox" name="usc" checked="{{usc}}" value="USC">&nbsp;USC<br>
+                        <input type="checkbox" name="rltp" checked="{{rltp}}" value="RLTP">&nbsp;RLTP<br>
+                        <input type="checkbox" name="socl" checked="{{socl}}" value="SOCL">&nbsp;SOCL<br>
+                        <input type="checkbox" name="cltp" checked="{{cltp}}" value="CLTP">&nbsp;CLTP<br>
                     </div>
                     <div class="form-entry">
                         <div class="question-title">
                             How long have you been playing Tagpro?*
                         </div>
                         <select name="experience">
-                            <option value="selectone">Select</option>
+                            <option value="{{experience}}">{{experience}}</option>
                             <option value="0-3 Months">0-3 Months</option>
                             <option value="3-6 Months">3-6 Months</option>
                             <option value="6-9 Months">6-9 Months</option>
@@ -235,16 +227,9 @@
                         <div class="question-title">
                             Is there anything else you want to tell the captains?
                         </div>
-                        <textarea rows="6" cols="50" name="personalmessage" id="personalmessage" placeholder="Serious responses only"></textarea>
+                        <textarea rows="6" cols="50" name="personalmessage" id="personalmessage" placeholder="Serious responses only">{{personalmessage}}</textarea>
                     </div>
-                    <div class="form-entry">
-                        <div class="question-title">
-                            Are you aware of the <a href="http://www.reddit.com/r/TagPro/wiki/mltp/season_8/rules">Season 8 MLTP Rules</a> and willing to abide by them throughout the season?*
-                        </div>
-                        <input type="checkbox" name="agreement" value="Yes">&nbsp;Yes<br>
-                    </div>
-
-                   <div id="somethingWentWrong" style="color:red"></div>
+                    <div id="somethingWentWrong" style="color:red"></div>
                     <span class="input-group-btn2">
                         <button class="btn btn-primary" type="submit">Submit</button>
                     </span>
@@ -252,8 +237,6 @@
             </form>
         </div>
     </div>
-    {{else}}
-        Log in to Sign up for MLTP!
+    {{/each}}
     {{/if}}
-  {{/if}}
 </template>

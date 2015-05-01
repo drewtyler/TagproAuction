@@ -328,7 +328,6 @@ Template.display_bidding_options.events(
 
 Meteor.methods({
   hasSignedUp : function(name) {
-    console.log("test");
     return PlayerResponse.find({"meteorUserId":name});
   },
   setBidTime: function(bidtime) {
@@ -405,98 +404,6 @@ Meteor.methods({
     return AuctionData.findOne();
   },
 
-  toggleState: function(playerNominated, bid) {
-    console.log("Checking toggle state");
-
-    if(Meteor.isServer) {
-      var state = AuctionData.findOne();
-
-      if(state !== undefined && state.State == "Nominating") {
-        console.log("State is nominating");
-        var team = TeamNames.findOne({captain:state.Nominator});
-
-        var money = team.money;
-        if(Meteor.call("isKeeper", state.Nominator, playerNominated)) {
-          money = team.money + team.keepermoney;
-        }
-        if(money < parseInt(bid)) {
-          return false;
-        }
-
-        // Log message
-        Meteor.call("insertMessage", state.Nominator + " nominates " + playerNominated + " with an initial bid of " + bid, new Date(), "nomination");
-        Meteor.call("insertMessage", team.teamname, new Date().getTime(), "bidIndication");
-
-        BidHistory.insert({bidder: state.Nominator, amount: bid, player: playerNominated, createdAt: new Date().getTime(), secondsLeft:bidTime});
-        // Start bidding baby
-        //PreviousAuctionData.remove({});
-        //PreviousAuctionData.insert(AuctionData.find({}));
-        AuctionData.remove({});
-
-        if(bidTimeout) {
-          Meteor.clearTimeout(bidTimeout);
-        }
-        bidTimeout = Meteor.setTimeout(function() {
-          Meteor.call("checkForToggle");
-        }, bidTime);
-
-        return AuctionData.insert({State: "Bidding", nextExpiryDate: new Date().getTime()+bidTime, currentBid: bid, currentPlayer: playerNominated, lastBidder: state.Nominator, Nominator:state.Nominator});
-      }
-      else if (state !== undefined)
-      {
-        AuctionData.remove({});
-        console.log("Not nominating... someone won!");
-        var team = TeamNames.findOne({"captain" : state.lastBidder});
-        var playerWon = state.currentPlayer;
-
-        // ALL CAPS-specific thing here
-        if(state.lastBidder == "YOSSARIAN") {
-          playerWon = playerWon.toUpperCase();
-        }
-
-        // handle keepers
-        keepers = Keepers.findOne({"captain":state.lastBidder}).keepers;
-        var keepermoney = team.keepermoney;
-        var money = team.money;
-
-        if(keepers.indexOf(playerWon) >= 0) {
-          console.log(playerWon, " is a keeper!");
-          keepermoney = keepermoney - state.currentBid;
-
-          if(keepermoney < 0) {
-            money = money - Math.abs(keepermoney);
-            keepermoney = 0;
-          }
-        }
-        else {
-          money = money - state.currentBid;
-        }
-
-        var playerOrder = parseInt(team.count) + 1;
-        // Put him in the roster
-        TeamData.update({"teamname": team.teamname, "order" : playerOrder}, {$set: {"name": playerWon, "cost": state.currentBid}});
-        TeamNames.update({"teamname": team.teamname}, {$set: {"count":playerOrder, "money":money, "keepermoney":keepermoney}});
-        // Prevent players from searching him
-        PlayerResponse.update({"tagpro":playerWon}, {$set:{"drafted":true}});
-        // Check if he's the last one for his team
-        if(playerOrder == team.numrosterspots) {
-          Nominators.update({"name": state.lastBidder}, {$set: {"rosterfull": true}});
-        }
-        // Log message
-        var text = state.lastBidder + " wins " + playerWon + " for " + state.currentBid + "!";
-        Meteor.call("insertMessage", text, new Date(), "winningBid");
-        Meteor.call("insertMessage", team.teamname, new Date(), "animate");
-
-        // Reset state
-        nominator = Meteor.call("pickNominator");
-        CurrentPick.update({}, {$inc:{'pick':1}});
-        var text = "Waiting for "+nominator +" to nominate the "+CurrentPick.findOne({}).pick+" pick of the draft.";
-        Nominators.update({name:nominator.name}, {$set:{nominated:true}});
-        return AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+10000, Nominator: nominator.name,  startTime:new Date().getTime()});
-      }
-
-    }
-  },
   checkForToggle: function() {
     console.log("checking for toggle");
     if(Meteor.isServer) {

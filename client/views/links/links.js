@@ -20,5 +20,8 @@ Template.links.events({
   },
   'click #viewSignups' : function(event) {
      Session.set("pageToDisplay","packetPage");
+  },
+  'click #editsignup' : function(event) {
+     Session.set("pageToDisplay","editSignUpPage");
   }// put in a listener for a click in each div for each button
 });

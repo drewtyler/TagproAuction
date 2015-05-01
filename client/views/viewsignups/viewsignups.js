@@ -18,6 +18,36 @@ Template.viewsignups.helpers({
     if(position == "Primarily Defense") {
      return "D";
     }
+  },
+  getHighestExperience:function(mltp, minorltp, nltpa, nltpb, eltp, usc, rltp, socl, cltp){
+    if(mltp) {
+     return "MLTP"
+    }
+    if(minorltp) {
+     return "mLTP"
+    }
+    if(nltpa) {
+     return "NLTP-A"
+    }
+    if(nltpb) {
+     return "NLTP-B"
+    }
+    if(eltp) {
+     return "ELTP"
+    }
+    if(usc) {
+     return "USC"
+    }
+    if(rltp || socl || cltp) {
+     return "Tourney League"
+    }
+    return "None"
+  },
+  getDay:function(day, avail) {
+    if(avail) {
+     return day;
+    }
+    return "-"
   }
 });
 
