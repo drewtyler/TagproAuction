@@ -1,0 +1,17 @@
+So you wanna contribute? Awesome!
+
+Here's how everything is (or will/should be) laid out:
+
+TagproAuction/* | project-level files. License, Readme, this file, maybe one or two more I'm scared to touch.
+
+TagproAuction/client/* and subfolders | Everything the client will see that isn't static. The meteor server cannot see any files here. The global meteor hookups, db connections, initial session variable setting, and more goes in client.js. I believe every js, css and html file in here is sent to the client and accessible without a reference.
+
+TagproAuction/client/views/* | I created a folder for each view except the frontpage.html one, which is, as you might expect, the front page of the site. There's stuff for the auction/snake draft, administration, signing up, team management, etc. I hope the names are relatively descriptive.
+
+TagproAuction/private/* | Files not sent to clients that the server may use. I've used it so far for pre-loading some databases between launches.
+
+TagproAuction/public/* | Files the client CAN see, that need to be explicitly added to pages to be referenced.
+
+TagproAuction/server/* | Files the server can only see. Currently just one javascript file - may break it up into smaller & easier-to-digest js files.
+
+Take a look at the issues & milestones if you're looking for inspiration!

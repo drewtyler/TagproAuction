@@ -1,3 +1,4 @@
+WarningMessage = new Mongo.Collection("warningmessage");
 AuctionData = new Mongo.Collection("auctiondata");
 PausedAuction = new Mongo.Collection("pauseddata");
 TeamData = new Mongo.Collection('teams');
@@ -17,7 +18,6 @@ PlayerResponse = new Mongo.Collection("playerResponse");
 
 if (Meteor.isClient) {
   Meteor.startup(function() {
-    // don't need to set all auction stuff until we're in the auction page
     Session.setDefault("serverTimeOffset", 0);
     Session.setDefault("time", new Date().getTime());
     Session.setDefault("auctionStatus", "Waiting to start");
@@ -47,6 +47,7 @@ if (Meteor.isClient) {
     Meteor.subscribe("previousauctiondata");
     Meteor.subscribe("keepers");
     Meteor.subscribe("playerResponse");
+    Meteor.subscribe("warningMessage");
   });
 
   Accounts.ui.config({

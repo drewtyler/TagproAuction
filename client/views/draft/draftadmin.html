@@ -1,0 +1,36 @@
+<template name="draftadmin">
+    {{#if draftadmin}}
+        <div class="row">
+            <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading text-center">
+                        <div class="btn-group">
+                            <div class="btn btn-primary resume-auction">Resume</div>
+                            <div class="btn start-auction btn-success">Start</div>
+                            <div class="btn btn-danger pause-auction">Pause</div>
+                            <div class="btn btn-primary undo-bid">Undo Bid</div>
+                            <div class="btn btn-primary undo-nomination">Undo Nomination</div>
+                        </div>
+                        <br>
+                        <form class="form-group add-nomination" role="form">
+                            <div class="input-group" style="padding-top:10px;">
+                                <input type="text" name="player" class="form-control" placeholder="Nominate Player" autocomplete="off" style="" />
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-success">Nominate</button>
+                                </span>
+                            </div>
+                        </form>
+                        <form class="form-group set-bidtime" role="form">
+                            <div class="input-group">
+                                <input type="text" name="bidtime" class="form-control" placeholder="Set initial bid time" style="" />
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-success">Set</button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{/if}}
+</template>

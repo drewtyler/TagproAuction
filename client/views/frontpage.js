@@ -28,5 +28,8 @@ Template.frontpage.helpers({
   },
   nav:function(){
    return Session.get("pageToDisplay");
+  },
+  warningMessage:function() {
+    return (WarningMessage.find({}).count() > 0) ? WarningMessage.findOne().message : "";
   }
 });
