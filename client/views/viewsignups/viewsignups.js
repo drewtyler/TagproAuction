@@ -1,6 +1,6 @@
 Template.viewsignups.helpers({
   allsignups:function() {
-    return PlayerResponse.find({},{sort: {playername: 1}});
+    return PlayerResponse.find({},{sort: {signupTime: 1}});
   },
   getPlayerPosition:function(position){
     if(position == "Primarily Offense") {
@@ -17,6 +17,23 @@ Template.viewsignups.helpers({
     }
     if(position == "Primarily Defense") {
      return "D";
+    }
+  },
+  getColorOfPosition:function(position){
+    if(position == "Primarily Offense") {
+      return "blue;color:white";
+    }
+    if(position == "Primarily Offense, but can play Defense") {
+     return "#1CA9C9";
+    }
+    if(position == "Both Equally") {
+      return "purple;color:white";
+    }
+    if(position == "Primarily Defense, but can play Offense") {
+     return "orange";
+    }
+    if(position == "Primarily Defense") {
+      return "#CC3333;color:white";
     }
   },
   getHighestExperience:function(mltp, minorltp, nltpa, nltpb, eltp, usc, rltp, socl, cltp){

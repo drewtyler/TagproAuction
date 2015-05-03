@@ -30,7 +30,6 @@ Meteor.methods({
   },
   getSignedUp : function(playername) {
     var num = PlayerResponse.find({meteorUserId:playername}).count();
-    console.log(num);
     return num;
   },
   getServerTime: function () {
