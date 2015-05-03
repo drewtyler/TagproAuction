@@ -1,29 +1,35 @@
 <template name="viewsignups">
+    <style type="text/css">
+    body {
+      padding-top: 70px;
+    }
+    </style>
     <!-- query for players with specific responses -->
     <!-- table of all players -->
-    <table class=".table-striped">
+    <div class="container">
+    <table class="draft-table">
         <thead>
             <tr>
-                <th>Position</th>
-                <th>Player</th>
-                <th>Location</th>
-                <th>Highest Experience</th>
+                <th class="table-title">Position</th>
+                <th class="table-title">Player</th>
+                <th class="table-title">Location</th>
+                <th class="table-title">Experience</th>
                 <!--<th colspan="7">Availability</th>-->
-                <th>Personal Note</th>
+                <th class="table-title">Personal Note</th>
             </tr>
         </thead>
         {{#each allsignups}}
         <tr>
-            <td>
+            <td class="cell">
                 {{getPlayerPosition position}}
             </td>
-            <td>
+            <td class="cell">
                 {{playername}}
             </td>
-            <td>
+            <td class="cell">
                 {{location}}
             </td>
-            <td>
+            <td class="cell">
                 {{getHighestExperience mltp minorltp nltpa nltpb eltp usc rltp socl cltp}}
             </td>
             <!--<td>
@@ -47,11 +53,12 @@
             <td>
                 {{getDay "Sa" saturday}}
             </td>-->
-            <td>
+            <td class="cell">
                 {{personalmessage}}
             </td>
         </tr>
         {{/each}}
     </table>
     <center><div id="home"><a>Back to home.</a></div></center>
+</div>
 </template>
