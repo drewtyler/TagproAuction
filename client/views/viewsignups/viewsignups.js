@@ -64,12 +64,22 @@ Template.viewsignups.helpers({
     if(avail) {
      return day;
     }
-    return "-"
+    return "-";
+  },
+  loadPopover:function(id){
+   Session.set("playerToDisplay", this._id);
+  },
+  getCheck:function(checker){
+    return checker ? "✓" : "X";
   }
 });
 
 Template.viewsignups.events({
+  'click .more' : function() {
+    Session.set("playerToDisplay", this.meteorUserId);
+  },
   'click #home' : function(event) {
      Session.set("pageToDisplay","homePage");
   }
+
 });

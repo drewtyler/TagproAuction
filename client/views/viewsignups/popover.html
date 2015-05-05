@@ -1,0 +1,12 @@
+<template name="popover">
+    {{#if viewingPopup}}
+    <div id="light" class="white_content">
+        More to come!
+        {{#each playerToDisplay}}
+            <!--{{playername}}-->
+        {{/each}}
+        <a class="closePopup">Close</a>
+    </div>
+    <div id="fade" class="black_overlay"></div>
+    {{/if}}
+</template>

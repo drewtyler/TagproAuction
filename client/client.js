@@ -28,6 +28,7 @@ if (Meteor.isClient) {
     Session.setDefault("playSound", "");
     Session.setDefault("teamJustBid", "");
     Session.setDefault("pageToDisplay", "homePage");
+    Session.setDefault("playerToDisplay", "N/A");
 
     Meteor.setServerTime();
     Meteor.clearInterval(Meteor.intervalUpdateTimeDisplayed);

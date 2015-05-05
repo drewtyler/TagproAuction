@@ -1,64 +1,94 @@
 <template name="viewsignups">
     <style type="text/css">
-    body {
-      padding-top: 70px;
-    }
+        body {
+            padding-top: 70px;
+        }
     </style>
     <!-- query for players with specific responses -->
     <!-- table of all players -->
     <div class="container">
-    <table class="draft-table">
-        <thead>
+        {{> popover}}
+        <table class="draft-table">
+            <thead>
+                <tr>
+                    <th class="table-title">Position</th>
+                    <th class="table-title">Player</th>
+                    <th class="table-title">Reddit</th>
+                    <th class="table-title">Mic</th>
+                    <th class="table-title">Location</th>
+                    <th class="table-title">Experience</th>
+                    <th class="table-title" colspan="7">Availability</th>
+                    <th class="table-title">Arc</th>
+                    <th class="table-title">Centra</th>
+                    <th class="table-title">Sphere</th>
+                    <th class="table-title">Origin</th>
+                    <th class="table-title">Pi</th>
+                    <th class="table-title">Radius</th>
+                    <th class="table-title">Segment</th>
+                    <th class="table-title">Personal Note</th>
+                    <!--<th class="table-title">View More</th>-->
+                </tr>
+            </thead>
+            {{#each allsignups}}
             <tr>
-                <th class="table-title">Position</th>
-                <th class="table-title">Player</th>
-                <th class="table-title">Location</th>
-                <th class="table-title">Experience</th>
-                <th class="table-title" colspan="7">Availability</th>
-                <th class="table-title">Personal Note</th>
+                <td class="cell" style="background-color:{{getColorOfPosition position}}">
+                    {{getPlayerPosition position}}
+                </td>
+                <td class="cell">
+                    {{playername}}
+                </td>
+                <td class="cell">
+                    {{redditname}}
+                </td>
+                <td class="cell">
+                    {{mic}}
+                </td>
+                <td class="cell">
+                    {{location}}
+                </td>
+                <td class="cell">
+                    {{getHighestExperience mltp minorltp nltpa nltpb eltp usc rltp socl cltp}}
+                </td>
+                <td class="cell">
+                    {{getDay "Su" sunday}}
+                </td>
+                <td class="cell">
+                    {{getDay "M" monday}}
+                </td>
+                <td class="cell">
+                    {{getDay "Tu" tuesday}}
+                </td>
+                <td class="cell">
+                    {{getDay "W" wednesday}}
+                </td>
+                <td class="cell">
+                    {{getDay "Th" thursday}}
+                </td>
+                <td class="cell">
+                    {{getDay "F" friday}}
+                </td>
+                <td class="cell">
+                    {{getDay "Sa" saturday}}
+                </td>
+                <td class="cell">{{getCheck arc}} - {{arcping}}</td>
+                <td class="cell">{{getCheck centra}} - {{centraping}}</td>
+                <td class="cell">{{getCheck sphere}} - {{sphereping}}</td>
+                <td class="cell">{{getCheck origin}} - {{originping}}</td>
+                <td class="cell">{{getCheck pi}} - {{piping}}</td>
+                <td class="cell">{{getCheck radius}} - {{radiusping}}</td>
+                <td class="cell">{{getCheck segment}} - {{segmentping}}</td>
+                <td class="cell">
+                    {{personalmessage}}
+                </td>
+                <!--<td class="cell">
+                    <p class="more">
+                        Detailed
+                    </p>
+                </td>-->
             </tr>
-        </thead>
-        {{#each allsignups}}
-        <tr>
-            <td class="cell" style="background-color:{{getColorOfPosition position}}">
-                {{getPlayerPosition position}}
-            </td>
-            <td class="cell">
-                {{playername}}
-            </td>
-            <td class="cell">
-                {{location}}
-            </td>
-            <td class="cell">
-                {{getHighestExperience mltp minorltp nltpa nltpb eltp usc rltp socl cltp}}
-            </td>
-            <td class="cell">
-                {{getDay "Su" sunday}}
-            </td>
-            <td class="cell">
-                {{getDay "M" monday}}
-            </td>
-            <td class="cell">
-                {{getDay "Tu" tuesday}}
-            </td>
-            <td class="cell">
-                {{getDay "W" wednesday}}
-            </td>
-            <td class="cell">
-                {{getDay "Th" thursday}}
-            </td>
-            <td class="cell">
-                {{getDay "F" friday}}
-            </td>
-            <td class="cell">
-                {{getDay "Sa" saturday}}
-            </td>
-            <td class="cell">
-                {{personalmessage}}
-            </td>
-        </tr>
-        {{/each}}
-    </table>
-    <center><div id="home"><a>Back to home.</a></div></center>
-</div>
+            {{/each}}
+        </table>
+        <center><div id="home"><a>Back to home.</a></div></center>
+    </div>
 </template>
+
