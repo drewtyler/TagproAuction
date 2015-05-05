@@ -35,6 +35,7 @@
   margin: 0 0px;
   width:100%;
   border: 1px solid #999999;
+  table-layout:fixed;
 }
 
 .table-title {
