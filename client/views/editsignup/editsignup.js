@@ -120,7 +120,6 @@ Template.editsignup.events({
         dataToSend.meteorUserId = Meteor.user().username;
         dataToSend.signupTime = new Date();
         if(isOK) {
-            console.log("test33");
             Meteor.call("editSignup", dataToSend);
             Session.set("pageToDisplay","homePage");
         } else {

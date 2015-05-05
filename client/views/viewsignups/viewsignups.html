@@ -19,65 +19,65 @@
                     <th class="table-title">Experience</th>
                     <th class="table-title" colspan="7">Availability</th>
                     <th class="table-title">Arc</th>
-                    <th class="table-title">Centra</th>
-                    <th class="table-title">Sphere</th>
-                    <th class="table-title">Origin</th>
+                    <th class="table-title">Cen</th>
+                    <th class="table-title">Sph</th>
+                    <th class="table-title">Ori</th>
                     <th class="table-title">Pi</th>
-                    <th class="table-title">Radius</th>
-                    <th class="table-title">Segment</th>
+                    <th class="table-title">Rad</th>
+                    <th class="table-title">Seg</th>
                     <th class="table-title">Personal Note</th>
                     <!--<th class="table-title">View More</th>-->
                 </tr>
             </thead>
             {{#each allsignups}}
             <tr>
-                <td class="cell" style="background-color:{{getColorOfPosition position}}">
+                <td class="cell" style="background-color:{{getColorOfPosition position}}" width="10px">
                     {{getPlayerPosition position}}
                 </td>
-                <td class="cell">
+                <td class="cell" width="20px">
                     {{playername}}
                 </td>
-                <td class="cell">
+                <td class="cell" width="25px">
                     {{redditname}}
                 </td>
-                <td class="cell">
+                <td class="cell" width="10px">
                     {{mic}}
                 </td>
-                <td class="cell">
+                <td class="cell" width="40px">
                     {{location}}
                 </td>
-                <td class="cell">
+                <td class="cell" width="25px">
                     {{getHighestExperience mltp minorltp nltpa nltpb eltp usc rltp socl cltp}}
                 </td>
-                <td class="cell">
+                <td class="cell" width="10px">
                     {{getDay "Su" sunday}}
                 </td>
-                <td class="cell">
+                <td class="cell" width="10px">
                     {{getDay "M" monday}}
                 </td>
-                <td class="cell">
+                <td class="cell" width="10px">
                     {{getDay "Tu" tuesday}}
                 </td>
-                <td class="cell">
+                <td class="cell" width="10px">
                     {{getDay "W" wednesday}}
                 </td>
-                <td class="cell">
+                <td class="cell" width="10px">
                     {{getDay "Th" thursday}}
                 </td>
-                <td class="cell">
+                <td class="cell" width="10px">
                     {{getDay "F" friday}}
                 </td>
-                <td class="cell">
+                <td class="cell" width="10px">
                     {{getDay "Sa" saturday}}
                 </td>
-                <td class="cell" style="{{getCheck arc}}">{{arcping}}</td>
-                <td class="cell" style="{{getCheck centra}}">{{centraping}}</td>
-                <td class="cell" style="{{getCheck sphere}}">{{sphereping}}</td>
-                <td class="cell" style="{{getCheck origin}}">{{originping}}</td>
-                <td class="cell" style="{{getCheck pi}}">{{piping}}</td>
-                <td class="cell" style="{{getCheck radius}}">{{radiusping}}</td>
-                <td class="cell" style="{{getCheck segment}}">{{segmentping}}</td>
-                <td class="cell">
+                <td class="cell" style="{{getCheck arc}}" width="7px">{{arcping}}</td>
+                <td class="cell" style="{{getCheck centra}}" width="7px">{{centraping}}</td>
+                <td class="cell" style="{{getCheck sphere}}" width="7px">{{sphereping}}</td>
+                <td class="cell" style="{{getCheck origin}}" width="7px">{{originping}}</td>
+                <td class="cell" style="{{getCheck pi}}" width="7px">{{piping}}</td>
+                <td class="cell" style="{{getCheck radius}}" width="7px">{{radiusping}}</td>
+                <td class="cell" style="{{getCheck segment}}" width="7px">{{segmentping}}</td>
+                <td class="cell" width="auto">
                     {{personalmessage}}
                 </td>
                 <!--<td class="cell">
