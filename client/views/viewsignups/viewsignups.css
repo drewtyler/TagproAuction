@@ -26,8 +26,8 @@
   overflow:auto;
 }
 
-.container {
-  margin: 0 0;
+.signupcontainer {
+  margin: 0 -200;
   width: 1820px;
 }
 
