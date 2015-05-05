@@ -35,14 +35,12 @@
   margin: 0 0px;
   width:100%;
   border: 1px solid #999999;
-  table-layout:fixed;
 }
 
 .table-title {
   height: 10px;
   background-color: #1e518c;
   padding: 0px 15px;
-  line-height: 20px;
   color: #ffffff;
   font-size: 15px;
   text-align: center;
@@ -57,7 +55,6 @@
   color: white;
   text-align: center;
   border-bottom: none;
-  line-height: 12px;
   font-weight: normal;
 }
 
