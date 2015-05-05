@@ -70,7 +70,7 @@ Template.viewsignups.helpers({
    Session.set("playerToDisplay", this._id);
   },
   getCheck:function(checker){
-    return checker ? "✓" : "X";
+    return checker ? "background-color:LightGreen" : "background-color:#FF6666";
   }
 });
 
