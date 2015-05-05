@@ -21,19 +21,19 @@ Template.viewsignups.helpers({
   },
   getColorOfPosition:function(position){
     if(position == "Primarily Offense") {
-      return "blue;color:white";
+      return "#DD4773";
     }
     if(position == "Primarily Offense, but can play Defense") {
-     return "#1CA9C9";
+     return "#ea9999";
     }
     if(position == "Both Equally") {
-      return "purple;color:white";
+      return "#0041c2;color:white";
     }
     if(position == "Primarily Defense, but can play Offense") {
-     return "orange";
+     return "#9fc5e8";
     }
     if(position == "Primarily Defense") {
-      return "#CC3333;color:white";
+      return "#8493ea";
     }
   },
   getHighestExperience:function(mltp, minorltp, nltpa, nltpb, eltp, usc, rltp, socl, cltp){
