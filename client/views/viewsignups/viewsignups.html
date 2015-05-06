@@ -6,15 +6,16 @@
     </style>
     <!-- query for players with specific responses -->
     <!-- table of all players -->
+    <center><input type="button" class="downloadAsCSV" value="Download CSV"><a id="csvDownload" download="signupdata.csv"></a></center>
     <div class="signupcontainer">
         {{> popover}}
         <table class="draft-table">
             <thead>
                 <tr>
                     {{#if canEditBoard}}
-                    <th class="table-title">Submit</th>
+                    <!--<th class="table-title">Submit</th>-->
                     {{/if}}
-                    <th class="table-title">#</th>
+                    <!--<th class="table-title">#</th>-->
                     <th class="table-title">Position</th>
                     <th class="table-title">Player</th>
                     <th class="table-title">Reddit</th>
@@ -36,17 +37,16 @@
             {{#each allsignups}}
             <tr>
                 {{#if canEditBoard}}
-                <input type="hidden">
-                <td class="cell" style="max-width:30px" width="30px">
+                <!--<td class="cell" style="max-width:30px" width="30px">
                     <input type="button" class="submitPacketUpdate" value="Update">
                 </td>
                 <td class="cell" width="60px" style="max-width:60px;padding:0px;align:left">
                     <input type="text" id="playerRanking{{meteorUserId}}" style="display:block;width:85%;height:100%;overflow:hidden" value="{{ranking}}">
-                </td>
+                </td>-->
                 {{else}}
-                <td class="cell" width="10px" style="max-width:10px;padding:0px;align:left">
+                <!--<td class="cell" width="10px" style="max-width:10px;padding:0px;align:left">
                     {{ranking}}
-                </td>
+                </td>-->
                 {{/if}}
                 <td class="cell" style="background-color:{{getColorOfPosition position}};max-width:40px" width="10px">
                     {{getPlayerPosition position}}
