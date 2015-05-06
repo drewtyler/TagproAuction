@@ -15,10 +15,15 @@ AuctionStatus = new Mongo.Collection("auctionstatus");
 AuctionLock = new Mongo.Collection("auctionlock");
 PreviousAuctionData = new Mongo.Collection("previousauctiondata");
 PlayerResponse = new Mongo.Collection("playerResponse");
+BoardHelpers = new Mongo.Collection("boardhelpers");
 
 admins = ["eagles.", "Bull"];
 
 Meteor.methods({
+  updatePacketValue : function(message, ranking, username) {
+    console.log(message);
+    PlayerResponse.update({meteorUserId: username}, {$set: {ranking: parseInt(ranking)}});
+  },
   insertSignup : function(dataToSend) {
     PlayerResponse.insert(dataToSend);
     console.log("Got signup from: " + dataToSend.meteorUserId);
@@ -360,5 +365,6 @@ Meteor.startup(function () {
   Meteor.publish("keepers", function() {return Keepers.find()});
   Meteor.publish("playerResponse", function() {return PlayerResponse.find()});
   Meteor.publish("warningMessage", function() {return WarningMessage.find()});
+  Meteor.publish("boardhelpers", function() {return BoardHelpers.find()});
   return true;
 });

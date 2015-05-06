@@ -11,6 +11,10 @@
         <table class="draft-table">
             <thead>
                 <tr>
+                    {{#if canEditBoard}}
+                    <th class="table-title">Submit</th>
+                    {{/if}}
+                    <th class="table-title">#</th>
                     <th class="table-title">Position</th>
                     <th class="table-title">Player</th>
                     <th class="table-title">Reddit</th>
@@ -31,11 +35,24 @@
             </thead>
             {{#each allsignups}}
             <tr>
-                <td class="cell" style="background-color:{{getColorOfPosition position}}" width="10px">
+                {{#if canEditBoard}}
+                <input type="hidden">
+                <td class="cell" style="max-width:30px" width="30px">
+                    <input type="button" class="submitPacketUpdate" value="Update">
+                </td>
+                <td class="cell" width="60px" style="max-width:60px;padding:0px;align:left">
+                    <input type="text" id="playerRanking{{meteorUserId}}" style="display:block;width:85%;height:100%;overflow:hidden" value="{{ranking}}">
+                </td>
+                {{else}}
+                <td class="cell" width="10px" style="max-width:10px;padding:0px;align:left">
+                    {{ranking}}
+                </td>
+                {{/if}}
+                <td class="cell" style="background-color:{{getColorOfPosition position}};max-width:40px" width="10px">
                     {{getPlayerPosition position}}
                 </td>
                 <td class="cell" width="120px" style="max-width:120px">
-                    {{playername}}
+                    <a href="{{proflink}}">{{playername}}</a>
                 </td>
                 <td class="cell" width="150px" style="max-width:150px">
                     {{redditname}}

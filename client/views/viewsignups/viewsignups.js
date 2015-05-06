@@ -1,6 +1,9 @@
 Template.viewsignups.helpers({
+  canEditBoard:function(){
+    return (BoardHelpers.find({"username":Meteor.user().username}).count() > 0)
+  },
   allsignups:function() {
-    return PlayerResponse.find({},{sort: {signupTime: 1}});
+    return PlayerResponse.find({},{sort: {ranking: 1}});
   },
   getPlayerPosition:function(position){
     if(position == "Primarily Offense") {
@@ -80,6 +83,13 @@ Template.viewsignups.events({
   },
   'click #home' : function(event) {
      Session.set("pageToDisplay","homePage");
+  },
+  'click .submitPacketUpdate' : function() {
+   console.log("test" + this.meteorUserId);
+    idToFind = "#playerRanking" + this.meteorUserId;
+    console.log(idToFind);
+    console.log($(idToFind).val());
+    Meteor.call("updatePacketValue", "test", $(idToFind).val(), this.meteorUserId);
   }
 
 });

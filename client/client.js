@@ -15,6 +15,7 @@ AuctionStatus = new Mongo.Collection("auctionstatus");
 AuctionLock = new Mongo.Collection("auctionlock");
 PreviousAuctionData = new Mongo.Collection("previousauctiondata");
 PlayerResponse = new Mongo.Collection("playerResponse");
+BoardHelpers = new Mongo.Collection("boardhelpers");
 
 if (Meteor.isClient) {
   Meteor.startup(function() {
@@ -49,6 +50,7 @@ if (Meteor.isClient) {
     Meteor.subscribe("keepers");
     Meteor.subscribe("playerResponse");
     Meteor.subscribe("warningMessage");
+    Meteor.subscribe("boardhelpers");
   });
 
   Accounts.ui.config({
