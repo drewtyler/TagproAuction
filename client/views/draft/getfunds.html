@@ -1,0 +1,18 @@
+<template name="get_funds">
+    <div class="row">
+        <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading form-inline">
+                    {{#if isCaptain}}
+                        <p class="pull-right">Balance: <b>{{getBalance}} ({{getKeepermoney}})</b></p>
+                    {{/if}}
+                    <div class="checkbox" style="padding-left:15px">
+                        <label>
+                            <input id="enableSounds" type="checkbox" checked> Play Sounds?
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

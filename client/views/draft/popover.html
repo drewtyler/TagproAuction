@@ -1,0 +1,46 @@
+<template name="popover">
+    {{#if viewingPopup}}
+    <div id="light" class="white_content">
+        {{#each playerToDisplay}}
+            <!-- make large -->
+            <center>{{playername}}</center><br>
+            {{#if formerName}}
+            <center>(Formerly: {{oldplayername}}</center>
+            {{/if}}
+            <hr>
+        {{/each}}
+        <a class="closePopup">Close</a>
+    </div>
+    <div id="fade" class="black_overlay"></div>
+    {{/if}}
+</template>
+
+
+<template name="renderplayermodal">
+    <div class="modal fade" id="playerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header alert-primary">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel">{{tagpro}}</h4>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-group list-striped" style="text-align:left">
+                        <li class="list-group-item"><b>reddit: </b>{{reddit}}</li>
+                        <li class="list-group-item"><b>position: </b>{{position}}</li>
+                        <li class="list-group-item"><b>days: </b>{{days}}</li>
+                        <li class="list-group-item"><b>server: </b>{{server}}</li>
+                        <li class="list-group-item"><b>mic: </b>{{mic}}</li>
+                        <li class="list-group-item"><b>league: </b>{{league}}</li>
+                        <li class="list-group-item"><b>note: </b>{{note}}</li>
+                        <li class="list-group-item"><b>time_played: </b>{{time_played}}</li>
+                        <li class="list-group-item"><b>location: </b>{{location}}</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

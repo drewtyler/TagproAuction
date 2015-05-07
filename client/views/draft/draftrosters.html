@@ -1,0 +1,56 @@
+<template name="draftrosters">
+    {{#each getDivisions}}
+    <div class="row">
+        <div class="col-md-2">
+            <div class="divisionpanel panel panel-default">
+                <div class="panel-heading division-header" style="text-align:right; background-color:{{inRedDivision division}}">
+                    {{division}} Division
+                </div>
+            </div>
+        </div>
+        {{> renderteam division=division}}
+        <div class="clearfix visible-sm visible-md visible-lg"></div>
+    </div>
+    {{/each}}
+</template>
+
+<template name="renderteam">
+    {{#each teams division ./division}}
+    <div class="col-lg-2 col-md-4 col-sm-6 col-xs-12 team" style="">
+        <ul class="list-group">
+            <li class="list-group-item" id="team_{{teamID teamname}}" style="text-align:center;background-color:{{inRedDivision division}}">
+                {{teamname}}
+                <br>
+                {{money}} ({{keepermoney}})
+            </li>
+            {{> renderplayers teamname=teamname}}
+        </ul>
+    </div>
+    {{/each}}
+</template>
+
+<template name="renderplayers">
+    {{#each players teamname}}
+    <li class="list-group-item" style="padding: 2px 2px; height:25px; white-space:nowrap; overflow:hidden;">
+        <span style="width:20px; display:inline-block;">
+            {{#if captain}}
+                <img src="/captain.png">
+            {{else}}
+                {{#if cocaptain}}
+                    <img src="/cocaptain.png">
+                {{else}}
+                    {{#if mltp}}
+                        <img src="/MLTP.png">
+                    {{/if}}
+                {{/if}}
+            {{/if}}
+        </span>
+        {{#if name}}
+        {{name}}
+        <div style="float:right; padding-right:8px">
+            {{cost}}
+        </div>
+        {{/if}}
+    </li>
+    {{/each}}
+</template>

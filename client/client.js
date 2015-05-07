@@ -16,9 +16,21 @@ AuctionLock = new Mongo.Collection("auctionlock");
 PreviousAuctionData = new Mongo.Collection("previousauctiondata");
 PlayerResponse = new Mongo.Collection("playerResponse");
 BoardHelpers = new Mongo.Collection("boardhelpers");
+Administrators = new Mongo.Collection("admins");
 
-if (Meteor.isClient) {
-  Meteor.startup(function() {
+ Meteor.startup(function() {
+    var bidTime = 25000;
+    var additionTime = 15000;
+    var lock = 0;
+    var bidTimeout = 0;
+
+    var setServerTime = function() {
+      Meteor.call("getServerTime", function(error, serverMS) {
+        var localMS = new Date().getTime();
+        var serverOffset = serverMS - localMS;
+        console.log('Meteor.setServerTime()', {serverMS: serverMS, localMS:localMS, serverOffset: serverOffset});
+        Session.set('serverTimeOffset', serverOffset);
+    })};
     Session.setDefault("serverTimeOffset", 0);
     Session.setDefault("time", new Date().getTime());
     Session.setDefault("auctionStatus", "Waiting to start");
@@ -32,11 +44,11 @@ if (Meteor.isClient) {
     Session.setDefault("playerToDisplay", "N/A");
     Session.setDefault("teamToDisplay", "N/A");
 
-    Meteor.setServerTime();
+    setServerTime();
     Meteor.clearInterval(Meteor.intervalUpdateTimeDisplayed);
     Meteor.intervalUpdateTimeDisplayed = Meteor.setInterval(function() { Session.set('time', new Date().getTime()); }, 50);
     Meteor.clearInterval(Meteor.intervalUpdateServerTime);
-    Meteor.intervalUpdateServerTime = Meteor.setInterval(function() { Meteor.setServerTime(); }, 300000);
+    Meteor.intervalUpdateServerTime = Meteor.setInterval(function() { setServerTime }, 300000);
 
     Meteor.subscribe("divisions");
     Meteor.subscribe("teamnames");
@@ -52,9 +64,9 @@ if (Meteor.isClient) {
     Meteor.subscribe("playerResponse");
     Meteor.subscribe("warningMessage");
     Meteor.subscribe("boardhelpers");
+    Meteor.subscribe("admins");
   });
 
-  Accounts.ui.config({
-    passwordSignupFields: "USERNAME_ONLY"
-  });
-}
+Accounts.ui.config({
+  passwordSignupFields: "USERNAME_ONLY"
+});

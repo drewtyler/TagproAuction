@@ -1,7 +1,7 @@
 [
-  {"admin" : "PrivateMajor"},
-  {"admin" : "Bull"},
-  {"admin" : "Ashmungashma"},
-  {"admin" : "asdf"},
-  {"admin" : "WowSuchPro"}
+  {"username" : "PrivateMajor"},
+  {"username" : "Bull"},
+  {"username" : "Ashmungashma"},
+  {"username" : "asdf"},
+  {"username" : "WowSuchPro"}
 ]

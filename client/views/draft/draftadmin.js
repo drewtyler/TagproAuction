@@ -31,13 +31,13 @@ Template.draftadmin.events({
 })
 
 Template.draftadmin.helpers({
-  draftadmin : function() {
-    if(Meteor.user() !== undefined) {
-
-      if(draftadmins.indexOf(Meteor.user().username) >= 0) {
-        return true;
+  isDraftAdmin : function() {
+      if(Meteor.user()) {
+        myusername = Meteor.user().username;
+        if(Administrators.find({username:myusername}).count() > 0) {
+          return true;
+        }
       }
-    }
     return false;
-  },
+  }
 });
