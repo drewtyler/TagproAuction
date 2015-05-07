@@ -1,0 +1,29 @@
+.rostersidebar {
+  float:right;
+  width:250px;
+  height:100%;
+  margin-top:70px;
+  border:1px solid;
+  font-size:18px;
+}
+.sidebarul {
+  list-style-type:none;
+  padding:10;
+  margin:0;
+  height:100%;
+  white-space:nowrap;
+  display:table;
+}
+.regionname {
+  font-size:40px;
+  color:darkblue;
+  display:tablecell;
+}
+.teamname {
+  width:100%;
+  display:tablecell;
+}
+.rosterview {
+  margin-top:100px;
+  float:left;
+}

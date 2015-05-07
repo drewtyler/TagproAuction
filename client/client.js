@@ -30,6 +30,7 @@ if (Meteor.isClient) {
     Session.setDefault("teamJustBid", "");
     Session.setDefault("pageToDisplay", "homePage");
     Session.setDefault("playerToDisplay", "N/A");
+    Session.setDefault("teamToDisplay", "N/A");
 
     Meteor.setServerTime();
     Meteor.clearInterval(Meteor.intervalUpdateTimeDisplayed);

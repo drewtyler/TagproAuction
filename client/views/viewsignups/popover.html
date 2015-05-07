@@ -1,9 +1,13 @@
 <template name="popover">
     {{#if viewingPopup}}
     <div id="light" class="white_content">
-        More to come!
         {{#each playerToDisplay}}
-            <!--{{playername}}-->
+            <!-- make large -->
+            <center>{{playername}}</center><br>
+            {{#if formerName}}
+            <center>(Formerly: {{oldplayername}}</center>
+            {{/if}}
+            <hr>
         {{/each}}
         <a class="closePopup">Close</a>
     </div>

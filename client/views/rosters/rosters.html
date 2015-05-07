@@ -1,0 +1,25 @@
+<template name="teamrosters">
+    <!-- TODO: Make this look pretty -->
+    <div class="rosterview">
+        {{#each curTeamDisplay}}
+            <div class="teamname">{{teamname}}</div>
+            {{#each curTeamData teamname}}
+                {{name}}<br>
+            {{/each}}
+        {{/each}}
+    </div>
+    <!-- side nav bar for each team -->
+    <div class="rostersidebar">
+        <ul class="sidebarul">
+            {{#each getRegions}}
+            <li class="regionname">{{division}}</li>
+                {{#each getTeams division}}
+                    <li class="teamname">{{teamname}}</li>
+                {{/each}}
+            <hr>
+            {{/each}}
+        </ul>
+    </div>
+    <!-- center div with info -->
+
+</template>
