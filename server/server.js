@@ -27,6 +27,7 @@ Meteor.methods({
         return false;
     },
     undoNomination : function(person) {
+        var bidTime = 25000;
         ad = AuctionData.findOne({});
         if(ad.Nominator !== undefined) {
             nominator = ad.Nominator;
@@ -37,22 +38,23 @@ Meteor.methods({
         }
     },
     resumeAuction : function (person) {
-        // Make it so you can't resume from nominating state
+        var additionTime = 15000;
         if(AuctionData.findOne({State:"Nominating"}) !== undefined) {
             return false;
         }
         pa = PausedAuction.findOne();
+        console.log(pa);
         pa.nextExpiryDate = new Date().getTime() + additionTime;
-        delete pa._id;
         AuctionStatus.update({}, {"status":"Live"});
         AuctionData.remove({});
         AuctionData.insert(pa);
         Meteor.call("insertMessage", "Auction resumed by "+person, new Date(), "started");
     },
     pauseAuction : function(person) {
+        PausedAuction.remove({});
         ad = AuctionData.findOne();
         secondsLeft = ad.nextExpiryDate - new Date().getTime();
-        delete ad._id;
+        console.log(ad);
         PausedAuction.insert(ad);
         PausedAuction.update({}, {$set: {"secondsLeft": secondsLeft}});
         Meteor.call("insertMessage", "Auction paused by "+person, new Date(), "paused");
@@ -60,6 +62,7 @@ Meteor.methods({
         AuctionData.remove({})
     },
     startAuction: function(person) {
+        var bidTime = 25000;
         console.log("Starting auction");
         Meteor.call("insertMessage", "Auction started by "+person, new Date(), "started");
         nominator = Meteor.call('pickNominator');
@@ -119,104 +122,106 @@ Meteor.methods({
         Messages.insert({text:texttowrite,createdAt:new Date(),messageType:messageType});
     },
     acceptBid: function(bidder, amount, clienttime) {
-        if(Meteor.isServer) {
-            // Gotta be logged in. Just precautionary.
-            if(!Meteor.userId()) {
-                console.log("acceptBid: no user");
-                return false;
+        var bidTimeout = 0;
+        var additionTime = 10000;
+        // Gotta be logged in. Just precautionary.
+        if(!Meteor.userId()) {
+            console.log("acceptBid: no user");
+            return false;
+        }
+        else
+        {
+            console.log("acceptBid: bid from " + Meteor.user().username);
+        }
+
+        // Check state of auction
+        var state = AuctionData.findOne({});
+        if(state.State == "Nominating") {
+            //console.log("acceptBid: Can't bid right now");
+            return false;
+        }
+
+        // Alright let's check this thang out.
+        console.log("acceptBid: Got State & we're bidding");
+
+        // First, is the bid enough?
+        if(parseInt(state.currentBid) < parseInt(amount)) {
+
+            // K cool, does the player have this much money?
+            team = TeamNames.findOne({captain:bidder});
+            var availablebidamt = parseInt(team.money);
+            if(Meteor.call("isKeeper", bidder, state.currentPlayer)) {
+                availablebidamt += parseInt(team.keepermoney);
             }
-            else
-            {
-                console.log("acceptBid: bid from " + Meteor.user().username);
-            }
 
-            // Check state of auction
-            var state = AuctionData.findOne({});
-            if(state.State == "Nominating") {
-                //console.log("acceptBid: Can't bid right now");
-                return false;
-            }
+            if(parseInt(amount) <= parseInt(availablebidamt)) {
+                // Cool, he does. Is it in time?
+                console.log("acceptBid: good amount");
+                // I can't bid when the time is still valid, this fixes it
+                //if() {
+                if(team.count < team.numrosterspots) {
+                    if(parseInt(state.nextExpiryDate) > parseInt(new Date().getTime())) {  // Sweet it was. Let's mark it down!
+                        console.log("acceptBid: nextExpiryDate good");
 
-            // Alright let's check this thang out.
-            console.log("acceptBid: Got State & we're bidding");
+                        console.log("acceptBid: Times: "+ state.nextExpiryDate + " vs " + clienttime);
 
-            // First, is the bid enough?
-            if(parseInt(state.currentBid) < parseInt(amount)) {
+                        secondsLeft = state.nextExpiryDate - new Date().getTime();
 
-                // K cool, does the player have this much money?
-                team = TeamNames.findOne({captain:bidder});
-                var availablebidamt = parseInt(team.money);
-                if(Meteor.call("isKeeper", bidder, state.currentPlayer)) {
-                    availablebidamt += parseInt(team.keepermoney);
-                }
+                        if(!(state.lastBidder == bidder)) {
+                            BidHistory.insert({
+                                bidder: bidder,
+                                amount: amount,
+                                player: state.currentPlayer,
+                                createdAt: new Date().getTime(),
+                                secondsLeft: secondsLeft
+                            });
+                            AuctionData.update(
+                                {State: "Bidding"},
+                                {$set: {currentBid: amount, lastBidder: bidder}}
+                            );
 
-                if(parseInt(amount) <= parseInt(availablebidamt)) {
-                    // Cool, he does. Is it in time?
-                    console.log("acceptBid: good amount");
-                    // I can't bid when the time is still valid, this fixes it
-                    //if() {
-                    if(team.count < team.numrosterspots) {
-                        if(parseInt(state.nextExpiryDate) > parseInt(new Date().getTime())) {  // Sweet it was. Let's mark it down!
-                            console.log("acceptBid: nextExpiryDate good");
-
-                            console.log("acceptBid: Times: "+ state.nextExpiryDate + " vs " + clienttime);
-
-                            secondsLeft = state.nextExpiryDate - new Date().getTime();
-
-                            if(!(state.lastBidder == bidder)) {
-                                BidHistory.insert({
-                                    bidder: bidder,
-                                    amount: amount,
-                                    player: state.currentPlayer,
-                                    createdAt: new Date().getTime(),
-                                    secondsLeft: secondsLeft
-                                });
-                                AuctionData.update(
-                                    {State: "Bidding"},
-                                    {$set: {currentBid: amount, lastBidder: bidder}}
-                                );
-
-                                Meteor.call("insertMessage",
-                                bidder + " bids " + amount + " on " + AuctionData.findOne({}).currentPlayer,
-                                new Date(), "bid");
-                                Meteor.call("insertMessage", team.teamname, new Date(), "bidIndication");
-                                console.log("acceptBid: inserted bid");
-                                // Do we need to give some time back?
-                                timeoutTime = secondsLeft;
-                                if(parseInt(secondsLeft) < 15000) {
-                                    AuctionData.update({State: "Bidding"}, {$set: {nextExpiryDate: new Date().getTime()+additionTime}});
-                                    timeoutTime = additionTime;
-                                }
-
-                                if(bidTimeout) {
-                                    Meteor.clearTimeout(bidTimeout);
-                                }
-                                bidTimeout = Meteor.setTimeout(function() {
-                                    Meteor.call("checkForToggle");
-                                }, timeoutTime);
-
-                                return true;
-                            } else {
-                                console.log("why would you bid 2x in a row?")
-                                return false;
+                            Meteor.call("insertMessage",
+                            bidder + " bids " + amount + " on " + AuctionData.findOne({}).currentPlayer,
+                            new Date(), "bid");
+                            Meteor.call("insertMessage", team.teamname, new Date(), "bidIndication");
+                            console.log("acceptBid: inserted bid");
+                            // Do we need to give some time back?
+                            timeoutTime = secondsLeft;
+                            if(parseInt(secondsLeft) < 15000) {
+                                AuctionData.update({State: "Bidding"}, {$set: {nextExpiryDate: new Date().getTime()+additionTime}});
+                                timeoutTime = additionTime;
                             }
+
+                            if(bidTimeout) {
+                                Meteor.clearTimeout(bidTimeout);
+                            }
+                            bidTimeout = Meteor.setTimeout(function() {
+                                Meteor.call("checkForToggle");
+                            }, timeoutTime);
+
+                            return true;
                         } else {
-                            console.log("acceptBid: too late: "+ state.nextExpiryDate + " vs " + clienttime);
+                            console.log("why would you bid 2x in a row?")
+                            return false;
                         }
                     } else {
-                        console.log("acceptBid: this captain already has a full roster...");
+                        console.log("acceptBid: too late: "+ state.nextExpiryDate + " vs " + clienttime);
                     }
+                } else {
+                    console.log("acceptBid: this captain already has a full roster...");
                 }
-                else {
-                    console.log("acceptBid: you outta money homie.");
-                }
-            } else {
-                console.log("acceptBid: bad amount: " + state.currentBid + " vs " + amount + ".");
             }
+            else {
+                console.log("acceptBid: you outta money homie.");
+            }
+        } else {
+            console.log("acceptBid: bad amount: " + state.currentBid + " vs " + amount + ".");
         }
         return false;
     },
     toggleState: function(playerNominated, bid) {
+        var bidTime = 25000;
+        var bidTimeout = 0;
         console.log("Checking toggle state");
 
         var state = AuctionData.findOne();
@@ -224,23 +229,32 @@ Meteor.methods({
         if(state !== undefined && state.State == "Nominating") {
             console.log("State is nominating");
             var team = TeamNames.findOne({captain:state.Nominator});
-
             var money = team.money;
+
             if(Meteor.call("isKeeper", state.Nominator, playerNominated)) {
                 money = team.money + team.keepermoney;
             }
             if(money < parseInt(bid)) {
+                console.log("Tried to nominate someone for too much money");
                 return false;
             }
 
-            // Log message
+            if(PlayerResponse.find({playername : playerNominated}).count() == 0) {
+                console.log("Player not signed up!");
+                return false;
+            }
+
+            if(TeamData.find({name: playerNominated}).count() > 0)
+            {
+                console.log("Can't nominate someone on a team!");
+                return false;
+            }
+
             Meteor.call("insertMessage", state.Nominator + " nominates " + playerNominated + " with an initial bid of " + bid, new Date(), "nomination");
             Meteor.call("insertMessage", team.teamname, new Date().getTime(), "bidIndication");
 
             BidHistory.insert({bidder: state.Nominator, amount: bid, player: playerNominated, createdAt: new Date().getTime(), secondsLeft:bidTime});
-            // Start bidding baby
-            //PreviousAuctionData.remove({});
-            //PreviousAuctionData.insert(AuctionData.find({}));
+
             AuctionData.remove({});
 
             if(bidTimeout) {
@@ -260,7 +274,7 @@ Meteor.methods({
             var playerWon = state.currentPlayer;
 
             // ALL CAPS-specific thing here
-            if(state.lastBidder == "YOSSARIAN") {
+            if(state.lastBidder == "BALLDON'TLIE") {
                 playerWon = playerWon.toUpperCase();
             }
 
@@ -271,7 +285,7 @@ Meteor.methods({
 
             if(keepers.indexOf(playerWon) >= 0) {
                 console.log(playerWon, " is a keeper!");
-                keepermoney = keepermoney - state.currentBid;
+                keepermoney = keepermoney - (state.currentBid > 5 ? 5 : state.currentBid);
 
                 if(keepermoney < 0) {
                     money = money - Math.abs(keepermoney);
@@ -306,20 +320,18 @@ Meteor.methods({
         }
     },
     removeLastBid : function(person) {
-        if(Meteor.isServer) {
-            auctionState = AuctionStatus.find({}).state;
-            if(auctionState !== "Paused") {
-                var currentState = AuctionData.findOne();
-                var lastbid = BidHistory.findOne({"player": currentState.currentPlayer},{sort:{"createdAt":-1}});
-                BidHistory.remove({"_id" : lastbid._id});
-                var lastbid2 = BidHistory.findOne({"player":currentState.currentPlayer},{sort:{"createdAt":-1}});
-                AuctionData.update(
-                    {State: "Bidding"},
-                    {$set: {currentBid: lastbid2.amount, lastBidder: lastbid2.bidder, nextExpiryDate: new Date().getTime()+bidTime}}
-                );
-                var text = "Last bid removed by " + person;
-                Meteor.call("insertMessage", text, new Date());
-            }
+        auctionState = AuctionStatus.find({}).state;
+        if(auctionState !== "Paused") {
+            var currentState = AuctionData.findOne();
+            var lastbid = BidHistory.findOne({"player": currentState.currentPlayer},{sort:{"createdAt":-1}});
+            BidHistory.remove({"_id" : lastbid._id});
+            var lastbid2 = BidHistory.findOne({"player":currentState.currentPlayer},{sort:{"createdAt":-1}});
+            AuctionData.update(
+                {State: "Bidding"},
+                {$set: {currentBid: lastbid2.amount, lastBidder: lastbid2.bidder, nextExpiryDate: new Date().getTime()+15000}}
+            );
+            var text = "Last bid removed by " + person;
+            Meteor.call("insertMessage", text, new Date());
         }
     },
     checkForToggle: function() {
@@ -337,7 +349,9 @@ Meteor.methods({
 Meteor.startup(function () {
     console.log("Loading it up");
     // Clear state
-
+    var bidTime = 25000;
+    var additionTime = 15000;
+    var lock = 0;
     var renewData = true;
 
     AuctionData.remove({});

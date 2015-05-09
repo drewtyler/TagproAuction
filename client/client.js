@@ -19,11 +19,6 @@ BoardHelpers = new Mongo.Collection("boardhelpers");
 Administrators = new Mongo.Collection("admins");
 
  Meteor.startup(function() {
-    var bidTime = 25000;
-    var additionTime = 15000;
-    var lock = 0;
-    var bidTimeout = 0;
-
     var setServerTime = function() {
       Meteor.call("getServerTime", function(error, serverMS) {
         var localMS = new Date().getTime();

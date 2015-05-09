@@ -9,7 +9,6 @@ Template.frontpage.helpers({
     return (Session.get("pageToDisplay") == "editSignUpPage");
   },
   draftPage:function() {
-    console.log("test");
     return (Session.get("pageToDisplay") == "draftPage");
   },
   packetPage:function() {
