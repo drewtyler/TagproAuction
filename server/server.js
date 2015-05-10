@@ -282,19 +282,22 @@ Meteor.methods({
             keepers = Keepers.findOne({"captain":state.lastBidder}).keepers;
             var keepermoney = team.keepermoney;
             var money = team.money;
+            money = money - state.currentBid;
 
             if(keepers.indexOf(playerWon) >= 0) {
                 console.log(playerWon, " is a keeper!");
-                keepermoney = keepermoney - (state.currentBid > 5 ? 5 : state.currentBid);
+                usedKeeperMoney = (state.currentBid > 5 ? 5 : state.currentBid);
+                keepermoney -= usedKeeperMoney;
+
+                money = money + usedKeeperMoney;
 
                 if(keepermoney < 0) {
                     money = money - Math.abs(keepermoney);
                     keepermoney = 0;
                 }
             }
-            else {
-                money = money - state.currentBid;
-            }
+            // fix the nomination turning into pick immediately
+            // fix keeper money stuff
 
             var playerOrder = parseInt(team.count) + 1;
             // Put him in the roster
