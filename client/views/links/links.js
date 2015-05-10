@@ -11,6 +11,16 @@ Template.links.helpers({
   },
   nav:function(){
    return Session.get("pageToDisplay");
+  },
+  canViewDraft:function() {
+    username = Meteor.user().username;
+    if(Nominators.find({"name":username}).count() > 0)
+        return true;
+    if(Administrators.find({"username":username}).count()>0)
+        return true;
+    if(Meteor.user().username == "BBQChicken")
+        return true;
+    return false;
   }
 });
 

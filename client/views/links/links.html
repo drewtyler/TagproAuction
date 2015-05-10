@@ -16,8 +16,9 @@
         <!-- button for draft -->
         <!-- button for draft packet -->
         <br><center><div id="viewSignups"><button type="button" class="btn btn-info">View a table of the signups.</button></div></center>
-        <br><center><div id="viewDraft"><button type="button" class="btn btn-info">MLTP Season 8 Draft!</button></div></center>
-        <!-- button for rosters -->
+        {{#if canViewDraft}}
+            <br><center><div id="viewDraft"><button type="button" class="btn btn-info">MLTP Season 8 Draft!</button></div></center>
+        {{/if}}<!-- button for rosters -->
         {{#if isCaptain}}
             <!-- button for trade -->
             <!-- button for waivers -->
