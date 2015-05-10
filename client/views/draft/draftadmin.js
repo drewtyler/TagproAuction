@@ -28,6 +28,10 @@ Template.draftadmin.events({
     Meteor.call('setBidTime', bidTime);
     return false;
   },
+  'click .undo-playerwon' : function(event) {
+    console.log("Undo that won player")
+    Meteor.call("undoLastWonPlayer", Meteor.user().username);
+  }
 })
 
 Template.draftadmin.helpers({

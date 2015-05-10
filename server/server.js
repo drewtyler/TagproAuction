@@ -17,6 +17,7 @@ PreviousAuctionData = new Mongo.Collection("previousauctiondata");
 PlayerResponse = new Mongo.Collection("playerResponse");
 BoardHelpers = new Mongo.Collection("boardhelpers");
 Administrators = new Mongo.Collection("admins");
+LastWonPlayer = new Mongo.Collection("lastwonplayer");
 
 Meteor.methods({
     isKeeper: function(bidder, player) {
@@ -269,7 +270,9 @@ Meteor.methods({
         }
         else if (state !== undefined)
         {
+            lastNominator = AuctionData.findOne({}).Nominator;
             AuctionData.remove({});
+
             console.log("Not nominating... someone won!");
             var team = TeamNames.findOne({"captain" : state.lastBidder});
             var playerWon = state.currentPlayer;
@@ -281,7 +284,9 @@ Meteor.methods({
 
             // handle keepers
             keepers = Keepers.findOne({"captain":state.lastBidder}).keepers;
+            var oldKeeperMoney = team.keepermoney;
             var keepermoney = team.keepermoney;
+            var oldMoney = team.money;
             var money = team.money;
             money = money - state.currentBid;
 
@@ -294,11 +299,12 @@ Meteor.methods({
 
                 if(keepermoney < 0) {
                     money = money - Math.abs(keepermoney);
+                    usedKeeperMoney += keepermoney;
                     keepermoney = 0;
                 }
             }
-            // fix the nomination turning into pick immediately
-            // fix keeper money stuff
+
+            var ActualCost = oldMoney - money;
 
             var playerOrder = parseInt(team.count) + 1;
             // Put him in the roster
@@ -315,6 +321,8 @@ Meteor.methods({
             Meteor.call("insertMessage", text, new Date(), "winningBid");
             Meteor.call("insertMessage", team.teamname, new Date(), "animate");
 
+            LastWonPlayer.remove({});
+            LastWonPlayer.insert({"teamname":team.teamname,"order":playerOrder,"name":playerWon,"oldMoney":oldMoney,"nominator":lastNominator,"keepercost":oldKeeperMoney})
             // Reset state
             nominator = Meteor.call("pickNominator");
             CurrentPick.update({}, {$inc:{'pick':1}});
@@ -322,6 +330,20 @@ Meteor.methods({
             Nominators.update({name:nominator.name}, {$set:{nominated:true}});
             return AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+10000, Nominator: nominator.name,  startTime:new Date().getTime()});
         }
+    },
+    undoLastWonPlayer:function(person) {
+        lastWonData = LastWonPlayer.findOne({});
+        LastWonPlayer.remove({});
+        TeamData.update({"teamname":lastWonData.teamname,"order":lastWonData.order},{$set:{"name":"","cost":0}});
+        curMoney = TeamNames.findOne({"teamname":lastWonData.teamname}).money;
+        TeamNames.update({"teamname":lastWonData.teamname},{$set:{"count":(lastWonData.order-1),"money":lastWonData.oldMoney,"keepermoney":lastWonData.oldKeeperMoney}});
+        PlayerResponse.update({"tagpro":lastWonData.name},{$set:{"drafted":false}});
+        status = AuctionData.findOne({});
+        curNominator = status.Nominator;
+        curNominatorOrder = Nominators.findOne({"name":curNominator}).order;
+        Nominators.update({"name":"nextInOrder"},{$set:{"nextorder":curNominatorOrder}});
+        AuctionData.update({State:"Nominating"},{$set:{Nominator:lastWonData.nominator}});
+        Meteor.call("insertMessage", "Last won player undone by " + person, new Date(), "started");
     },
     removeLastBid : function(person) {
         auctionState = AuctionStatus.find({}).state;
