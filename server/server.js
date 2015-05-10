@@ -151,7 +151,8 @@ Meteor.methods({
             team = TeamNames.findOne({captain:bidder});
             var availablebidamt = parseInt(team.money);
             if(Meteor.call("isKeeper", bidder, state.currentPlayer)) {
-                availablebidamt += parseInt(team.keepermoney);
+
+                availablebidamt += (parseInt(team.keepermoney) > 5 ? 5 : parseInt(team.keepermoney));
             }
 
             if(parseInt(amount) <= parseInt(availablebidamt)) {
