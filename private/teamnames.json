@@ -1,6 +1,6 @@
 [
   {"teamname":"LagProne", "division" : "Atlantic", "money" : 100, "keepermoney":10, "captain" : "Ballymandias", "numrosterspots":6, "count" : 1, "order":0},
-  {"teamname":"Myrtle Beach Merballs", "division" : "Atlantic", "money" : 100, "keepermoney":0, "captain" : "Romulus", "numrosterspots":6, "count" : 1, "order":1},
+  {"teamname":"Myrtle Beach Merballs", "division" : "Atlantic", "money" : 100, "keepermoney":10, "captain" : "Romulus", "numrosterspots":6, "count" : 1, "order":1},
   {"teamname":"Adrenaline Spikes", "division" : "Atlantic", "money" : 100, "keepermoney":0, "captain" : "Nebuchanezar", "numrosterspots":6, "count" : 1, "order":2},
   {"teamname":"TagPro Rangers", "division" : "Atlantic", "money" : 100, "keepermoney":0, "captain" : "jjpoole", "numrosterspots":6, "count" : 1, "order":3},
   {"teamname":"Bad News Balls", "division" : "Atlantic", "money" : 100, "keepermoney":0, "captain" : "honeybear", "numrosterspots":6, "count" : 1, "order":4},
@@ -13,9 +13,9 @@
   {"teamname":"Capper's Delight", "division" : "Central", "money" : 100, "keepermoney":0, "captain" : "Tpr", "numrosterspots":6, "count" : 1, "order":1},
   {"teamname":"The Wild Pings", "division" : "Central", "money" : 100, "keepermoney":0, "captain" : "crosky", "numrosterspots":4, "count" : 1, "order":2},
   {"teamname":"BallChimedes", "division" : "Central", "money" : 100, "keepermoney":10, "captain" : "Chalksy", "numrosterspots":6, "count" : 1, "order":3},
-  {"teamname":"KGBallers", "division" : "Central", "money" : 100, "keepermoney":0, "captain" : "Raven", "numrosterspots":6, "count" : 1, "order":4},
+  {"teamname":"KGBallers", "division" : "Central", "money" : 100, "keepermoney":10, "captain" : "Raven", "numrosterspots":6, "count" : 1, "order":4},
   {"teamname":"Dino's Teamname", "division" : "Northeast", "money" : 100, "keepermoney":0, "captain" : "Dino", "numrosterspots":6, "count" : 1, "order":0},
-  {"teamname":"Ghostboosters", "division" : "Northeast", "money" : 100, "keepermoney":0, "captain" : "Gem", "numrosterspots":6, "count" : 1, "order":1},
+  {"teamname":"Ghostboosters", "division" : "Northeast", "money" : 100, "keepermoney":10, "captain" : "Gem", "numrosterspots":6, "count" : 1, "order":1},
   {"teamname":"ALL CAPS", "division" : "Northeast", "money" : 100, "keepermoney":10, "captain" : "BALLDON'TLIE", "numrosterspots":6, "count" : 1, "order":2},
   {"teamname":"30 SMB", "division" : "Northeast", "money" : 100, "keepermoney":10, "captain" : "Legman", "numrosterspots":6, "count" : 1, "order":3},
   {"teamname":"Marble Madness", "division" : "Northeast", "money" : 100, "keepermoney":0, "captain" : "swerve", "numrosterspots":6, "count" : 1, "order":4}
