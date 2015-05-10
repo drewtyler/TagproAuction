@@ -328,7 +328,16 @@ Meteor.methods({
             CurrentPick.update({}, {$inc:{'pick':1}});
             var text = "Waiting for "+nominator +" to nominate the "+CurrentPick.findOne({}).pick+" pick of the draft.";
             Nominators.update({name:nominator.name}, {$set:{nominated:true}});
-            return AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+10000, Nominator: nominator.name,  startTime:new Date().getTime()});
+
+            var numPlayers = TeamData.find({"name":{$ne:""}}).count();
+            console.log(numPlayers);
+            if(numPlayers < 40)
+                return AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+10000, Nominator: nominator.name,  startTime:new Date().getTime()});
+            else {
+                Meteor.call("insertMessage","The first round is over!",new Date(),"started");
+                AuctionData.insert({State:"Nominating",nextExpiryDate:new Date(),Nominator:"Nobody",startTime:new Date().getTime()});
+            }
+            return false;
         }
     },
     undoLastWonPlayer:function(person) {
