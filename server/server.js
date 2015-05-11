@@ -322,7 +322,7 @@ Meteor.methods({
             Meteor.call("insertMessage", team.teamname, new Date(), "animate");
 
             LastWonPlayer.remove({});
-            LastWonPlayer.insert({"teamname":team.teamname,"order":playerOrder,"name":playerWon,"oldMoney":oldMoney,"nominator":lastNominator,"keepercost":oldKeeperMoney})
+            LastWonPlayer.insert({"teamname":team.teamname,"order":playerOrder,"name":playerWon,"oldMoney":oldMoney,"nominator":lastNominator,"oldKeeperMoney":oldKeeperMoney})
             // Reset state
             nominator = Meteor.call("pickNominator");
             CurrentPick.update({}, {$inc:{'pick':1}});
