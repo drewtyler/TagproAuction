@@ -18,7 +18,7 @@ Template.links.helpers({
         return true;
     if(Administrators.find({"username":username}).count()>0)
         return true;
-    if(Meteor.user().username == "Spiller" || Meteor.user().username == "dodsfall" || Meteor.user().username == "Nawse" || Meteor.user().username == "Xile")
+    if(Meteor.user().username == "Spiller" || Meteor.user().username == "dodsfall" || Meteor.user().username == "Nawse" || Meteor.user().username == "Xile" || Meteor.user().username == "Mikero")
         return true;
     return false;
   }
