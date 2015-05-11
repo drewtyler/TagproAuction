@@ -387,7 +387,7 @@ Meteor.startup(function () {
     var bidTime = 25000;
     var additionTime = 15000;
     var lock = 0;
-    var renewData = true;
+    var renewData = false;
 
     AuctionData.remove({});
     AuctionStatus.remove({})
