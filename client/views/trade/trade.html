@@ -8,16 +8,14 @@
     <div class="tradecontainer">
         <form class="new-post" id="offertrade">
             <div class="trademyTeam">
-                <ul class="myRoster">
-                    {{#each getallPlayersInRoster}}
-                        {{#if isCaptain name}}
-                            <li class="myteam">{{teamname}}</li>
-                        {{else}}
-                            <li class="player">{{name}}</li>
-                        {{/if}}
-                    {{/each}}
-                </ul>
-                <input class="tagCoinsToGive" value="" placeholder="# Tagcoins to offer" type="text">
+                {{#each getallPlayersInRoster}}
+                    {{#if isCaptain name}}
+                        <br><br><strong>{{teamname}}</strong><br>
+                    {{else}}
+                        <input type="checkbox" name="myplayer{{order}}" class="tradeplayer" value="{{name}}">{{name}}<br>
+                    {{/if}}
+                {{/each}}
+                <input name="tagCoinsToGive" id="tagCoinsToGive" value="" placeholder="# Tagcoins to offer" type="text">
             </div>
             <div class="tradeTheirTeam">
                 <select id="proposedCaptain">
@@ -26,22 +24,19 @@
                         <option value="{{captain}}">{{captain}}</option>
                     {{/each}}
                 </select>
-                <!-- put team name here -->
-                <ul class="theirRoster">
-                    {{#each getallPlayersInTheirRoster}}
-                        {{#if isCaptain name}}
-                            <li class="theirteam">{{teamname}}</li>
-                        {{else}}
-                            <li class="player">{{name}}</li>
-                        {{/if}}
-                    {{/each}}
-                </ul>
-                <input class="tagCoinsToReceive" value="" placeholder="# Tagcoins to receive" type="text">
+                {{#each getallPlayersInTheirRoster}}
+                    {{#if isCaptain name}}
+                        <br><strong>{{teamname}}</strong><br>
+                    {{else}}
+                        <input type="checkbox" name="theirplayer{{order}}" class="tradeplayer" value="{{name}}">{{name}}<br>
+                    {{/if}}
+                {{/each}}
+                <input name="tagCoinsToReceive" id="tagCoinsToReceive" value="" placeholder="# Tagcoins to receive" type="text">
             </div>
             <div class="tradecommonarea">
                 <br>
-                <textarea placeholder="Reasoning to admins. (The other captain will not see this)"></textarea>
-                <textarea placeholder="Message to other captain"></textarea>
+                <textarea name="reasoning" id="reasoning" placeholder="Reasoning to admins. (The other captain will not see this)"></textarea>
+                <textarea name="message" id="message" placeholder="Message to other captain"></textarea>
                 <button class="btn btn-primary" type="submit">Propose</button>
             </div>
         </form>
