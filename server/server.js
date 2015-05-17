@@ -61,7 +61,7 @@ Meteor.methods({
         PausedAuction.update({}, {$set: {"secondsLeft": secondsLeft}});
         Meteor.call("insertMessage", "Auction paused by "+person, new Date(), "paused");
         AuctionStatus.update({}, {"status":"Paused"});
-        AuctionData.remove({})
+        AuctionData.remove({});
     },
     startAuction: function(person) {
         var bidTime = 25000;
@@ -326,6 +326,11 @@ Meteor.methods({
             LastWonPlayer.remove({});
             LastWonPlayer.insert({"teamname":team.teamname,"order":playerOrder,"name":playerWon,"oldMoney":oldMoney,"nominator":lastNominator,"oldKeeperMoney":oldKeeperMoney})
             // Reset state
+            if(TeamData.find({"name":{$ne:""}}).count() == 120) {
+                Meteor.call("insertMessage", "The auction draft has completed!", new Date(), "started");
+                AuctionStatus.update({}, {"status":"Paused"});
+                AuctionData.remove({});
+            }
             nominator = Meteor.call("pickNominator");
             CurrentPick.update({}, {$inc:{'pick':1}});
             var text = "Waiting for "+nominator +" to nominate the "+CurrentPick.findOne({}).pick+" pick of the draft.";
