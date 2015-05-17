@@ -17,6 +17,7 @@ PreviousAuctionData = new Mongo.Collection("previousauctiondata");
 PlayerResponse = new Mongo.Collection("playerResponse");
 BoardHelpers = new Mongo.Collection("boardhelpers");
 Administrators = new Mongo.Collection("admins");
+PendingTrades = new Mongo.Collection("trades");
 
  Meteor.startup(function() {
     var setServerTime = function() {
@@ -38,6 +39,7 @@ Administrators = new Mongo.Collection("admins");
     Session.setDefault("pageToDisplay", "homePage");
     Session.setDefault("playerToDisplay", "N/A");
     Session.setDefault("teamToDisplay", "N/A");
+    Session.setDefault("tradeCaptainToView", "Select");
 
     setServerTime();
     Meteor.clearInterval(Meteor.intervalUpdateTimeDisplayed);
@@ -60,6 +62,7 @@ Administrators = new Mongo.Collection("admins");
     Meteor.subscribe("warningMessage");
     Meteor.subscribe("boardhelpers");
     Meteor.subscribe("admins");
+    Meteor.subscribe("trades");
   });
 
 Accounts.ui.config({

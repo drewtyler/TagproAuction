@@ -12,6 +12,9 @@ Template.links.helpers({
   nav:function(){
    return Session.get("pageToDisplay");
   },
+  isAdmin:function() {
+      return Administrators.find({"username":Meteor.user().username}).count()>0
+  },
   canViewDraft:function() {
     username = Meteor.user().username;
     if(Nominators.find({"name":username}).count() > 0)
@@ -36,5 +39,8 @@ Template.links.events({
   },
   'click #viewDraft' : function(event) {
      Session.set("pageToDisplay","draftPage");
-  }// put in a listener for a click in each div for each button
+ },
+ 'click #viewTrade' : function(event) {
+     Session.set("pageToDisplay","tradePage");
+ }// put in a listener for a click in each div for each button
 });

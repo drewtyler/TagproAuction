@@ -1,0 +1,13 @@
+.trademyTeam{
+    float:left;
+    padding-left:500px;
+}
+
+.tradeTheirTeam{
+    float:right;
+    padding-right:500px;
+}
+
+.tradecommonarea{
+    float:bottom;
+}

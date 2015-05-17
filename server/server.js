@@ -18,6 +18,7 @@ PlayerResponse = new Mongo.Collection("playerResponse");
 BoardHelpers = new Mongo.Collection("boardhelpers");
 Administrators = new Mongo.Collection("admins");
 LastWonPlayer = new Mongo.Collection("lastwonplayer");
+PendingTrades = new Mongo.Collection("trades");
 
 Meteor.methods({
     isKeeper: function(bidder, player) {
@@ -112,7 +113,8 @@ Meteor.methods({
         }
 
         nextNominator = Nominators.findOne({"order":newnextorder});
-        var text = "Waiting for "+captain.name +" to nominate pick "+CurrentPick.findOne({}).pick+" of the draft.";
+        var numplayers = TeamData.find({name:{$ne:""}}).count() - 19;
+        var text = "Waiting for "+captain.name +" to nominate pick "+numplayers+" of the draft.";
         Meteor.call("insertMessage", text, new Date());
         var text = nextNominator.name +" is nominating after "+ captain.name;
         Meteor.call("insertMessage", text, new Date());
@@ -331,13 +333,8 @@ Meteor.methods({
 
             var numPlayers = TeamData.find({"name":{$ne:""}}).count();
             console.log(numPlayers);
-            if(numPlayers < 40)
-                return AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+10000, Nominator: nominator.name,  startTime:new Date().getTime()});
-            else {
-                Meteor.call("insertMessage","The first round is over!",new Date(),"started");
-                AuctionData.insert({State:"Nominating",nextExpiryDate:new Date(),Nominator:"Nobody",startTime:new Date().getTime()});
-            }
-            return false;
+
+            return AuctionData.insert({State: "Nominating", nextExpiryDate: new Date().getTime()+10000, Nominator: nominator.name,  startTime:new Date().getTime()});
         }
     },
     undoLastWonPlayer:function(person) {
@@ -389,43 +386,13 @@ Meteor.startup(function () {
     var lock = 0;
     var renewData = false;
 
-    AuctionData.remove({});
-    AuctionStatus.remove({})
-    AuctionStatus.insert({"status":"Not Started"});
-    AuctionLock.remove({});
-    AuctionLock.insert({"locked":0});
-
-    if(renewData) {
-        TeamNames.remove({});
-        var teamnames = {};
-        teamnames = JSON.parse(Assets.getText('teamnames.json'));
-        for(i = 0; i < teamnames.length; i++) {
-            var obj = teamnames[i];
-            TeamNames.insert(obj);
-        }
-
-        TeamData.remove({});
-        Nominators.remove({});
-        Keepers.remove({});
-        CurrentPick.remove({});
-        PausedAuction.remove({});
-        CurrentPick.insert({"pick":1});
-
-        // Load Nominators
-        var initialRosterData = {};
-        initialRosterData = JSON.parse(Assets.getText('nominations.json'));
-        for(i = 0; i < initialRosterData.length; i++) {
-            var obj = initialRosterData[i];
-            Nominators.insert(obj);
-        }
-
-        Administrators.remove({});
-        var admins = {};
-        admins = JSON.parse(Assets.getText('admins.json'));
-        for(i = 0; i < admins.length; i++) {
-            var obj = admins[i];
-            Administrators.insert(obj);
-        }
+    var renew2 = true;
+    if(renew2) {
+        AuctionData.remove({});
+        AuctionStatus.remove({})
+        AuctionStatus.insert({"status":"Not Started"});
+        AuctionLock.remove({});
+        AuctionLock.insert({"locked":0});
 
         // Fischer-Yates shuffle
         var shuffle = function(array) {
@@ -443,8 +410,16 @@ Meteor.startup(function () {
                 array[currentIndex] = array[randomIndex];
                 array[randomIndex] = temporaryValue;
             }
-
             return array;
+        }
+
+        Nominators.remove({});
+        // Load Nominators
+        var initialRosterData = {};
+        initialRosterData = JSON.parse(Assets.getText('nominations.json'));
+        for(i = 0; i < initialRosterData.length; i++) {
+            var obj = initialRosterData[i];
+            Nominators.insert(obj);
         }
 
         // Set nomination order
@@ -453,17 +428,38 @@ Meteor.startup(function () {
         for(var i = 0; i < captains.length; i++) {
             Nominators.update({"name":captains[i].name}, {$set: {"order": i}});
         }
+        TeamData.remove({});
+        TeamNames.remove({});
+        var teamnames = JSON.parse(Assets.getText('teamnames.json'));
+        initialRosterData = JSON.parse(Assets.getText('teams.json'));
+        for(i = 0; i < teamnames.length; i++) {
+            var obj = teamnames[i];
+            TeamNames.insert(obj);
+        }
+        for(i = 0; i < initialRosterData.length; i++) {
+            var obj = initialRosterData[i];
+            TeamData.insert(obj);
+        }
+    }
+
+    if(renewData) {
+        Keepers.remove({});
+        CurrentPick.remove({});
+        PausedAuction.remove({});
+        CurrentPick.insert({"pick":1});
+
+        Administrators.remove({});
+        var admins = {};
+        admins = JSON.parse(Assets.getText('admins.json'));
+        for(i = 0; i < admins.length; i++) {
+            var obj = admins[i];
+            Administrators.insert(obj);
+        }
 
         keepers = JSON.parse(Assets.getText('keepers.json'));
         for(i = 0; i < keepers.length; i++) {
             var obj = keepers[i];
             Keepers.insert(obj);
-        }
-
-        initialRosterData = JSON.parse(Assets.getText('teams.json'));
-        for(i = 0; i < initialRosterData.length; i++) {
-            var obj = initialRosterData[i];
-            TeamData.insert(obj);
         }
 
         PlayerResponse.update({}, {$set:{"drafted":false}}, {multi:true});
@@ -488,5 +484,6 @@ Meteor.startup(function () {
     Meteor.publish("warningMessage", function() {return WarningMessage.find()});
     Meteor.publish("boardhelpers", function() {return BoardHelpers.find()});
     Meteor.publish("admins", function() {return Administrators.find()});
+    Meteor.publish("trades", function() {return PendingTrades.find()});
     return true;
 });
