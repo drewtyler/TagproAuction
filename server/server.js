@@ -391,7 +391,7 @@ Meteor.startup(function () {
     var lock = 0;
     var renewData = false;
 
-    var renew2 = true;
+    var renew2 = false;
     if(renew2) {
         AuctionData.remove({});
         AuctionStatus.remove({})
