@@ -9,7 +9,7 @@ Template.links.helpers({
   isCaptain:function() {
    return (TeamData.findOne({"name":Meteor.user().username, "captain" : true}))
   },
-  nav:function(){
+  nav:function(){ 
    return Session.get("pageToDisplay");
   },
   isAdmin:function() {
