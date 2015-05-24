@@ -119,7 +119,7 @@ Meteor.methods({
         var captain = SnakeOrder.findOne({"order":order,"round":round});
         console.log(captain);
         if(nextOrder == 141) {
-            Meteor.call("insertMessage", "Draft over!", "winningBid");
+            Meteor.call("insertMessage", "Draft over!", new Date(), "winningBid");
             AuctionData.remove({});
             return null;
         }
@@ -135,6 +135,7 @@ Meteor.methods({
         }
     },
     finishPicking:function(captain) {
+        Meteor.call("insertMessage",captain + " has elected to stop picking", new Date(), "winningBid")
         SnakeOrder.update({"name":captain,"playername":""},{$set:{"picking":false}},{multi:true});
     },
     pickNominator : function() {
@@ -327,12 +328,13 @@ Meteor.methods({
             var round = Math.ceil(curPick/20);
             var order = curPick - (20 * (round - 1));
             currentCaptain = AuctionData.findOne({});
+            console.log(round + " " + order);
             SnakeOrder.update({"round":round,"order":order}, {$set: {"playername":playerNominated}});
             var selectingTeam = TeamNames.findOne({"captain":currentCaptain.Nominator});
             var thisPlayerOrder = selectingTeam.numrosterspots + 1;
             TeamData.insert({"name" : playerNominated, "order" : thisPlayerOrder, "cost": 0, "division": selectingTeam.division, "teamname" : selectingTeam.teamname});
             TeamNames.update({"teamname":selectingTeam.teamname}, {$set: {"numrosterspots":thisPlayerOrder}});
-            Meteor.call("insertMessage", currentCaptain.Nominator + " selects " + playerNominated + " with pick " + curPick, "winningBid");
+            Meteor.call("insertMessage", currentCaptain.Nominator + " selects " + playerNominated + " with pick " + curPick,new Date() + " of the snake draft", "winningBid");
             nextNominator = Meteor.call("pickSnakePicker");
             if(nextNominator) {
                 AuctionData.remove({});
@@ -461,7 +463,7 @@ Meteor.startup(function () {
     var lock = 0;
     var renewData = false;
     var renew2 = false;
-    var renew3 = true;
+    var renew3 = false;
 
     if(renew3) {
         SnakeOrder.remove({});
